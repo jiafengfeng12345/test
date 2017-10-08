@@ -14,7 +14,7 @@ dependencies {
 
 android {
     compileSdkVersion 19
-    buildToolsVersion "26.0.1"
+    buildToolsVersion "19.1"
 	
 	lintOptions {
         abortOnError false
@@ -49,7 +49,7 @@ android {
 	 
 	buildTypes {
 		release {
-			 zipAlignEnabled true
+			zipAlign true
 			signingConfig signingConfigs.release
 		}
 	}
