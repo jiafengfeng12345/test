@@ -1,0 +1,132 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<style>
+			.kefu{
+				height: 200px;
+				background: #FFFFFF;
+			}
+			.title{
+				display: inline-block;
+				width: 100%;
+				height: 15px;
+				margin-top: 5px;
+				text-align: center;
+				font-size: 15px;
+				color: darkgrey;
+			}
+			.kefu a{
+				display: inline-block;
+				width: 100%;
+				height: 1px;
+				border: 1px solid #f2f2f2;
+			}
+			.left{
+				width: 48%;
+				display: inline-block;
+			}
+			.left_img{
+				width:24px;
+				height: 24px;
+			}
+			.left_text{
+				font-size: 14px;
+				text-align: center;
+			}
+			.right{
+				width: 48%;
+				float: right;
+				display: inline-block;
+			}
+			.right_img{
+				width:24px;
+				height: 24px;
+			}
+			.right_text{
+				font-size: 14px;
+				text-align: center;
+			}
+			.line{
+				margin-top: 15px;
+				overflow: hidden;
+			}
+			.line1{
+				margin-top: -35px;
+				overflow: hidden;
+			}
+			.lines{
+				width: 30%;
+				height: 1px;
+				margin-top: 5px;
+				margin-left: 34%;
+				border:1px solid #f2f2f2;
+			}
+			.vline{
+				width: 2px;
+				height: 100px;
+				display: inline-block;
+				margin-left: 50%;
+				margin-top: -50px;
+				background: #f2f2f2;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="kefu" style="z-index:99">
+			<span class="title">客户服务</span>
+			<a></a>
+			<div class="line" >
+				<div class="left" align="center" onclick="javaScript:goPage('clientService/cantUnLock.html')">
+					<img src="img/kaibu.png" class="left_img">
+					<div class="left_text" id="kaisuo" >开不了锁</div>
+				</div>
+				<div class="right" align="center" onclick="javaScript:goPage('msg.html')">
+					<img src="img/xiufu.png" class="right_img">
+					<div class="right_text">发现车辆故障</div>
+				</div>
+			</div>
+			<div class="lines"></div>
+			<div class="vline"></div>
+			<div class="line1">
+				<div class="left" align="center" onclick="javaScript:goPage('clientService/reportViolation.html')">
+					<img src="img/233333.png" class="left_img">
+					<div class="left_text">举报</div>
+				</div>
+				<div class="right" align="center" onclick="javaScript:goPage('otherClientService.html')">
+					<img src="img/qita.png" class="right_img">
+					<div class="right_text">其他</div>
+				</div>
+			</div>
+		</div>
+	</body>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript" src="js/click.js" ></script>
+		<script type="text/javascript" src="js/jquery-2.2.0.min.js" ></script>
+		<script type="text/javascript">
+			/*$(".title").click(function(){
+				plus.webview.close('mapSub1.html');
+			});
+			$(".kefu a").click(function(){
+				plus.webview.close('mapSub1.html');
+			});
+			$(".lines").click(function(){
+				plus.webview.close('mapSub1.html');
+			});
+			$(".vline").click(function(){
+				plus.webview.close('mapSub1.html');
+			});*/
+			
+			function goPage(path){
+				mui.openWindow({
+					url:path,
+					id:path
+				});
+			}
+		</script>
+
+</html>

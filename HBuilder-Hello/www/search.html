@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+		<meta name="HandheldFriendly" content="true" />
+		<meta name="MobileOptimized" content="320" />
+		<link rel="stylesheet" href="css/common.css">
+		<link rel="stylesheet" href="css/mui.min.css">
+		<link rel="stylesheet" href="http://cache.amap.com/lbs/static/main.css?v=1.0" />
+		<script type="text/javascript" src="http://webapi.amap.com/maps?v=1.3&key=b5a6dea9e006539a5499341b5cf1217f"></script>
+		<title>去哪找我</title>
+		<style>
+			.mui-bar {
+				background: #6bbb55;
+				color: #fff;
+			}
+			
+			header .mui-title {
+				color: #fff;
+			}
+			
+			header .mui-icon-left-nav {
+				color: #fff;
+			}
+			
+			header button {
+				color: #fff !important;
+			}
+			
+			.yue {
+				padding-top: 200px;
+				text-align: center;
+				font-size: 60px;
+				color: #6bbb55;
+			}
+			
+			.yue p {
+				margin-top: 22px;
+				color: #6bbb55;
+			}
+			
+			.chongzhi {
+				position: absolute;
+				bottom: 90px;
+				background: #6bbb55;
+				color: #fff;
+				height: 40px;
+				line-height: 40px;
+				width: 86%;
+				text-align: center;
+				left: 7%;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header id="header" class="mui-bar mui-bar-nav">
+			<button class="mui-action-back mui-btn mui-btn-blue mui-btn-link mui-btn-nav mui-pull-left"><span class="mui-icon mui-icon-left-nav"></span>返回</button>
+			<!--<h1 class="mui-title">搜索</h1>-->
+			<input type="text" placeholder="去哪找我" id="searchBarx" style="width: 60%;color: #000;" />
+		</header>
+		<!--<div class="content">
+			 <input type="text" class="mui-input-password" id = "searchBarx">
+		</div>-->
+	</body>
+	<script src="js/mui.min.js"></script>
+	<script type="text/javascript" src="js/jquery-2.2.0.min.js" ></script>
+	<script>
+		if(window.plus) {
+			plusReady();
+		} else {
+			document.addEventListener('plusready', plusReady, false);
+		}
+		
+		function plusReady () {
+			AMap.plugin('AMap.Autocomplete', function() {
+				var autoOptions = {
+					city: "",
+					input: "searchBarx"
+				};
+				autocomplete = new AMap.Autocomplete(autoOptions);
+				AMap.event.addListener(autocomplete, "select", function(e) {
+					var data=plus.webview.getLaunchWebview();
+					mui.fire(data,"doit",{
+						search:e.poi.name
+					});
+					mui.back();
+				});
+			});
+			
+		}
+		
+	</script>
+
+</html>

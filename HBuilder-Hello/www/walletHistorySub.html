@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>Hello MUI</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<link rel="stylesheet" href="css/mui.min.css">
+		<style>
+			li span{
+				display:inline-block;
+			}
+			.createDate{
+				width:65%;
+			}
+			.amount{
+				font-size:15px;
+			}
+			.payment-list-div{
+				background-color:white;
+				margin:0;
+				padding-left:10px;
+				padding-top:15px;
+				width:100%;
+				border:none;
+				float:left;
+				font-size:13px;
+			}
+
+			.payment-list-div h5{
+				margin-top:0;
+			}
+			
+			.refund-Item-li{
+				padding:0;
+				height:80px;
+				border-bottom:1px solid #0CB88E;
+			}
+			
+			.refund-Item-div{
+				width:0px;
+				border:none;
+				overflow: hidden;
+				height:80px;
+				line-height: 80px;
+			}
+			
+			.refund-Item-div a{
+				margin-left: 12px;
+			}
+			
+			.refund-Item-a{
+				margin-left:80px;
+				color:red;
+				font-size: 14px;
+			}
+			
+			.refund-Item-span{
+				margin-top:10px;
+			}
+
+		</style>
+	</head>
+
+	<body>
+		<div id="pullrefresh" class="mui-content mui-scroll-wrapper">
+			<div class="mui-scroll">
+				<ul class="mui-table-view mui-table-view-chevron">
+				</ul>
+			</div>
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script src="js/jquery-2.2.0.min.js"></script>
+		<script src="js/base.js"></script>
+		<script>
+			var pays = {};
+			var w = null;
+			
+			function plusReady() {
+				plus.payment.getChannels(function(channels) {
+					var content = document.getElementById('dcontent');
+					var txt = "支付通道信息：";
+					for(var i in channels) {
+						var channel = channels[i];
+						if(channel.id == 'qhpay' || channel.id == 'qihoo') { // 过滤掉不支持的支付通道：暂不支持360相关支付
+							continue;
+						}
+						pays[channel.id] = channel;
+						txt += "id:" + channel.id + ", ";
+						txt += "description:" + channel.description + ", ";
+						txt += "serviceReady:" + channel.serviceReady + "； ";
+					}
+				}, function(e) {});
+			}
+			document.addEventListener('plusready', plusReady, false);
+			function checkServices(pc) {
+				if(!pc.serviceReady) {
+					var txt = null;
+					switch(pc.id) {
+						case "alipay":
+							txt = "检测到系统未安装“支付宝快捷支付服务”，无法完成支付操作，是否立即安装？";
+							break;
+						default:
+							txt = "系统未安装“" + pc.description + "”服务，无法完成支付，是否立即安装？";
+							break;
+					}
+					plus.nativeUI.confirm(txt, function(e) {
+						if(e.index == 0) {
+							pc.installService();
+						}
+					}, pc.description);
+				}
+			}
+		
+			mui.init({
+				pullRefresh: {
+					container: '#pullrefresh',
+					down: {
+						callback: pulldownRefresh
+					},
+				}
+			});
+			function pulldownRefresh() {
+				setTimeout(function() {
+					$.ajax({
+						type: "post",
+						url: IP + "/mobile/ZhiFuHistory/list",
+						dataType: "json",
+						success : function(data){
+							var list = data.result;
+							var ul = $(".mui-table-view");
+							ul.empty();
+							$.each(list,function(i,n){
+								var date = n.createDate;
+								var amount = n.amount;
+								var type = n.type;
+								var orderId = n.orderId;
+								var status = n.orderStatus;
+								//var li = "<li class='mui-table-view-cell'><span class='createDate'>"+data+"</span><span class='amount'>"+amount+"</span></li>";
+								var li =  "<li class='refund-Item-li'>"+
+									"<div class='payment-list-div'>"+
+										"<div style='float:left; width:60%'><a><h5 class = 'createDate'>" + type + "</h5>"+
+											"<h6 class = 'bikeSn'>"+status +"</h6>"+ 
+											"<span class = 'costTime'>"+
+											"<i class='fa fa-history'></i>" + date+ "</span></a></div>"+
+										"<div><span class = 'amount'>交易金额:" + amount+ "元</span>"+
+									"<span class='refund-Item-span'><a class='refund-Item-a'>退款</a>"+
+								"<input type='text' style='display:none' value='"+orderId+"'/>"+
+								"<input type='text' style='display:none' value='"+amount +"'/></span></div></div></li>";
+								ul.append(li);
+							});
+						},
+					});
+					mui("#pullrefresh").pullRefresh().endPulldownToRefresh();
+				}, 1000);
+			}
+			$.ajax({
+				type: "post",
+				url: IP + "/mobile/ZhiFuHistory/list",
+				dataType: "json",
+				success : function(data){
+					var list = data.result;
+					var ul = $(".mui-table-view");
+					$.each(list,function(i,n){
+						var date = n.createDate;
+						var amount = n.amount;
+						var type = n.type;
+						var orderId = n.orderId;
+						var status = n.orderStatus;
+						//var li = "<li  class='mui-table-view-cell'><span class='createDate'>"+data+"</span><span class='amount'>金额："+amount+"</span></li>";
+						var li = "<li class='refund-Item-li'>"+
+									"<div class='payment-list-div'>"+
+										"<div style='float:left; width:60%'><a><h5 class = 'createDate'>" + type + "</h5>"+
+											"<h6 class = 'bikeSn'>"+status +"</h6>"+ 
+											"<span class = 'costTime'>"+
+											"<i class='fa fa-history'></i>" + date+ "</span></a></div>"+
+										"<div><span class = 'amount'>交易金额:" + amount+ "元</span>"+
+									"<span class='refund-Item-span'><a class='refund-Item-a'>退款</a>"+
+								"<input type='text' style='display:none' value='"+orderId+"'/>"+
+								"<input type='text' style='display:none' value='"+amount +"'/></span></div></div></li>";
+						ul.append(li);
+					});
+				},
+			});
+			window.addEventListener("pulldownRefresh",function(){
+				pulldownRefresh();
+			});
+			
+			$("body").on("click",".refund-Item-a",function(){
+				var orderId = $(this).next().val();
+				var amount = $(this).next().next().val();
+				var url;
+				var payType = $(this).parent().parent().parent().find(".createDate").html();
+				var payStatus = $(this).parent().parent().parent().find(".bikeSn").html();
+				if(payStatus == "已退款"){
+					plus.nativeUI.alert("已退款");
+					return;
+				}
+				plus.nativeUI.confirm("确认退款吗?",function(e){
+					if(e.index == 0){
+						w = plus.nativeUI.showWaiting();
+						if(payType == "支付宝支付"){
+							url = "/ali/refund";
+						}
+						else{
+							url = "/weChat/refund";
+						}
+						var data = {"orderId":orderId,"amount":amount,"username":plus.storage.getItem("username")};
+						$.ajax({
+							type:'post',
+							url:IP + url,
+							data:data,
+							dataType:"json",
+							success:function(retData){
+								if(retData.result == "success"){
+									w.close();
+									w=null;
+									plus.nativeUI.alert("退款成功");
+									var webview = plus.webview.getWebviewById("walletSub.html");
+									mui.fire(webview, "walletInit");
+									var webviewMenu = plus.webview.getWebviewById("menu.html");
+									mui.fire(webviewMenu,"reflashClient");
+									location.reload(true);								
+								}
+								else{
+									plus.nativeUI.alert("退款失败");
+								}
+							},
+							error:function(error,e2,e3){
+								console.log(error);
+								console.log(e2);
+								console.log(e3);
+							}
+						});
+					}
+				},"退款",["确认","取消"]);
+			});
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+		<meta name="HandheldFriendly" content="true" />
+		<meta name="MobileOptimized" content="320" />
+		<link rel="stylesheet" href="css/mui.min.css">
+		<link rel="stylesheet" href="css/common.css" type="text/css" charset="utf-8" />
+		<title>Hello H5+</title>
+		<style>
+			.mui-bar {
+				background: #6bbb55;
+				color: #fff;
+			}
+			
+			header .mui-title {
+				color: #fff;
+			}
+			
+			header .mui-icon-left-nav {
+				color: #fff;
+			}
+			 
+			header button {
+				color: #fff !important;
+			}
+			
+			.yue {
+				padding-top: 200px;
+				text-align: center;
+				font-size: 60px;
+				color: #6bbb55;
+			}
+			
+			.yue p {
+				margin-top: 22px;
+				color: #6bbb55;
+			}
+			
+			.chongzhi {
+				position: absolute;
+				bottom: 90px;
+				background: #6bbb55;
+				color: #fff;
+				height: 40px;
+				line-height: 40px;
+				width: 86%;
+				text-align: center;
+				left: 7%;
+			}
+			
+			#lightBar {
+				width: 100%;
+				position: absolute;
+				top: 60px;
+				bottom: 44px;
+				text-align: center;
+				z-index: 9999999;
+			}
+			#sssssss{
+			    position: absolute;
+			    width: 100%;
+			    top: 44px;
+			    bottom: 44px;
+			}
+			footer{
+				position: absolute;
+			    bottom: 0;
+			    width: 100%;
+			    height: 44px;
+			    line-height: 44px;
+			    background-color:#6bbb55;
+			}
+			footer .tooterBtn{
+				display:inline-block;
+				width:50%;
+				text-align: center;
+				 color:#FFFFFF;
+			}
+			footer .tooterBtn:nth-child(1){
+				width:calc(50% - 1px),;
+				border-right: 1px solid rgba(0,0,0,0.5);
+			}
+			footer .tooterBtn:active{
+				box-shadow: 0px 2px 5px 2px rgba(0,0,0,0.5) inset;
+			}
+		</style>
+	</head>
+
+	<body style="background-color:#000000">
+		<header id="header" class="mui-bar mui-bar-nav">
+			<button class="mui-action-back mui-btn mui-btn-blue mui-btn-link mui-btn-nav mui-pull-left"><span class="mui-icon mui-icon-left-nav"></span>返回</button>
+			<h1 class="mui-title">二维码拍照</h1>
+		</header>
+		<div id="sssssss" class="content">
+		</div>
+		<footer>
+			<a class="tooterBtn flashSwitch">
+				打开手电筒
+			</a><span></span></算盘><a class="tooterBtn inputBySelf">
+				手动输入二维码
+			</a>
+		</footer>
+	</body>
+	<script type="text/javascript" src="js/mui.min.js"></script>
+	<script type="text/javascript" src="js/jquery-2.2.0.min.js"></script>
+	<script type="text/javascript" src="js/base.js"></script>
+	<script type="text/javascript">
+		var client =null;
+		var backQR = false;
+		var longitude = null;
+		var latitude = null;
+		document.addEventListener('touchstart', function() {
+			return false;
+		}, true);
+		document.oncontextmenu = function() {
+			return false;
+		};
+		var as = 'pop-in';
+		var map = null;
+
+		function plusReady() {
+			var longitude = plus.webview.currentWebview().longitude;
+			var latitude = plus.webview.currentWebview().latitude;
+			console.log(longitude+","+latitude);
+			backQR = plus.webview.currentWebview().backQR;
+			$.ajax({
+				type: "post",
+				url: IP + "/client/info",
+				dataType: "json",
+				success : function(data){
+					client = data;
+					$(".userName").text(data.name);
+				},
+			});
+			plus.webview.currentWebview().setStyle({
+				scrollIndicator: 'none'
+			});
+			plus.key.addEventListener('backbutton', function() {
+//				if(confirm('确认退出？')) {
+//					plus.runtime.quit();
+//				}
+			}, false);
+			compatibleAdjust();
+		}
+		if(window.plus) {
+			plusReady();
+		} else {
+			document.addEventListener('plusready', plusReady, false);
+		}
+		var _domReady = false;
+		document.addEventListener('DOMContentLoaded', function() {
+			_domReady = true;
+			compatibleAdjust();
+		}, false);
+		var _adjust = false;
+
+		function compatibleAdjust() {
+			if(_adjust || !window.plus || !_domReady) {
+				return;
+			}
+			_adjust = true;
+			if('iOS' == plus.os.name) {
+				document.getElementById('sssssss').className = 'scontent'; 
+			}
+			
+			var barStyle = {
+				"frameColor": "#6abb54",
+				"scanbarColor": "#6abb54"
+			};
+			ws = plus.webview.currentWebview();
+			scan = new plus.barcode.Barcode('sssssss', [], barStyle);
+			scan.onmarked = onmarked;
+			scan.start();
+			
+		}
+		
+		function onmarked(type, result, file) {
+			setTimeout(function() {
+				scan.close();
+			}, 200);
+			if(!backQR){
+				$.ajax({
+					type: "post",
+					url: IP + "/mobile/journeryStart",
+					dataType: "json",
+					data:{
+						clientId : client.id,
+						bikeQR : result,
+						longitude : longitude,
+						latitude : latitude,
+					},
+					success : function(data){
+						console.log(data.result);
+						if(data.result == "success"){
+							mui.toast('扫码成功，等待自行车开锁...');
+							var travelSub = plus.webview.getWebviewById("travelSub.html");
+							mui.fire(travelSub,'pulldownRefresh');
+							mui.back();
+						}else{
+							plus.nativeUI.alert(data.result, function() {
+								console.log("User pressed!");
+							}, "出错了", "知道了")
+						}
+					},
+					error :function(){
+						plus.nativeUI.alert("扫码失败，请从新扫码", function() {
+							console.log("User pressed!");
+						}, "出错了", "知道了")
+					}
+				});
+			}else{
+				plus.webview.currentWebview().opener().evalJS("showQR('"+result+"')")
+				mui.back();
+			}
+			
+		}
+		var flag = 0;
+		$(".flashSwitch").click(function(){
+			if(flag==0){
+				scan.setFlash(true);
+				flag=1;
+			}else{
+				scan.setFlash(false);
+				flag=0;
+			}
+		});
+		$(".inputBySelf").click(function(){
+			var bts=["确认","取消"];
+			plus.nativeUI.prompt("请输入二维码",function(e){
+				if(e.index == 0){
+					if(!backQR){
+						$.ajax({
+							type: "post",
+							url: IP + "/mobile/journeryStart",
+							dataType: "json",
+							data:{
+								clientId : client.id,
+								bikeQR : e.value,
+							},
+							success : function(data){
+								console.log(data.result);
+								if(data.result == "success"){
+									mui.toast('扫码成功，等待自行车开锁...');
+									var travelSub = plus.webview.getWebviewById("travelSub.html");
+									mui.fire(travelSub,'pulldownRefresh');
+									mui.back();
+								}else{
+									plus.nativeUI.alert(data.result, function() {
+										console.log("User pressed!");
+									}, "出错了", "知道了")
+								}
+							},
+							error :function(){
+								plus.nativeUI.alert("扫码失败，请从新扫码", function() {
+									console.log("User pressed!");
+								}, "出错了", "知道了")
+							}
+						});
+					}else{
+						plus.webview.currentWebview().opener().evalJS("showQR("+e.value+")");
+						mui.back();
+					}
+				}
+			},"","",bts);
+		});
+		
+	</script>
+
+</html>

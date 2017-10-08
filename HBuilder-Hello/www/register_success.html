@@ -1,0 +1,218 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<style>
+			.mui-bar {
+				background: #efeff4;
+				color: #000;
+			}
+			header .mui-title {
+				color: #000;
+			}
+			
+			header .mui-icon-left-nav {
+				color: #000;
+			}
+			
+			header button{
+				color: #000 !important;	
+			}
+			.mui-content{
+				background: #FFFFFF;
+				display: block;
+				height: 100%;
+				width: 100%;
+				position: absolute;
+			}
+			.mui-input-row{
+				margin-top: 20px;
+				margin-left: 5%;
+				width: 90%;
+				font-size: 13px;
+			}
+			.mui-input-row label{
+				margin-top: 3.5px;
+			}
+			.mui-input-row input{
+				margin-top: 3.5px;
+			}
+			
+			input{
+				font-size: 13px;
+			}
+			#change_row{
+				margin-top: 20px;
+				width: 62%;
+				margin-left: 5%;
+			}
+			#get{
+				float: right;
+				background: #C0C0C1;
+				margin-top: -40px;
+				margin-right: 5%;
+				font-size: 12px;
+				height: 40px;
+				color: #fff;
+			}
+			#sure{
+				margin-left: 5%;
+				width: 90%;
+				background: #C0C0C1;
+				margin-top: 20px;
+				color: #F3F3F3;
+				font-size: 20px;
+			}
+			#user_lable{
+				width: 24%;
+			}
+			#mobile{
+				width: 75%;
+				
+			}
+			#user_Pass{
+				width: 75%;		
+			}
+		</style>
+	</head>
+
+	<body>
+		<header id="header" class="mui-bar mui-bar-nav">
+			<button class="mui-action-back mui-btn mui-btn-blue mui-btn-link mui-btn-nav mui-pull-left"><span class="mui-icon mui-icon-left-nav"></span>返回</button>
+			<h1 class="mui-title">用户注册</h1>
+		</header>
+		<div class="mui-content">
+			注册成功啦
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript" src="js/base.js" ></script>
+		<script type="text/javascript" src="js/jquery-2.2.0.min.js" ></script>
+		<script type="text/javascript" src="js/click.js" ></script>
+		<script type="text/javascript">
+		
+		document.addEventListener('touchstart', function() {
+			return false;
+		}, true);
+		document.oncontextmenu = function() {
+			return false;
+		};
+		
+		function plusReady() {
+			plus.webview.currentWebview().setStyle({
+				scrollIndicator: 'none'
+			});
+			compatibleAdjust();
+		}
+		if(window.plus) {
+			plusReady();
+		} else {
+			document.addEventListener('plusready', plusReady, false);
+		}
+		var _domReady = false;
+		document.addEventListener('DOMContentLoaded', function() {
+			_domReady = true;
+			compatibleAdjust();
+		}, false);
+		var _adjust = false;
+
+		function compatibleAdjust() {
+			if(_adjust || !window.plus || !_domReady) {
+				return;
+			}
+			_adjust = true;
+			setTimeout(function() {
+				plus.navigator.closeSplashscreen();
+				plus.navigator.setStatusBarBackground('#efeff4');
+				if(plus.navigator.isImmersedStatusbar()) {
+					plus.navigator.setStatusBarStyle('UIStatusBarStyleBlackOpaque');
+				}
+			}, 100);
+		}
+		
+		function goPage(page) {
+			mui.openWindow({
+				url: page,
+				id: page
+			});
+		}
+		$("#mobile").keyup(function  () {
+			var ph=$("#mobile").val().length;
+			if(ph==11){
+				$("#get").css("background","red");
+			}
+			else{
+				$("#get").css("background","#C0C0C1");
+			}
+		});
+		$("#verCode").keyup(function  () {
+			var ph=$("#verCode").val().length;
+			if(ph!=0){
+				$("#sure").css("background","red");
+			}
+			else{
+				$("#sure").css("background","#C0C0C1");
+			}
+		});
+		
+		$("#get").click(function  () {
+			var mobile=$("#mobile").val();
+			if(mobile.length==11)
+			{
+				$.ajax({
+					type:"post",
+					url:IP+"/mobile/userSendMsg",
+					data:{phone:mobile},
+					dataType:'json'
+				});	
+			}
+			
+		});
+		$("#sure").click(function () {
+			var phone=$("#mobile").val();
+			var ver=$("#verCode").val();
+			var pass=$("#user_Pass").val();
+			$.ajax({
+				type:"post",
+				url:IP+"/mobile/verificationCheck",
+				data:{
+					phone:phone,
+					verificationCode:ver
+				},
+				dataType:"json",
+				success:function(data){
+					var result=data.result;
+					if(result=='success'){
+						$.ajax({
+							type:"post",
+							url:IP+"/mobile/register",
+							data:{
+								username:phone,
+								password:pass
+							},
+							dataType:"json",
+							success:function (re) {
+								var da=re.result;
+								if(da=='success'){
+									goPage('index.html');
+								}else{
+									plus.nativeUI.alert(da, function() {
+										console.log("User pressed!");
+									}, "出错了", "知道了")
+								}
+							}
+						});
+					}
+					else{
+						plus.nativeUI.alert(result, function() {
+							console.log("User pressed!");
+						}, "出错了", "知道了")
+					}
+				}				
+			});
+		});
+		</script>	
+	</body>
+</html>

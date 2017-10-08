@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<style>
+			.mui-bar {
+				background: #6bbb55;
+				color: #000;
+			}
+			header .mui-title {
+				color: #FFFFFF;
+			}
+			
+			header .mui-icon-left-nav {
+				color: #FFFFFF;
+			}
+			
+			header button{
+				color: #FFFFFF !important;	
+			}
+		</style>
+	</head>
+
+	<body>
+		<header id="header" class="mui-bar mui-bar-nav">
+			<button class="mui-action-back mui-btn mui-btn-link mui-btn-nav mui-pull-left"><span class="mui-icon mui-icon-left-nav"></span>返回</button>
+			<h1 class="mui-title">服务条款</h1>
+		</header>
+		<div class="mui-content">
+			<div id="term" style="font-size: 18px;"></div>
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript" src="js/jquery-2.2.0.min.js" ></script>
+		<script type="text/javascript" src="js/base.js" ></script>
+		<script type="text/javascript">
+			$.ajax({
+				type:"post",
+				url:IP+"/mobile/getTermOfService",
+				data:{},
+				dataType:"json",
+				success:function (re) {
+					$("#term").html(re.content);
+				}
+			});
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+		<meta name="HandheldFriendly" content="true" />
+		<meta name="MobileOptimized" content="320" />
+		<link rel="stylesheet" href="css/mui.min.css">
+		<title>Hello H5+</title>
+		<style>
+			.mui-bar {
+				background: #6bbb55;
+				color: #fff;
+			}
+			
+			header .mui-title {
+				color: #fff;
+			}
+			
+			header .mui-icon-left-nav {
+				color: #fff;
+			}
+			
+			header button{
+				color: #fff !important;	
+			}
+			
+			.yue{
+				padding-top: 200px;
+				text-align: center;
+				font-size: 60px;
+				color:#6bbb55;
+			}
+			
+			.yue p{
+				margin-top: 22px;
+				color:#6bbb55;
+			}
+			
+			.chongzhi{
+				position: absolute;
+				bottom: 90px;
+				background: #6bbb55;
+				color:#fff;
+				height:40px;
+				line-height:40px;
+				width:86%;
+				text-align: center;
+				left:7%;
+			}
+			#content{
+				margin-top: 50px;
+			}
+			#getNewVersion {
+				position: absolute;
+				width: 80%;
+				left: 10%;
+				height: 40px;
+				line-height: 40px;
+				color: #fff;
+				background: #e74c3c;
+				text-align: center;
+				display: none;
+			}
+		</style>
+	</head>
+	<body>
+		<header id="header" class="mui-bar mui-bar-nav">
+			<button class="mui-action-back mui-btn mui-btn-link mui-btn-nav mui-pull-left"><span class="mui-icon mui-icon-left-nav"></span>返回</button>
+			<h1 class="mui-title">版本信息</h1>
+		</header>
+		<input type="hidden" class="version" value="1.0"/>
+		<div id="content" class="content">
+			<h5 style="text-align: center;margin-top: 30px;">当前版本号 V1.2</h5>
+			<p style="text-align: center;">宁波齐心科技股份有限公司版权所有</p>
+			<div  id="getNewVersion">
+				获取最新版本
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="js/mui.min.js"></script>
+	<script type="text/javascript" src="js/jquery-2.2.0.min.js"></script>
+	<script type="text/javascript" src="js/base.js"></script>
+	<script>
+		function plusReady() {
+			$("#getNewVersion").click(function(){
+				console.log(plus.runtime.version);
+				plus.runtime.openURL("http://121.43.32.226:8080/web/apk/zhqx.apk");
+			})
+		}
+		plusReady();
+		var currentVersion = $(".version").val();
+		$.ajax({
+			type:"post",
+			url: IP + "/getVersion",
+			success : function(data){
+				var onlineVersion = data;
+				if(onlineVersion.toString() != currentVersion){
+					$("#getNewVersion").show();
+				}
+			},
+			error : function(){
+				alert("网络错误");
+			}
+		});
+	</script>
+</html>

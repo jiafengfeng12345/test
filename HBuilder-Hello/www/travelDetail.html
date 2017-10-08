@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+		<meta name="HandheldFriendly" content="true" />
+		<meta name="MobileOptimized" content="320" />
+		<link rel="stylesheet" href="css/mui.min.css">
+		<title>Hello H5+</title>
+		<style>
+			.mui-bar {
+				background: #6bbb55;
+				color: #fff;
+			}
+			body{
+				position: absolute;
+			    top: 0;
+			    bottom: 0;
+			    left: 0;
+			    right: 0;
+			    background: #f6f6f6;
+			}
+			
+			header .mui-title {
+				color: #fff;
+			}
+			
+			header .mui-icon-left-nav {
+				color: #fff;
+			}
+			
+			header button {
+				color: #fff !important;
+			}
+			
+			#header .shareBtn{
+				color: #FFFFFF;
+			    position: absolute;
+			    right: 10px;
+			    top: 0;
+			    height: 44px;
+			    line-height: 44px;
+			}
+			
+			#content {
+				padding-top: 44px;
+			}
+			
+			.line{
+				margin-left: 20px;
+				padding-left: 40px;
+				width: calc(100% - 20px);
+				height: 52px;
+				line-height: 52px;
+				border-bottom: 1px solid #e5e5e5;
+			}
+			.line .fir{
+				display: inline-block;
+				width: 100px;
+				color: #929292;
+			}
+			.line .sec{
+				padding-left: 5px;
+				color: #5e5e5e;
+			}
+			.titleLine{
+				height: 45px;
+				line-height: 45px;
+			}
+			.titleLine .fir{
+				width: 150px;
+				color: #5E5E5E;
+			}
+			.titleLine .sec{
+				position: absolute;
+				right: 6px;
+				font-size: 13.5px;
+				color: #bebebe;
+			}
+			.bikeIcon{
+				position: absolute;
+				left: 20px;
+				/*top: 345px;*/
+				top: 241px;
+				width: 37px;
+				height: 17.55px;
+				background: #f6f6f6;
+			}
+			.bikeIcon img{
+				width: 30px;
+				height: auto;
+				/*-webkit-transform: rotate(-90deg);*/
+			}
+			
+			.totalInfo{
+				width: 100%;
+				height: 120px;
+			}
+			.totalInfo .unitLine{
+				display: inline-block;
+				width: 50%;
+				height: 80px;
+				line-height: 60px;
+				text-align: center;
+				color: #a5a5a5;
+				border-bottom: 1px solid #e5e5e5;
+			}
+			.totalInfo .unitLine span{
+				color: #5E5E5E;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header id="header" class="mui-bar mui-bar-nav">
+			<button class="mui-action-back mui-btn mui-btn-blue mui-btn-link mui-btn-nav mui-pull-left"><span class="mui-icon mui-icon-left-nav"></span>返回</button>
+			<h1 class="mui-title">行程详情</h1>
+			<a class="shareBtn">分享</a>
+		</header>
+		<div id="content" class="content">
+			<div class="line">
+				<span class="fir">订单号</span>
+				<span class="sec orderSn"></span>
+			</div>
+			<div class="line">
+				<span class="fir">状态</span>
+				<span class="sec status"></span>
+			</div>
+			<!--
+			<div class="line">
+				<span class="fir">开始时间</span>
+				<span class="sec startDate"></span>
+			</div>
+			<div class="line">
+				<span class="fir">结束时间</span>
+				<span class="sec endDate"></span>
+			</div>
+			 -->
+			<div class="line">
+				<span class="fir">车辆编号</span>
+				<span class="sec bikeCode"></span>
+			</div>
+			
+			<div class="line">
+				<span class="fir">租车点</span>
+				<span class="sec parkPoint1"></span>
+			</div>
+			<div class="bikeIcon">
+				<img src="img/cc1.png"/>
+			</div>
+			<div class="line" style="">
+				<span class="fir">还车点</span>
+				<span class="sec parkPoint2"></span>
+			</div>
+			<div class="totalInfo">
+				<div class="unitLine">
+					里程
+					<div style="line-height:0px">
+						<span class="distance"></span>&nbsp;<span>Km</span>
+					</div>
+				</div><div class="unitLine" style="border-left:1px solid #e5e5e5">
+					时长
+					<div style="line-height:0px">
+						<span class="rideTime"></span>&nbsp;<span>min</span>
+					</div>
+				</div><div class="unitLine">
+					碳节约量
+					<div style="line-height:0px">
+						<span class="CSaving"></span>&nbsp;<span>Kg</span>
+					</div>
+				</div><div class="unitLine" style="border-left:1px solid #e5e5e5">
+					卡路里消耗
+					<div style="line-height:0px">
+						<span class="calories"></span>&nbsp;<span>Ka</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="js/mui.min.js"></script>
+	<script type="text/javascript" src="js/common.js"></script>
+	<script type="text/javascript" src="js/jquery-2.2.0.min.js"></script>
+	<script type="text/javascript" src="js/base.js"></script>
+	<script type="text/javascript">
+		var em = null,
+			map = null;
+		var shares=null;
+		var journery = null;
+		var dis = 0;
+		if(window.plus) {
+			plusReady();
+		} else {
+			document.addEventListener("plusready", plusReady, false);
+		}
+		function plusReady() {
+			journery = plus.webview.currentWebview().journeryId;
+			updateSerivces();
+			console.log(journery);
+			$.ajax({
+				type: "post",
+				url: IP + "/mobile/getJournery",
+				dataType: "json",
+				data:{
+					id : journery,
+				},
+				success : function(data){
+					journery = data.result;
+					$(".orderSn").text(journery.id16);
+					$(".status").text(journery.status);
+					$(".startDate").text(journery.startDate);
+					$(".endDate").text(journery.endDate);
+					$(".bikeCode").text(journery.bikeCode);
+					$(".parkPoint1").text(journery.parkPointOfBorrowSn);
+					$(".parkPoint2").text(journery.parkPointOfReturnSn);
+					$(".distance").text(journery.distance);
+					$(".rideTime").text(journery.rideTime);
+					$(".CSaving").text(journery.CSaving);
+					$(".calories").text(journery.calories);
+					dis = journery.distance;
+				},
+				error :function(){
+					plus.nativeUI.alert("网络错误", function() {
+					}, "出错了", "知道了")
+				}
+			});
+		}
+		
+		function shareShow(){
+			var shareBts=[];
+			var ss=shares['weixin'];
+			if(navigator.userAgent.indexOf('StreamApp')<0&&navigator.userAgent.indexOf('qihoo')<0){
+				ss&&ss.nativeClient&&(shareBts.push({title:'微信朋友圈',s:ss,x:'WXSceneTimeline'}),
+				shareBts.push({title:'微信好友',s:ss,x:'WXSceneSession'}));
+			}
+//			ss=shares['sinaweibo'];
+//			ss&&shareBts.push({title:'新浪微博',s:ss});
+//			ss=shares['qq'];
+//			ss&&ss.nativeClient&&shareBts.push({title:'QQ',s:ss});
+			// 弹出分享列表
+			shareBts.length>0?plus.nativeUI.actionSheet({title:'分享',cancel:'取消',buttons:shareBts},function(e){
+				(e.index>0)&&shareAction(shareBts[e.index-1]);
+			}):plus.nativeUI.alert('当前环境无法支持分享操作!');
+		}
+		function updateSerivces(){
+			plus.share.getServices( function(s){
+				shares={};
+				for(var i in s){
+					var t=s[i];
+					shares[t.id]=t;
+				}
+			}, function(e){
+				outSet( "获取分享服务列表失败："+e.message );
+			} );
+		}
+		$("#header .shareBtn").click(function(){
+			shareShow();
+		});
+		function shareAction(sb) {
+			if(!sb.s) {
+				shareWithSystem();
+				return;
+			}
+			var msg = {};
+			msg.href = IP+'/lvxing/journeryDetail?id='+journery.id;
+			msg.content = '我在绿行骑了' + dis + '公里，快来一起体验绿行吧!';
+			msg.title = '绿行分享';
+			sb.x && (msg.extra = {
+				scene: sb.x
+			});
+			msg.thumbs = msg.pictures = 'lvxing.png';
+			console.log('share ' + sb.title + ' : ' + JSON.stringify(msg));
+			sb.s.authenticated ? shareMessage(sb.s, msg) : sb.s.authorize(function() {
+				shareMessage(sb.s, msg);
+			}, function(e) {
+				plus.nativeUI.toast('取消分享!');
+			});
+		}
+		function shareMessage(s, m) {
+			s.send(m, function() {
+				plus.nativeUI.toast('完成分享!');
+			}, function(e) {
+				plus.nativeUI.toast('取消分享!');
+				console.log( "分享失败："+e.message );
+			});
+		}
+	</script>
+</html>

@@ -1,0 +1,88 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="css/font-awesome.min.css" />
+		<style>
+			.footer{
+				z-index: 999;
+			}
+			.footer .btn{
+				float: left;
+				display: inline-block;
+				width:50%;
+				text-align: center;
+				color:#FFFFFF;
+			}
+			.btn img{
+				width:50px;
+				height:40px;
+			}
+			.btn p{
+				margin: 0;
+				margin-top:20px;
+				color:#FFFFFF;
+				font-size:16px;
+			}
+		</style>
+	</head>
+	<body style="background: rgba(0,0,0,0);">
+		<div class="footer">
+			<div class="btn inputBySelf">
+				<img src="img/shou.png">
+				<p>输入编号开锁</p>
+			</div>
+			<div class="btn flashSwitch">
+				<img src="img/diantong.png">
+				<p>打开手电筒</p>
+			</div>
+		</div>
+	</body>
+	<script src="js/mui.min.js"></script>
+	<script type="text/javascript" src="js/base.js" ></script>
+	<script type="text/javascript" src="js/jquery-2.2.0.min.js" ></script>
+	<script type="text/javascript" src="js/click.js" ></script>
+	<script type="text/javascript">
+		var flag = 0;
+		var s1 = null;
+		var s = null;
+		$(".flashSwitch").click(function(){
+			if(flag == 0){
+				plus.webview.currentWebview().opener().evalJS("startflash()");
+				flag = 1 ;
+				$(".flashSwitch >p").text("关闭手电筒");
+			}else{
+				plus.webview.currentWebview().opener().evalJS("cannleflash()");
+				flag = 0;
+				$(".flashSwitch >p").text("打开手电筒");
+			}
+//			plus.webview.currentWebview().opener().evalJS("flash()");
+		});
+		$(".inputBySelf").click(function(){
+			//goPage("handLostNumber.html");
+			var backQR = plus.webview.currentWebview().backQR;
+			s = plus.webview.getWebviewById("scan.html");
+			s1 = plus.webview.create('handLostNumber.html', 'handLostNumber.html', {
+				top: '0px',
+				bottom: '0px',
+				position: 'absolute',
+				scrollIndicator: 'none',
+				background: 'transparent'
+			},{
+				backQR:backQR,
+			});
+			s.append(s1);
+		});
+		function goPage(page) {
+			mui.openWindow({
+				url: page,
+				id: page
+			});
+		}
+	</script>
+
+</html>

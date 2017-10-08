@@ -1,0 +1,358 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<link href="css/mui.min.css" rel="stylesheet" />
+	<link rel="stylesheet" href="css/font-awesome.min.css" />
+	<style>
+		.mui-bar {
+			background: #6bbb55;
+			color: #fff;
+		}
+		header .mui-title {
+			color: #fff;
+		}
+		header .mui-icon-left-nav {
+			color: #fff;
+		}
+		header button{
+			color: #fff !important;	
+		}
+		
+		.mui-table-view-cell{
+			list-style-type: none;
+			text-align: center;
+		}
+		.mui-table-view .mui-grid-view .mui-table-view-cell .mui-media-body{
+			height: 40px;
+			text-align: left;
+			font-size: 18px;
+		}
+		#makeExchangeOrder_center{
+			bottom: 55px;
+			box-shadow: inset 0 0.35px 3px #EAEAEA;
+		}
+		
+		.mui-content{
+			background: #ececec;
+		}
+		
+		.addrSelect{
+			position: relative;
+			height: 90px;
+			background: #fff;
+		}
+		.addrSelect .location-border{
+			position: absolute;
+			bottom: 1px;
+			left: 0px;
+			height: 3px;
+			width: 100%;
+			background: url(img/location-border.png) repeat-x;
+			background-size: 80px 4px;
+		}
+		.addrSelect .addrIconLeft{
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 5%;
+			height: 90px;
+			line-height: 94px;
+			text-align: right;
+			color: #cfcfcf;
+		}
+		.addrSelect .addrIconRight{
+			position: absolute;
+			top: 0;
+			right: 0;
+			width: 5%;
+			height: 90px;
+			line-height: 94px;
+			text-align: left;
+			color: #cfcfcf;
+		}
+		.addrSelect .addrInfo{
+			margin: 0 6%;
+			padding: 12px 2px 12px 15px;
+			width: 88%;
+			height: 90px;
+		}
+		.addrSelect .addrInfo .name, .addrSelect .addrInfo .phone{
+			color: #252525;
+		}
+		.addrSelect .addrInfo .addrStr{
+			font-size: 14px;
+			color: #232326;
+		}
+		
+		.productInfo{
+			position: relative;
+			margin-top: 10px;
+			height: 100px;
+			background: #fff;
+		}
+		.productInfo .left{
+			position: absolute;
+			top: 0;
+			left: 0;
+			display: inline-block;
+			width: 30%;
+			height: 100px;
+		}
+		.productInfo .left img{
+			position: absolute;
+			top: 5px;
+			left: 8px;
+			display: inline-block;
+			width: 90px;
+			height: 90px;
+			border: 1px solid #eee;
+		}
+		.productInfo .right{
+			position: absolute;
+			top: 0;
+			right: 0;
+			display: inline-block;
+			padding: 12px 2px 12px 5px;
+			width: 70%;
+			height: 100px;
+		}
+		.productInfo .right .pName{
+			color: #232326;
+		}
+		.productInfo .right .pPrice{
+			margin-top: 2px;
+			font-size: 15px;
+			color: #606060;
+		}
+		.productInfo .right .pPrice span{
+			color: #ccc;
+			text-decoration: line-through;
+		}
+		.productInfo .right .pCost{
+			font-size: 15px;
+			color: #606060;
+		}
+		.productInfo .right .pCost span{
+			color: #6bbb55;
+		}
+		.productInfo .right .pNote{
+			position: absolute;
+			bottom: 3px;
+			font-size: 13.5px;
+			color: #6679b3;
+		}
+		.productInfo .right .pNum{
+			position: absolute;
+			top: 39px;
+			right: 10px;
+			font-size: 16px;
+			color: #848689;
+		}
+		
+		.unitTitle{
+			font-size: 14px;
+			color: #999999;
+		}
+		.productInfo-detail{
+			margin-top: 10px;
+			padding-left: 10px;
+			line-height: 35px;
+			background: #fff;
+			/*border-top: 1px solid #ddd;*/
+		}
+		.productInfo-detail .content{
+			margin: 0 0 55px 0;
+			width: 94%;
+			min-height: 150px;
+		}
+		
+		#makeExchangeOrder_footer{
+			position: absolute;
+			bottom: 0;
+			width: 100%;
+			height: 54px;
+			background: #fff;
+		}
+		#makeExchangeOrder_footer .left{
+			position: absolute;
+			top: 0;
+			left: 0;
+			display: inline-block;
+			padding-right: 10px;
+			width: 70%;
+			height: 54px;
+			line-height: 58px;
+			text-align: right;
+			background: #fff;
+			color: #6bbb55;
+		}
+		#makeExchangeOrder_footer .left span{
+			color: #6bbb55;
+		}
+		#makeExchangeOrder_footer .right{
+			position: absolute;
+			top: 0;
+			right: 0;
+			display: inline-block;
+			width: 30%;
+			height: 54px;
+			line-height: 54px;
+			text-align: center;
+			background: #6bbb55;
+			color: #fff;
+		}
+	</style>
+</head>
+<body>
+<header id="header" class="mui-bar mui-bar-nav">
+	<button class="mui-action-back mui-btn mui-btn-blue mui-btn-link mui-btn-nav mui-pull-left"><span class="mui-icon mui-icon-left-nav"></span>返回</button>
+	<h1 class="mui-title">填写订单</h1>
+</header>
+<div class="mui-content mui-scroll-wrapper" id="makeExchangeOrder_center">
+	<div class="mui-scroll">
+		<div class="addrSelect">
+			<i class="fa fa-map-marker addrIconLeft"></i>
+            <div class="addrInfo">
+                <div>
+					<span class="name"></span>&nbsp;
+					<span class="phone"></span>
+				</div>
+				<div style="margin-top: 5px;">
+					<span class="addrStr"></span>
+				</div>
+				<input type="text" style="display: none;" class="id"/>
+            </div>
+            <b class="location-border"></b>
+            <i class="fa fa-lg fa-angle-right addrIconRight"></i>
+        </div>
+    	<div class="productInfo">
+    		<div class="left">
+    			<img/>
+    		</div><div class="right">
+    			<div class="pName"></div>
+    			<div class="pPrice">
+    				原价:&nbsp;<span></span>
+    			</div>
+    			<div class="pCost">
+    				消耗积分:&nbsp;<span></span>
+    			</div>
+    			<div class="pNote">不支持退货</div>
+    			<span class="pNum">x 1</span>
+    		</div>
+    	</div>
+    	<div class="productInfo-detail">
+        	<span class="unitTitle"><i class="fa fa-caret-right">&nbsp;商品详情&nbsp;</i></span>
+        	<div class="content">
+        	</div>
+        </div>
+	</div>
+</div>
+<div id="makeExchangeOrder_footer">
+	<div class="left">消耗积分&nbsp;:&nbsp;<span></span></div>
+	<div class="right" onclick="doExchange();">提交订单</div>
+</div>
+<script type="text/javascript" src="js/base.js"></script>
+<script type="text/javascript" src="js/mui.min.js"></script>
+<script type="text/javascript" src="js/jquery-2.2.0.min.js" ></script>
+<script>
+	mui('.mui-scroll-wrapper').scroll({
+		indicators: false
+	});
+	// 自定义监听事件，可在另外页面触发 , 地址选择后触发
+	window.addEventListener('makeExchangeOrder_addrSelectReFun',function(event){
+		//获得事件参数
+		$(".addrInfo .id").val(event.detail.id);
+		$(".addrInfo .name").html(event.detail.name);
+		$(".addrInfo .phone").html(event.detail.phone);
+		$(".addrInfo .addrStr").html(event.detail.addrStr);
+	});
+	// 页面初始化
+	window.addEventListener('makeExchangeOrder_init',function(event){
+		//获得事件参数
+		var tmp = event.detail.productInfo;
+		makeExchangeOrder_init(tmp);
+	});
+	
+	$(".addrSelect").click(function(){
+		var datas = {};
+		datas.leftFun = "selectAddr";
+		datas.callbackURL = "makeExchangeOrder.html";
+		datas.callbackFun = "makeExchangeOrder_addrSelectReFun";
+		var url = "addrList.html";
+		mui.openWindow({
+			url: UrlTool.setData(url, datas),
+			id: url
+		});
+		var webview = plus.webview.getWebviewById(url);
+		mui.fire(webview, "addrList_addrListReflash");
+	});
+	
+	var urlDatas;
+	var clientInfo;
+	var productInfo;
+	function makeExchangeOrder_init(product){
+		$.ajax({
+			url: IP + "/orderAddr/defAddr",
+			type: "post",
+			dataType: "json",
+			success: function(re){
+				if(re.error){
+					alert(re.error);
+				}else{
+					var defAddr = re;
+					$(".addrInfo .id").val(defAddr.id);
+					$(".addrInfo .name").html(defAddr.addressee);
+					$(".addrInfo .phone").html(defAddr.addresseePhone);
+					$(".addrInfo .addrStr").html(defAddr.area + " " + defAddr.addrDetail);
+				}
+			}
+		});
+		
+		productInfo = product;
+		
+		$(".productInfo .left img").attr("src", IMGIP + productInfo.img1);
+		$(".productInfo .right .pName").html(productInfo.name);
+		$(".productInfo .right .pCost span").html(productInfo.cost);
+		$(".productInfo .right .pPrice span").html("￥" + productInfo.price);
+		$("#makeExchangeOrder_footer .left span").html(productInfo.cost);
+		$(".productInfo-detail .content").html(productInfo.content);
+	}
+	
+	function doExchange(){
+		mui.confirm("确定提交订单吗？", "提交订单确认", "确定", function(e){
+			if(e.index == 0){
+				$.ajax({
+					url: IP + "/exchangeOrder/save",
+					type: "post",
+					dataType: "json",
+					data: {
+						productId : productInfo.id,
+						orderAddrId : $(".addrInfo .id").val()
+					},
+					success: function(re){
+						if(re.error){
+							alert(re.error);
+						}else if(re.result == "success"){
+							alert("订单创建成功，可在兑换记录里查看物流进度。");
+							var url = "shop.html";
+							mui.openWindow({
+								url: url,
+								id: url
+							});
+							var webview = plus.webview.getWebviewById(url);
+							mui.fire(webview, "shop_initFun");
+						}
+					},
+					error: function(){
+						alert("网络不给力");
+					}
+				});
+			}
+		});
+	}
+</script>
+</body>
+</html>

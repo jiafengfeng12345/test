@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+		<meta name="HandheldFriendly" content="true" />
+		<meta name="MobileOptimized" content="320" />
+		<link rel="stylesheet" href="css/mui.min.css">
+		<title>Hello H5+</title>
+		<style>
+			.mui-bar {
+				background: #6bbb55;
+				color: #fff;
+			}
+			
+			header .mui-title {
+				color: #fff;
+			}
+			
+			header .mui-icon-left-nav {
+				color: #fff;
+			}
+			
+			header button{
+				color: #fff !important;	
+			}
+			
+			#content{
+				margin-top:45px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header id="header" class="mui-bar mui-bar-nav">
+			<button class="mui-action-back mui-btn mui-btn-link mui-btn-nav mui-pull-left"><span class="mui-icon mui-icon-left-nav"></span>返回</button>
+			<h1 class="mui-title">客户服务</h1>
+		</header>
+		<div id="content" class="content">
+			<div class="mui-scroll">
+				<ul class="mui-table-view mui-table-view-chevron menu-list">
+				</ul>
+				
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="js/mui.min.js"></script>
+	<script type="text/javascript" src="js/jquery-2.2.0.min.js"></script>
+	<script sype="text/javascript" src="js/base.js"></script>
+	<script>
+	
+		function goPage(page) {
+			mui.openWindow({
+				url: page,
+				id: page
+			});
+		}
+		
+			$.ajax({
+				type:"post",
+				url:IP + "/userHelp/firstMenuList",
+				dataType:"json",
+				success:function(retData){
+					if(retData.result == "success"){
+						var list = retData.lists;
+						for(var i=0;i<list.length;i++){
+							$(".menu-list").append("<li class='mui-table-view-cell'>"+
+						"<a class='mui-navigate-right' onclick='goSubMenu(this)'>"+ list[i].menuName +"</a>"+
+						"<span style='display:none'>"+list[i].id+"</span></li>");
+						}
+					}else if(retData.result != "没有一级菜单"){
+						alert(retData.result);
+					}
+				},error:function(){
+				}
+				
+			});
+			
+			function goSubMenu(item){
+				mui.openWindow({
+					url:"subMenu.html",
+					id:"subMenu.html",
+					createNew:true,
+					extras:{
+						menuId:$(item).next().html(),
+						menuName:$(item).html()
+					}
+				});
+			}
+	</script>
+
+</html>

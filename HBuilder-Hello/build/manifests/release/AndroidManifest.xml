@@ -1,0 +1,417 @@
+<!-- From: file:/E:/testSpace/HBuilder-Hello/AndroidManifest.xml --><manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" android:versionName="1.7.7" package="io.dcloud.H50849C0F">
+
+    <supports-screens android:anyDensity="true" android:largeScreens="true" android:normalScreens="true" android:resizeable="true" android:smallScreens="true"/>
+
+    <uses-sdk android:minSdkVersion="14"/>
+    <!-- HBuilder Runtime 鍩虹鏉冮檺   begin -->
+    <!-- 鑱旂綉 -->
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <!-- 浣跨敤瀛樺偍鍗� -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.GET_TASKS"/>
+    <!-- Html5Plus runtime鍩虹鏉冮檺   end -->
+
+
+    <!-- Audio begin -->
+    <!-- 璁块棶褰曢煶璁惧 -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <!-- 淇敼鎾斁澹伴煶閫氶亾 -->
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
+    <!-- Audio end -->
+
+
+    <!-- Camera  begin -->
+    <!-- 璋冪敤鎽勫儚澶� -->
+    <uses-permission android:name="android.permission.CAMERA"/>
+
+    <uses-feature android:name="android.hardware.camera"/>
+    <!-- Camera  end -->
+
+
+    <!-- Contacts  begin -->
+    <!-- 璁块棶鑱旂郴浜� -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+    <uses-permission android:name="android.permission.WRITE_CONTACTS"/>
+    <uses-permission android:name="android.permission.READ_CONTACTS"/>
+    <!-- Contacts  end -->
+
+
+    <!-- Device begin -->
+    <!-- 灞忓箷淇濇寔鍞ら啋 涓嶉攣灞�  plus.device.setWakelock();plus.device.isWakelock(); -->
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <!-- 闇囧姩 鏉冮檺 plus.device.vibrate(); -->
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <!-- 鎷ㄦ墦鐢佃瘽 plus.device.dail(); -->
+    <uses-permission android:name="android.permission.CALL_PHONE"/>
+    <!-- 璁块棶缃戠粶鐘舵�� plus.networkinfo.* -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <!-- 璇诲啓鎵嬫満鐘舵�佸拰韬唤 plus.devices.* -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <!-- Device end -->
+
+
+    <!-- Messaging begin -->
+    <!-- 鎷ㄦ墦鐢佃瘽鏉冮檺 -->
+    <!-- 鍙戠煭淇℃潈闄� -->
+    <!-- 璇�/鍐欑煭/褰╀俊绠辨潈闄� -->
+    <uses-permission android:name="android.permission.CALL_PHONE"/>
+    <uses-permission android:name="android.permission.SEND_SMS"/>
+    <uses-permission android:name="android.permission.WRITE_SMS"/>
+    <uses-permission android:name="android.permission.READ_SMS"/>
+    <!-- Messaging end -->
+
+
+    <!-- Invocation - JSB begin -->
+    <!-- 璋冪敤绯荤粺API锛岄�氳繃Native.js璋冪敤绯荤粺API闇�瑕佺殑鏉冮檺娣诲姞鍒拌繖閲� -->
+    <!-- 瀹夎蹇嵎鏂瑰紡 -->
+    <!-- 鍗歌浇蹇嵎鏂瑰紡 -->
+    <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT"/>
+    <uses-permission android:name="com.android.launcher.permission.UNINSTALL_SHORTCUT"/>
+    <!-- Invocation - JSB end -->
+
+
+    <!-- Barcode(浜岀淮鐮�)  begin -->
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
+    <uses-feature android:name="android.hardware.camera"/>
+    <uses-feature android:name="android.hardware.camera.autofocus"/>
+
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.FLASHLIGHT"/>
+    <!-- Barcode(浜岀淮鐮�)  end -->
+
+
+    <!-- Maps(鍦板浘) begin -->
+    <!-- Maps - 鐧惧害鍦板浘 begin -->
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
+    <uses-permission android:name="android.permission.READ_LOGS"/>
+
+    <!-- 楂樺痉鍦板浘 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION">
+    </uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION">
+    </uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE">
+    </uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE">
+    </uses-permission>
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE">
+    </uses-permission>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE">
+    </uses-permission>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE">
+    </uses-permission>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS">
+    </uses-permission>
+    <uses-permission android:name="android.permission.READ_LOGS">
+    </uses-permission>
+    <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
+    <!-- Maps(鍦板浘) end -->
+
+
+    <!-- Push(鎺ㄩ��)鍙兘閫夋嫨涓�涓帹閫佺粍浠� -->
+    <!-- Push(鎺ㄩ��)-MKeyPush begin -->
+    <!--
+    <uses-permission android:name="android.permission.INTERNET"/>   
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    -->
+    <!-- Push(鎺ㄩ��)-MKeyPush  end -->
+
+
+    <!-- Push(鎺ㄩ��)-涓帹  begin -->
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.CALL_PHONE"/>
+    <uses-permission android:name="getui.permission.GetuiService.io.dcloud.H50849C0F"/>
+
+    <permission android:name="getui.permission.GetuiService.io.dcloud.H50849C0F" android:protectionLevel="normal"/>
+    <!-- Push(鎺ㄩ��)-涓帹    end -->
+
+
+    <!-- Share(鍒嗕韩)  begin -->
+    <!-- Share - 鏂版氮寰崥鍒嗕韩 -->
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <!-- Share - 鑵捐寰崥鍒嗕韩 -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION"/>
+    <!-- Share - 寰俊鍒嗕韩 -->
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
+    <!-- Push(鎺ㄩ��)   end -->
+
+
+    <!-- Speech(璇煶璇嗗埆)  begin -->
+    <!-- Speech - 璁璇煶浜� -->
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <!-- Speech(璇煶璇嗗埆)  end -->
+
+
+    <!-- Statistic(缁熻)  begin -->
+    <!-- Statistic - 鍙嬬洘缁熻 -->
+    <uses-permission android:name="android.permission.READ_LOGS"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT"/>
+    <!-- Statistic(缁熻)  end -->
+
+
+    <!-- QQ鍒嗕韩 begin -->
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
+    <!-- QQ鍒嗕韩  end -->
+
+    <application android:allowClearUserData="true" android:icon="@drawable/icon" android:label="@string/app_name" android:largeHeap="true" android:name="io.dcloud.application.DCloudApplication">
+        <activity android:configChanges="orientation|keyboardHidden|keyboard|navigation" android:hardwareAccelerated="true" android:label="@string/app_name" android:launchMode="singleTask" android:name="io.dcloud.PandoraEntry" android:screenOrientation="user" android:theme="@style/TranslucentTheme" android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity android:configChanges="orientation|keyboardHidden|screenSize|keyboard|navigation|mcc|mnc|fontScale" android:hardwareAccelerated="true" android:label="5+Debug" android:launchMode="singleTask" android:name="io.dcloud.PandoraEntryActivity" android:screenOrientation="user" android:theme="@style/DCloudTheme" android:windowSoftInputMode="adjustResize">
+        </activity>
+
+        <service android:exported="true" android:name="io.dcloud.common.adapter.io.MiniServerService"/>
+
+        <activity android:name="io.dcloud.imagepick.CustomGalleryActivity">
+            <intent-filter>
+                <action android:name="io.dcloud.ACTION_PICK"/>
+                <action android:name="io.dcloud.ACTION_MULTIPLE_PICK"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+
+        <!-- Statistic(缁熻)-鍙嬬洘缁熻 begin -->
+        <!-- 瀹樻柟缃戠珯锛歨ttp://www.umeng.com/analytics -->
+        <!-- meta-data鑺傜偣android:name="UMENG_APPKEY"椤逛腑android:value鍊间负鍙嬬洘缃戠珯鐢宠鐨凙PPKEY -->
+        <!-- meta-data鑺傜偣android:name="UMENG_CHANNEL"椤逛腑android:value鍊间负鍙戣娓犻亾鏍囪瘑锛屽彲浠绘剰鍙栧�硷紝鐢ㄤ簬鍚勭鍙戣娓犻亾鏁堟灉缁熻 -->
+        <meta-data android:name="UMENG_APPKEY" android:value="%UMeng APPKEY%"/>
+        <meta-data android:name="UMENG_CHANNEL" android:value="googleplay"/>
+        <!-- 鍙嬬洘缁熻  閰嶇疆  end -->
+
+
+        <!-- Maps(鍦板浘) begin -->
+        <!-- meta-data鑺傜偣android:name="com.baidu.lbsapi.API_KEY"椤逛腑android:value鍊间负鐧惧害鍦板浘搴旂敤鐨凙ppkey -->
+        <meta-data android:name="com.baidu.lbsapi.API_KEY" android:value="0FqWnCZOt0qIRRVSgSr5zzvfRlzOGGro">
+        </meta-data>
+
+        <service android:enabled="true" android:name="com.baidu.location.f" android:process=":remote">
+        </service>
+        <!-- Maps(鍦板浘) end -->
+
+
+        <!-- 楂樺痉鍦板浘 -->
+        <meta-data android:name="com.amap.api.v2.apikey" android:value="964d5057fcfcf6fe9b4728977468cc37"/>
+        <!-- end -->
+        <!-- Oauth 鎺堟潈鐧婚檰 start -->
+        <!-- Oauth QQ start -->
+        <!-- QQ 鍒嗕韩 閰嶇疆鍜屾巿鏉冪櫥闄嗙浉鍚� -->
+        <meta-data android:name="QQ_APPID" android:value="%appid%"/>
+
+        <activity android:launchMode="singleTask" android:name="com.tencent.tauth.AuthActivity" android:noHistory="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+
+                <data android:scheme="%appid%"/>
+            </intent-filter>
+        </activity>
+        <activity android:name="com.tencent.connect.common.AssistActivity" android:screenOrientation="portrait" android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+        <!-- Oauth QQ end -->
+
+
+        <!-- Oauth Sina start -->
+        <!--
+             涓洪槻姝ndroid Studio瀵煎叆宸ョ▼鏃舵姤閿欏皢鏂版氮寰崥鐨勬巿鏉冪櫥闄嗘殏鏃舵敞閲�
+            鍦ㄩ」鐩紑鍙戜腑濡傚悓鏃剁敤鍒颁簡鏂版氮寰崥鐨勬巿鏉冨拰鍒嗕韩璇峰皢涓ゆ潯鐨勯厤缃悎骞�
+        -->
+        <!--
+        meta-data
+            android:name="SINA_REDIRECT_URI"
+            android:value="%redirect_uri%" />
+        <meta-data
+            android:name="SINA_APPKEY"
+            android:value="_%appkey%" />
+
+        <activity
+            android:name="com.sina.weibo.sdk.component.WeiboSdkBrowser"
+            android:configChanges="keyboardHidden|orientation"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" >
+        </activity
+        -->
+        <!-- Oauth Sina end -->
+        <!-- Oauth 鎺堟潈鐧婚檰 end -->
+
+
+        <!-- Speech(璇煶璇嗗埆)-璁璇煶 begin -->
+        <!-- 瀹樻柟缃戠珯锛歨ttp://open.voicecloud.cn/ -->
+        <!-- meta-data鑺傜偣android:name="IFLY_APPKEY"椤逛腑android:value鍊间负璁璇煶浜戠綉绔欑敵璇风殑APPKEY锛岀敱浜庡畠鏄拰libs鐩綍涓嬬殑jar鍖呮槸缁戝畾鐨勶紝涓嶈淇敼姝ゅ�� -->
+        <meta-data android:name="IFLY_APPKEY" android:value="5177d8fe"/>
+        <!-- Speech(璇煶璇嗗埆)-璁璇煶 end -->
+
+
+        <!-- Push(鎺ㄩ��)-涓帹 begin -->
+        <!-- 瀹樻柟缃戠珯锛歨ttp://www.igetui.com/ -->
+        <!-- meta-data鑺傜偣android:name="appid"椤逛腑android:value鍊间负涓帹鏈嶅姟鍣ㄤ笂鐢宠鐨凙PPID -->
+        <!-- meta-data鑺傜偣android:name="appkey"椤逛腑android:value鍊间负涓帹鏈嶅姟鍣ㄤ笂鐢宠鐨凙PPKEY -->
+        <!-- meta-data鑺傜偣android:name="appsecret"椤逛腑android:value鍊间负涓帹鏈嶅姟鍣ㄤ笂鐢宠鐨凙PPSECRET -->
+        <!-- 涓帹 aps閰嶇疆  begin -->
+
+        <receiver android:name="io.dcloud.feature.apsGt.PushMessageReceiver">
+            <intent-filter>
+                <action android:name="com.igexin.sdk.action.bBPiGM1VQ66mhMI3d9tG0A"/>
+            </intent-filter>
+        </receiver>
+        <receiver android:name="io.dcloud.feature.apsGt.GTNotificationReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="io.dcloud.H50849C0F.__CREATE_NOTIFICATION"/>
+                <action android:name="io.dcloud.H50849C0F.__REMOVE_NOTIFICATION"/>
+                <action android:name="io.dcloud.H50849C0F.__CLEAR_NOTIFICATION"/>
+                <action android:name="io.dcloud.H50849C0F.__CLILK_NOTIFICATION"/>
+            </intent-filter>
+        </receiver>
+
+        <meta-data android:name="PUSH_APPID" android:value="yUh52ngZMY6MGwhHNZrFP6"/>
+        <meta-data android:name="PUSH_APPKEY" android:value="dH14b5ivjT8OccKGXtJbw2"/>
+        <meta-data android:name="PUSH_APPSECRET" android:value="bIcsezIfDb5JtFfjCjndA7"/>
+
+        <service android:exported="true" android:label="NotificationCenter" android:name="com.igexin.sdk.PushService" android:process=":pushservice">
+        </service>
+        <service android:exported="true" android:label="NotificationCenterUser" android:name="com.igexin.sdk.PushServiceUser">
+        </service>
+
+        <receiver android:name="com.igexin.sdk.PushReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+                <action android:name="android.intent.action.USER_PRESENT"/>
+                <action android:name="com.igexin.sdk.action.refreshls"/>
+                <action android:name="android.intent.action.MEDIA_MOUNTED"/>
+                <action android:name="android.intent.action.ACTION_POWER_CONNECTED"/>
+                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED"/>
+            </intent-filter>
+        </receiver>
+        <receiver android:exported="false" android:name="com.igexin.sdk.PushManagerReceiver">
+            <intent-filter>
+                <action android:name="com.igexin.sdk.action.pushmanager"/>
+            </intent-filter>
+        </receiver>
+
+        <activity android:excludeFromRecents="true" android:exported="false" android:name="com.igexin.sdk.PushActivity" android:process=":pushservice" android:taskAffinity="com.igexin.sdk.PushActivityTask" android:theme="@android:style/Theme.Translucent.NoTitleBar">
+        </activity>
+
+        <service android:name="com.igexin.download.DownloadService" android:process=":pushservice"/>
+
+        <receiver android:name="com.igexin.download.DownloadReceiver">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+            </intent-filter>
+        </receiver>
+
+        <provider android:authorities="downloads.io.dcloud.H50849C0F" android:exported="true" android:name="com.igexin.download.DownloadProvider" android:process=":pushservice"/>
+
+        <activity android:configChanges="orientation|keyboard|keyboardHidden" android:excludeFromRecents="true" android:exported="false" android:name="com.igexin.getuiext.activity.GetuiExtActivity" android:process=":pushservice" android:taskAffinity="android.task.myServicetask" android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+        <activity android:excludeFromRecents="true" android:exported="true" android:name="com.igexin.sdk.GActivity" android:process=":pushservice" android:taskAffinity="com.igexin.sdk.PushActivityTask" android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+
+        <receiver android:exported="false" android:name="com.igexin.getuiext.service.PayloadReceiver">
+            <intent-filter>
+                <action android:name="com.igexin.sdk.action.7fjUl2Z3LH6xYy7NQK4ni4"/>
+                <action android:name="com.igexin.sdk.action.bBPiGM1VQ66mhMI3d9tG0A"/>
+            </intent-filter>
+        </receiver>
+
+        <service android:name="com.igexin.getuiext.service.GetuiExtService" android:process=":pushservice"/>
+
+        <!-- Push(鎺ㄩ��)-涓帹  end -->
+
+
+        <!-- Share(鍒嗕韩) begin -->
+        <!-- Share - 鏂版氮寰崥鍒嗕韩 -->
+        <!-- 瀹樻柟缃戠珯锛歨ttp://open.weibo.com/ -->
+        <meta-data android:name="SINA_REDIRECT_URI" android:value="%鏂版氮寰崥寮�鏀惧钩鍙扮敵璇峰簲鐢ㄩ厤缃殑鍥炶皟鍦板潃%"/>
+        <meta-data android:name="SINA_SECRET" android:value="%鏂版氮寰崥寮�鏀惧钩鍙扮敵璇峰簲鐢ㄧ殑Secret%"/>
+        <meta-data android:name="SINA_APPKEY" android:value="_%鏂版氮寰崥寮�鏀惧钩鍙扮敵璇峰簲鐢ㄧ殑Appkey锛屾敞鎰忓墠闈㈣娣诲姞涓嬪垝绾�%"/>
+            
+        <activity android:configChanges="keyboardHidden|orientation" android:exported="false" android:name="com.sina.weibo.sdk.component.WeiboSdkBrowser" android:windowSoftInputMode="adjustResize">
+        </activity>
+        <!-- 鍒嗕韩 -->
+        <activity android:configChanges="keyboardHidden|orientation" android:launchMode="singleTask" android:name="io.dcloud.H50849C0F.SinaCallbackActivity" android:screenOrientation="portrait" android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen">
+            <intent-filter>
+                <!--鍞よ捣鏂版氮寰崥瀹㈡埛绔垎浜悗鐨勫洖璋冨鐞唅ntent-->
+                <action android:name="com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+        <!-- Share - 鑵捐寰崥鍒嗕韩 -->
+        <!-- 瀹樻柟缃戠珯锛歨ttp://dev.t.qq.com/ -->
+        <meta-data android:name="TENCENT_REDIRECT_URI" android:value="%鑵捐寰崥寮�鏀惧钩鍙扮敵璇峰簲鐢ㄩ厤缃殑鍥炶皟鍦板潃%"/>
+        <meta-data android:name="TENCENT_SECRET" android:value="%鑵捐寰崥寮�鏀惧钩鍙扮敵璇峰簲鐢ㄧ殑Secret%"/>
+        <meta-data android:name="TENCENT_APPKEY" android:value="_%鑵捐寰崥寮�鏀惧钩鍙扮敵璇峰簲鐢ㄧ殑Appkey锛屾敞鎰忓墠闈㈣娣诲姞涓嬪垝绾�%"/>
+
+        <activity android:name="io.dcloud.share.tencent.WebAuthorize" android:theme="@android:style/Theme.NoTitleBar">
+        </activity>
+        <!-- 寰俊鍒嗕韩 閰嶇疆begin -->
+        <meta-data android:name="WX_SECRET" android:value="cee27a93f6e5280498399dbdbd7f633e"/>
+        <meta-data android:name="WX_APPID" android:value="wxf4a90457106b4cd8"/>
+
+        <activity android:exported="true" android:label="@string/app_name" android:launchMode="singleTop" android:name="io.dcloud.H50849C0F.wxapi.WXEntryActivity" android:theme="@android:style/Theme.Translucent.NoTitleBar">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+
+                <data android:scheme="wxf4a90457106b4cd8"/>
+            </intent-filter>
+        </activity>
+
+        <!-- 鏀粯瀹濇敮浠� 閰嶇疆begin -->
+        <activity android:configChanges="orientation|keyboardHidden|navigation" android:exported="false" android:name="com.alipay.sdk.app.H5PayActivity" android:screenOrientation="behind" android:windowSoftInputMode="adjustResize|stateHidden">
+        </activity>
+        <activity android:configChanges="orientation|keyboardHidden|navigation" android:exported="false" android:name="com.alipay.sdk.auth.AuthActivity" android:screenOrientation="behind">
+        </activity>
+        <!-- 鏀粯瀹濇敮浠� 閰嶇疆end -->
+
+
+        <!-- 寰俊鏀粯閰嶇疆 start -->
+        <activity android:exported="true" android:launchMode="singleTop" android:name="io.dcloud.H50849C0F.wxapi.WXPayEntryActivity" android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+
+        <meta-data android:name="WX_APPID" android:value="wxf4a90457106b4cd8"/>
+        <!-- 寰俊鏀粯閰嶇疆end -->
+    </application>
+
+</manifest>

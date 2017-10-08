@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+		<meta name="HandheldFriendly" content="true" />
+		<meta name="MobileOptimized" content="320" />
+		<link rel="stylesheet" href="css/mui.min.css">
+		<title>Hello H5+</title>
+		<style>
+			body{
+				background: #FFFFFF;
+			}
+			.mui-bar {
+				background: #6bbb55;
+				color: #fff;
+			}
+			
+			header .mui-title {
+				color: #fff;
+			}
+			
+			header .mui-icon-left-nav {
+				color: #fff;
+			}
+			
+			header button{
+				color: #fff !important;	
+			}
+			.mui-content{
+				background: #FFFFFF;
+			}
+			.mui-input-row{
+				width: 90%;
+				margin-left: 5%;
+				margin-top: 5px;
+				height: 80px;
+			}
+			#check{
+				margin-top: 20px;
+				margin-left: 5%;
+				font-size: 25px;
+				color: black;
+			}
+			#scantext{
+				width: 75%;
+				color: #000000;
+				margin-top: 15px;
+			}
+			#memo{
+				width: 90%;
+				height: 90px;
+				margin-left: 5%;
+				text-align: left;
+				background:  #DDDDDD;
+			}
+			.mui-btn.mui-btn-block{
+				margin-left: 5%;
+				width: 90%;
+				margin-right: 5%;
+				background:#6D6D72 ;
+				margin-top: 20px;
+				color: #FFFFFF;
+				border: 0;
+			}
+			#img_div{
+				margin-top: 20px;
+				width: 120px;
+				height: 120px;
+				margin-left: 5%;
+				border: 1px  dashed  #000000;
+				float: left;
+				margin-right: 5%;
+			}
+			#icon_add{
+				line-height: 120px;
+				font-size: 90px;
+				text-align: center;
+				color: #9e9e9e;
+			}
+			#scan-lb{
+				background: #000000;
+				width: 60px;
+				height: 60px;
+				border-radius: 30px;
+				margin-left: 5%;
+				margin-top: 10px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header id="header" class="mui-bar mui-bar-nav">
+			<button class="mui-action-back mui-btn mui-btn-blue mui-btn-link mui-btn-nav mui-pull-left"><span class="mui-icon mui-icon-left-nav"></span>返回</button>
+			<h1 class="mui-title">故障上报</h1>
+		</header>
+		<div class="mui-content">
+			<div id="check">发现车辆故障</div>
+			<div class="mui-input-row" style="background: #DDDDDD">
+				<label id="scan-lb"><span class="mui-icon mui-icon-weixin" style="color: #FFFFFF;"></span>
+				</label>
+		    	<input type="text" class="mui-input-clear" placeholder="扫描二维码或手动输入编码" id="scantext">
+			</div>
+			<div style="margin-left: 7%;margin-top: 10px;font-size: 15.5px;">
+				<div style="margin-top: 10px;overflow: hidden;">
+					<div style="float: left;margin-left: 5%;width: 50%;">
+						<input type="checkbox" class="Ischecked"><label style="margin-left: 5%;" >车太重，骑不动</label>
+					</div>
+					<div >
+						<input type="checkbox" class="Ischecked"><label style="margin-left: 5%;" >二维码脱落</label>
+					</div>
+				</div>
+				<div style="margin-top: 10px;overflow: hidden;">
+					<div style="float: left;margin-left: 5%;width: 50%;">
+						<input type="checkbox"class="Ischecked"><label style="margin-left: 5%;" >把套歪了</label>
+					</div>
+					<div >
+						<input type="checkbox" class="Ischecked"><label style="margin-left: 5%;">车铃丢了</label>
+					</div>
+				</div>
+				<div style="margin-top: 10px;overflow: hidden;">
+					<div style="float: left;margin-left: 5%;width: 50%;">
+						<input type="checkbox"class="Ischecked"><label style="margin-left: 5%;" >踏板坏了</label>
+					</div>
+					<div >
+						<input type="checkbox" class="Ischecked"><label style="margin-left: 5%;">龙头歪斜</label>
+					</div>
+				</div>
+				<div style="margin-top: 10px;overflow: hidden;">
+					<div style="float: left;margin-left: 5%;width: 50%;">
+						<input type="checkbox" class="Ischecked"><label style="margin-left: 5%;" >刹车失灵</label>
+					</div>
+					<div >
+						<input type="checkbox" class="Ischecked"><label style="margin-left: 5%;">其他</label>
+					</div>
+				</div>
+			  
+			</div>
+			<div style="overflow: hidden;">
+				<div id="img_div">
+					<div id="icon_add">+</div>
+				</div>
+				<div style="margin-top: 100px;">
+					<p>拍摄单车照片<br>帮助我们更快解决问题</p>
+				</div>
+			</div>		
+			<div style="margin-top: 10px;">
+				<textarea placeholder="备注" id="memo"></textarea>
+			</div>
+			<div style="overflow: hidden;margin-top:-10px;">
+				<a style="float: right;margin-right: 5%;color: #8F8F94;">还可输入140字</a>
+			</div>
+			<button type="button" class="mui-btn mui-btn-block" id="sub">提交</button>
+		</div>
+	</body>
+	<script type="text/javascript" src="js/jquery-2.2.0.min.js"></script>
+	<script type="text/javascript" src="js/mui.min.js"></script>
+	<script>
+		var $checkBoxs = $(".Ischecked");
+		var len = $checkBoxs.length;
+		for(var i=0; i<len; i++)
+		{
+			var check = $checkBoxs[i];
+			$(check).click(function(){
+				if($(this).is(":checked")){
+					$("#sub").css('background','#6bbb55');
+				}
+			});
+		}
+	</script>
+
+</html>

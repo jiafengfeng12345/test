@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>New Web Project</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="css/mui.min.css">
+		<style>
+			body {
+				font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+				font-size: 14px;
+				line-height: 1.42857143;
+				color: #333;
+				background-color: #f6f6f6;
+			}
+			
+			.aBule {
+				color: #00a0e9;
+			}
+			
+			ul,
+			li {
+				list-style-type: none;
+			}
+			
+			a {
+				text-decoration: none;
+			}
+			
+			.xingChengList> li {
+				margin-top: 16px;
+			}
+			
+			.xingChengList> li> div {
+				position: relative;
+				display: block;
+				padding: 2px 10px 8px;
+				color: #333;
+				border-top-left-radius: 2px;
+				border-top-right-radius: 2px;
+				background-color: #fff;
+				-webkit-box-shadow: 0 0 1px rgba(0, 0, 0, .3), 0 1px 0 rgba(170, 170, 170, .1);
+				box-shadow: 0 0 1px rgba(0, 0, 0, .3), 0 1px 0 rgba(170, 170, 170, .1);
+			}
+			
+			.xingChengList h2 {
+				font-size: 16px;
+				max-height: 80px;
+				margin-bottom: 5px;
+				padding-right: 35px;
+			}
+			
+			.xingChengList h2 a {
+				color: #333;
+			}
+			
+			.xingStatusEnded {
+				background: #959595;
+			}
+			
+			.xingStatusWaiting {
+				background: #6bbb55;
+			}
+			
+			.xingStatusSuccess {
+				background: #f97252;
+			}
+			
+			.xingStatusCancel {
+				background: #000000;
+			}
+			
+			.xingStatus {
+				font-size: 12px;
+				line-height: 14px;
+				position: absolute;
+				top: 0;
+				right: 5px;
+				width: 36px;
+				height: 40px;
+				padding: 4px 2px 0;
+				text-align: center;
+				color: #fff;
+			}
+			
+			.xingChengList> li> div> div {
+				font-size: 12px;
+				line-height: 21px;
+				padding-right: 36px;
+			}
+			
+			.xingStatus:after {
+				position: absolute;
+				bottom: -6px;
+				left: 0;
+				width: 100%;
+				height: 10px;
+				content: '';
+				border-radius: 50px/10px;
+				background: #fff;
+			}
+			.xingChengList{
+				padding: 0;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="pullrefresh" class="mui-content mui-scroll-wrapper">
+			<div class="mui-scroll">
+				<ul class="xingChengList mui-table-view mui-table-view-chevron">
+				</ul>
+			</div>
+		</div>
+
+	</body>
+	<script src="js/mui.min.js"></script>
+	<script src="js/jquery-2.2.0.min.js"></script>
+	<script src="js/common.js"></script>
+	<script src="js/base.js"></script>
+	<script>
+		var phone = null;
+		if(window.plus) {
+			plusReady();
+		} else {
+			document.addEventListener('plusready', plusReady, false);
+		}
+		function plusReady() {
+			phone = plus.storage.getItem("username");
+			$.ajax({
+				type: 'post',
+				dataType: 'json',
+				data:{
+					"phone":phone
+				},
+				url: IP + '/mobile/journery/list',
+				success: function(data) {
+					if(data.result.length != 0){
+						$("body .mui-scroll").html("<ul class='xingChengList'></ul>");
+						$.each(data.result, function(i, n) {
+							var status =null;
+							if(n.status == "待开锁"){
+								status = "xingStatusWaiting";
+							}else if(n.status == "完结"){
+								status = "xingStatusEnded";
+							}else if(n.status == "开锁成功"){
+								status = "xingStatusSuccess";
+							}else{
+								status = "xingStatusCancel";
+							}
+							var li = "<li data-id = '"+n.id+"'>"+
+										"<div>"+
+											"<h2><a>自行车编号："+n.bikeCode+"</a></h2>"+
+											"<span class='xingStatus "+status+"'> "+n.status+"  </span>"+
+											"<div>"+
+												"请求开锁时间：<span class='aBule'> "+n.createDate+" </span>"+
+											"</div>"+
+											"<div>"+
+												"租车点："+n.parkPointOfBorrowSn+
+											"</div>"+
+										"</div>"+
+									"</li>";
+							$(".xingChengList").append(li);
+						});
+					}
+					if(data.result.length == 0) {
+						$("body .mui-scroll").html("<img src ='img/default/journeryDefault.png' style='width:110%;height:110%'>");
+					}
+				}
+			});
+		}
+		function goPage(page, id) {
+			mui.openWindow({
+				url: page,
+				id: page,
+				extras: {
+					journeryId: id,
+				}
+			});
+		}
+		mui.init({
+			pullRefresh: {
+				container: '#pullrefresh',
+				down: {
+					callback: pulldownRefresh
+				},
+			},
+		});
+
+		function pulldownRefresh() {
+			setTimeout(function() {
+				$.ajax({
+					type: 'post',
+					dataType: 'json',
+					data: {
+						"phone": phone,
+					},
+					url: IP + '/mobile/journery/list',
+					success: function(data) {
+						if(data.result.length != 0) {
+							$(".xingChengList").empty();
+							$("body .mui-scroll").html("<ul class='xingChengList'></ul>");
+							$.each(data.result, function(i, n) {
+							var status =null;
+							if(n.status == "待开锁"){
+								status = "xingStatusWaiting";
+							}else if(n.status == "完结"){
+								status = "xingStatusEnded";
+							}else if(n.status == "开锁成功"){
+								status = "xingStatusSuccess";
+							}else{
+								status = "xingStatusCancel";
+							}
+							var li = "<li data-id = '"+n.id+"'>"+
+										"<div>"+
+											"<h2><a>自行车编号："+n.bikeCode+"</a></h2>"+
+											"<span class='xingStatus "+status+"'> "+n.status+" </span>"+
+											"<div>"+
+												"请求开锁时间：<span class='aBule'> "+n.createDate+" </span>"+
+											"</div>"+
+											"<div>"+
+												"租车点："+n.parkPointOfBorrowSn+
+											"</div>"+
+										"</div>"+
+									"</li>";
+							$(".xingChengList").append(li);
+	
+						});
+						}
+						if(data.result.length == 0) {
+							$("body .mui-scroll").html("<img src ='img/default/journeryDefault.png' style='width:110%;height:110%'>");
+						}
+					}
+				});
+				mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
+			}, 500);
+		}
+		window.addEventListener("pulldownRefresh", function() {
+			pulldownRefresh();
+		});
+		$("body").on("click",".xingChengList li",function(){
+			var id = $(this).attr("data-id");
+			goPage("travelDetail.html",id);
+		});
+	</script>
+
+</html>

@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8"
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+		<meta name="HandheldFriendly" content="true" />
+		<meta name="MobileOptimized" content="320" />
+		<title></title>
+		<link rel="stylesheet" href="css/mui.min.css" />
+		<link rel="stylesheet" href="css/font-awesome.min.css">
+		<style>
+			.mui-bar {
+				background: #6bbb55;
+				color: #fff;
+			}
+			header.mui-bar.mui-bar-nav{
+				box-shadow: initial;
+			}
+			header .mui-title {
+				color: #fff;
+			}
+			
+			header .mui-icon-left-nav {
+				color: #fff;
+			}
+			
+			header button{
+				color: #fff !important;	
+			}
+			header .setting i {
+				position:absolute;
+				top:12px;
+				right:12px;
+				font-size:25px;
+				color:#FFFFFF;
+			}
+			#content .userINF{
+				height:100px;
+				width:100%;
+				background-color:#6bbb55;
+			}
+			#content ul{
+				margin : 10px 0;
+			}
+			#content ul:before,#content ul:after{
+				background-color: initial;
+			}
+			#content .userINF .userPortrait{
+				display:inline-block;
+				height: 100%;
+				margin-left:10%;
+			}
+			#content .userINF .userPortrait img{
+				width:50px;
+				height: 50px;
+				margin: 25px 0;
+				border-radius: 50%;
+			}
+			#content .userdetail{
+				display:inline-block;
+				position: relative;
+    			bottom: 84px;
+    			height:100%;
+    			width: calc(90% - 55px);
+    			padding-left:10px;
+			}
+			#content .userdetail:after{
+				color:#FFFFFF;
+			}
+			#content .userdetail span,#content .userdetail a{
+				color:#FFFFFF;
+			}
+			#content .userdetail span:nth-child(1){
+				position: absolute;
+				top: 25px;
+			}
+			#content .userdetail a:nth-child(3){
+				position: absolute;
+				top: 55px;
+			}
+			#content .userdetail a:after{
+				right: initial;
+				color:#FFFFFF;
+			}
+			#content .topMenu{
+				margin:0;
+				padding: 0;
+				width:100%;
+				overflow: hidden;
+				background-color: #FFFFFF;
+			}
+			
+			#content .topMenu li{
+				float:left;
+				display: inline-block;
+				width:25%;
+				text-align: center;
+				height:80px;
+				padding-top: 20px;
+			}
+			#content .topMenu li:nth-child(1),#content .topMenu li:nth-child(2),#content .topMenu li:nth-child(3){
+				width:calc( 33.3% );
+				border-right:1px solid #e5e5e5;
+				border-bottom:1px solid #e5e5e5;
+			}
+			#content .topMenu li span{
+				display:block;
+			}
+			
+			.mobilePhone{
+				font-size: 16px;
+			}
+			
+			.fa-mobile{
+				padding-right: 4px;
+			}
+			
+			.userName{
+				font-size: 20px;
+			}
+			
+			.topMenu div{
+				font-size: 14px;
+			}
+			
+			.topMenu span{
+				font-size:18px;
+			}
+			ul li img{
+				margin-right: 7px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header id="header" class="mui-bar mui-bar-nav">
+			<button class="mui-action-back mui-btn mui-btn-blue mui-btn-link mui-btn-nav mui-pull-left"><span class="mui-icon mui-icon-left-nav"></span>返回</button>
+			<a class="setting"><i class="fa fa-gear"></i></a>
+			
+		</header>
+		<div id="content" class="content" style="margin-top:44px">
+			<div class="userINF">
+				<div class="userPortrait">
+					<img>
+				</div>
+				<div class="userdetail mui-navigate-right">
+					<span class="userName"></span><br>
+					<a class = "mobilePhone"><i class="fa fa-mobile" aria-hidden="true"></i><span>135****8026</span></a>
+				</div>
+			</div>
+			<ul class = "topMenu">
+				<li><span></span><div>余额</div></li>
+				<li><span></span><div>里程</div></li>
+				<li><span></span><div>积分</div></li>
+			</ul>
+			<ul class="mui-table-view mui-table-view-chevron">
+				<li class="mui-table-view-cell">
+					<a href="javascript:goPage('wallet.html')" class="mui-navigate-right"><img src="img/qianbao.png" width="25px" style="vertical-align: bottom;">&nbsp;我的钱包</a>
+				</li>
+				<li class="mui-table-view-cell">
+					<a href="javascript:goPage('travel.html')" class="mui-navigate-right"><img src="img/xingcheng.png" width="25px" style="vertical-align: bottom;">&nbsp;我的行程</a>
+				</li>
+				<li class="mui-table-view-cell">
+					<a href="javascript:goPage('notification.html')" class="mui-navigate-right"><img src="img/xiaoxi.png" width="25px" style="vertical-align: bottom;">&nbsp;我的消息</a>
+				</li>
+			</ul>
+			<ul class="mui-table-view mui-table-view-chevron">
+				<li class="mui-table-view-cell">
+					<a href="javascript:goPage('invite.html')" class="mui-navigate-right"><img src="img/fenxiang.png" width="25px" style="vertical-align: bottom;">&nbsp;邀请好友</a>
+				</li>
+				<li class="mui-table-view-cell">
+					<a href="javascript:goShop()" class="mui-navigate-right"><img src="img/shangcheng.png" width="25px" style="vertical-align: bottom;">&nbsp;积分商城</a>
+				</li>
+			</ul>
+			<ul class="mui-table-view mui-table-view-chevron">
+				<li class="mui-table-view-cell">
+					<a href="javascript:goPage('guide.html')" class="mui-navigate-right"><img src="img/zhinan.png" width="25px" style="vertical-align: bottom;">&nbsp;用户指南</a>
+				</li>
+				<!--<li class="mui-table-view-cell">
+					<a href="javascript:goPage('setting.html')" class="mui-navigate-right">&nbsp;系统设置</a>
+				</li>-->
+				<li class='mui-table-view-cell'>
+					<a class='mui-navigate-right'  href="javascript:goPage('contactUs.html')"><img src="img/lianxi.png" width="20px" style="vertical-align: bottom;margin-right:15px; ;">联系我们</a>
+				</li>
+			</ul>
+		</div>
+			
+	</body>
+	<script type="text/javascript" src="js/jquery-2.2.0.min.js"></script>
+	<script type="text/javascript" src="js/mui.min.js"></script>
+	<script type="text/javascript" src="js/base.js"></script>
+	<script>
+		var client; 
+		var ppp = "";
+		getClient();
+		function goPage(page) {
+			mui.openWindow({
+				url: page,
+				id: page
+			});
+		}
+		window.addEventListener("reflashClient",function(){
+			//ppp = plus.storage.getItem("username");
+			getClient();
+		});
+		function getClient(){
+			//var ppp = plus.storage.getItem("username");
+			$.ajax({
+				type: "post",
+				url: IP + "/client/info",
+				dataType: "json",
+				success : function(data){
+					client = data;
+					$(".userName").text(data.name);
+					var phone=data.username;
+					var phone1=phone.substring(0,3);
+					var phone2=phone.substring(7,11);
+					var clientname=phone1+"****"+phone2;
+					$(".mobilePhone span").text(clientname);
+					$(".topMenu li:nth-child(1) span").text(data.yuE);
+					$(".topMenu li:nth-child(2) span").text(data.totaldistance);
+					$(".topMenu li:nth-child(3) span").text(data.totalIntegral);
+					if(client.imgSrc == "" || client.imgSrc == null){
+						$(".userPortrait img").attr("src","img/touXiang.png");
+					}else{
+						$(".userPortrait img").attr("src",IMGIP + client.imgSrc);
+					}
+				},
+			});
+		}
+		$(".userINF").click(function(){
+			mui.openWindow({
+				url : 'userInfo.html',
+				id : 'userInfo.html',
+				extras : {
+					client : client,
+				},
+			});
+		});
+		$.ajax({
+			type: "post",
+			url: IP + "/client/info",
+			dataType: "json",
+			success : function(data){
+				$(".topMenu li:nth-child(1) span").text(data.yuE);
+				$(".topMenu li:nth-child(2) span").text(data.totaldistance);
+				$(".topMenu li:nth-child(3) span").text(data.totalIntegral);
+			},
+		});
+		
+		$(".setting,.setting i").click(function(){
+			 goPage('setting.html');
+		});
+		
+		function goShop(){
+			var url = 'shop.html';
+			mui.openWindow({
+				url: url,
+				id: url
+			});
+			var webview = plus.webview.getWebviewById(url);
+			mui.fire(webview, "shop_initFun");
+		}
+	</script>
+</html>

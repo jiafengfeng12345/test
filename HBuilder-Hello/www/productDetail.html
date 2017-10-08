@@ -1,0 +1,272 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<link href="css/mui.min.css" rel="stylesheet" />
+	<link rel="stylesheet" href="css/font-awesome.min.css" />
+	<style>
+		.mui-bar {
+			background: #6bbb55;
+			color: #fff;
+		}
+		header .mui-title {
+			color: #fff;
+		}
+		header .mui-icon-left-nav {
+			color: #fff;
+		}
+		header button{
+			color: #fff !important;	
+		}
+		
+		.mui-table-view-cell{
+			list-style-type: none;
+			text-align: center;
+		}
+		.mui-table-view .mui-grid-view .mui-table-view-cell .mui-media-body{
+			height: 40px;
+			text-align: left;
+			font-size: 18px;
+		}
+		#productDetail_center{
+			bottom: 55px;
+			box-shadow: inset 0 0.35px 3px #EAEAEA;
+		}
+		#productDetail_footer{
+			position: absolute;
+			bottom: 0;
+			width: 100%;
+			height: 54px;
+			background: #fff;
+		}
+		#productDetail_footer a.doExchange{
+			display: inline-block;
+			position: absolute;
+			top: 7px;
+			left: 4%;
+			width: 92%;
+			height: 41px;
+			line-height: 43px;
+			text-align: center;
+			border-radius: 5px;
+			background: #6bbb55;
+			color: #fff;
+		}
+		.shop-slider{
+			height: 200px;
+		}
+		.shop-slider img{
+			height: 200px;
+			width: 100%;
+		}
+		.mui-content{
+			background: #ececec;
+		}
+		.productDetail-title{
+			padding-left: 10px;
+			width: 100%;
+			height: 50px;
+			line-height: 50px;
+			font-size: 16px;
+			background: #fff;
+			color: #333333;
+		}
+		.productDetail-cost{
+			padding-left: 12px;
+			height: 40px;
+			line-height: 25px;
+			font-size: 15px;
+			background: #fff;
+			color: #00ea55;
+		}
+		.productDetail-cost .cost{
+			font-size: 27px;
+		}
+		.productDetail-cost .price{
+			margin-left: 10px;
+			text-decoration: line-through;
+			font-size: 12px;
+			color: #ccc;
+		}
+		.unitTitle{
+			font-size: 14px;
+			color: #999999;
+		}
+		.productDetail-expDate{
+			padding-left: 10px;
+			height: 35px;
+			line-height: 35px;
+			background: #fff;
+			border-top: 1px solid #ececec;
+			box-shadow: 0 3px 3px #e1e1e1;
+		}
+		.productDetail-expDate .expDate{
+			margin-left: 5px;
+			font-size: 14px;
+			color: #686868;
+		}
+		.productDetail-info{
+			margin-top: 10px;
+			padding-left: 10px;
+			line-height: 35px;
+			background: #fff;
+			/*border-top: 1px solid #ddd;*/
+		}
+		.productDetail-info .content{
+			margin: 0 0 55px 0;
+			width: 94%;
+			min-height: 150px;
+		}
+		
+	</style>
+</head>
+<body>
+<header id="header" class="mui-bar mui-bar-nav">
+	<button class="mui-action-back mui-btn mui-btn-blue mui-btn-link mui-btn-nav mui-pull-left"><span class="mui-icon mui-icon-left-nav"></span>返回</button>
+	<h1 class="mui-title">商品详情页</h1>
+</header>
+<div class="mui-content mui-scroll-wrapper" id="productDetail_center">
+	<div class="mui-scroll">
+		<div class="mui-slider shop-slider">
+			<div class="mui-slider-group mui-slider-loop" id="productDetail_topShow">
+			</div>
+			<div class="mui-slider-indicator" id="productDetail_topShowNote">
+			</div>
+		</div>
+		<div class="productDetail-title">
+        </div>
+        <div class="productDetail-cost">
+        	<span class="cost"></span>&nbsp;积分
+        	<span class="price"></span>
+        </div>
+        <div class="productDetail-expDate">
+        	<span class="unitTitle"><i class="fa fa-caret-right">&nbsp;有效期&nbsp;</i></span><span class="expDate"></span>
+        </div>
+        <div class="productDetail-info">
+        	<span class="unitTitle"><i class="fa fa-caret-right">&nbsp;详细说明&nbsp;</i></span>
+        	<div class="content">
+        	</div>
+        </div>
+	</div>
+</div>
+<div id="productDetail_footer">
+	<a class="doExchange">马上兑换</a>
+</div>
+<script type="text/javascript" src="js/base.js"></script>
+<script type="text/javascript" src="js/mui.min.js"></script>
+<script type="text/javascript" src="js/jquery-2.2.0.min.js" ></script>
+<script>
+	mui('.mui-scroll-wrapper').scroll({
+		indicators: false
+	});
+	// 自定义监听事件，可在另外页面触发
+	window.addEventListener('productDetail_init',function(event){
+		//获得事件参数
+		var id = event.detail.id;
+		productDetail_init(id);
+	});
+	
+	var productInfo = {};
+	var clientInfo = {};
+	
+	function productDetail_init(id){
+		var urlDatas = UrlTool.getData(document.URL);
+		
+		id = (id==null ? urlDatas.id : id);
+		productInfo = {};
+		clientInfo = {};
+		
+		$.ajax({
+			type:"post",
+			url: IP + "/product/info",
+			async: false,
+			dataType: "json",
+			data: {id: id},
+			success: function(re){
+				var info = re.result;
+				productInfo = info;
+				var imgList = [];
+				for(var key in info){
+					var val = info[key];
+					if(key=="img1" && val != null && val != ""){
+						imgList.push(val);
+					}else if(key=="img2" && val != null && val != ""){
+						imgList.push(val);
+					}else if(key=="img3" && val != null && val != ""){
+						imgList.push(val);
+					}else if(key=="img4" && val != null && val != ""){
+						imgList.push(val);
+					}else if(key=="img5" && val != null && val != ""){
+						imgList.push(val);
+					}else if(key=="img6" && val != null && val != ""){
+						imgList.push(val);
+					}
+				}
+				var len = imgList.length;
+				var topShowHtml = "";
+				var topShowNoteHtml = "";
+				for(var i = 0; i < len; i++){
+					var item = imgList[i];
+					if(i==0) topShowHtml +=
+						"<div class=\"mui-slider-item mui-slider-item-duplicate\">" +
+							"<img src=\"" + IMGIP + imgList[len-1] + "\"/>" +
+						"</div>";
+					topShowHtml +=
+						"<div class=\"mui-slider-item mui-slider-item-duplicate\">" +
+							"<img src=\"" + IMGIP + item + "\"/>" +
+						"</div>";
+					topShowNoteHtml += "<div class=\"mui-indicator" + (i==0 ? " mui-active" : "") + "\"></div>";
+					if(i == len-1) topShowHtml +=
+						"<div class=\"mui-slider-item mui-slider-item-duplicate\">" +
+							"<img src=\"" + IMGIP + imgList[0] + "\"/>" +
+						"</div>";
+				}
+				$("#productDetail_topShow").html(topShowHtml);
+				if(len > 1){
+					$("#productDetail_topShowNote").html(topShowNoteHtml);
+					var gallery = mui('.mui-slider');
+					gallery.slider({
+						interval:5000
+					});
+				}
+				$(".productDetail-title").html(info.name);
+				$(".productDetail-cost .cost").html(info.cost);
+				$(".productDetail-cost .price").html("￥" + info.price);
+				$(".productDetail-info .content").html(info.content);
+				$(".productDetail-expDate .expDate").html(info.startDate + "至" + info.endDate);
+				$("#productDetail_footer .doExchange").attr("href", "javascript:doExchange();");
+			}
+		});
+		$.ajax({
+			type:"post",
+			url: IP + "/client/info",
+			async: false,
+			dataType: "json",
+			success: function(re){
+				clientInfo = re;
+				if(parseFloat(re.jiFen) < parseFloat(productInfo.cost)){
+					$("#productDetail_footer .doExchange").html("积分不足");
+					$("#productDetail_footer .doExchange").css("background","#ccc");
+					$("#productDetail_footer .doExchange").removeAttr("href");
+				}
+			}
+		});
+	}
+	productDetail_init();
+	
+	function doExchange(){
+		var datas = {};
+		datas.product = productInfo;
+		var url = "makeExchangeOrder.html";
+		mui.openWindow({
+			url: UrlTool.setData(url, datas),
+			id: url
+		});
+		var webview = plus.webview.getWebviewById(url);
+		mui.fire(webview, "makeExchangeOrder_init", {productInfo : productInfo});
+	}
+</script>
+</body>
+</html>

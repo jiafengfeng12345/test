@@ -1,0 +1,146 @@
+.mui-bar {
+	background: #6bbb55;
+	color: #fff;
+}
+
+header .mui-title {
+	color: #fff;
+}
+
+header .mui-icon-left-nav {
+	color: #fff;
+}
+
+header .mui-pull-left{
+	color: #fff;
+}
+
+header button{
+	color: #fff !important;	
+}
+
+#content .title{
+	margin-top:50px;
+	font-size:15px;
+	width: 90%;
+	margin-left: 5%;
+	border-bottom: 2px solid #E8E8E8;
+	height:40px;
+	line-height: 40px;
+	color:#968989;
+}
+
+#content .payWay{
+	width:90%;
+	margin-left: 5%;
+	font-size: 14px;
+	font-family: "微软雅黑";
+	margin-top:20px;
+}
+
+#content .color-6BBB55{
+	background-color: #6BBB55;
+}
+#content .color-F7DFDF{
+	background-color: #D9D9D9;
+}
+
+#content .submit{
+	width: 90%;
+	height: 50px;
+	margin-top:30px;
+	font-size: 15px;
+	color:white;
+	margin-left:5%;
+	border:none;
+}
+
+#content .getScan{
+	margin-left:5%;
+	width:90%;
+	height:50px;
+	line-height: 50px;
+	margin-top:60px;
+}
+
+#content .getScan img{
+	/*width:15%;*/
+	height: 50px;
+	float: left;
+}
+
+#content .scantext {
+	width: calc(100% - 70px);
+	color: #000000;
+	margin-left:20px;
+	border:1px solid #6bbb55;
+	margin-top:5px;
+	vertical-align: top;
+}
+
+#content .memo{
+	width:90%;
+	margin-left:5%;
+	background-color: #DDDDDD;
+	border:none;
+	height:80px;
+	font-size:13px;
+	margin-bottom: 0;
+	padding-bottom: 0;
+	margin-top:20px;
+}
+
+#content .textStatic{
+	width:90%;
+	height:20px;
+	font-size: 13px;
+	margin-left: 5%;
+	text-align: right;
+	color:#CACACA;
+}
+
+#content .lastLength{
+	color:#CACACA;
+}
+
+#content .report-image{
+	margin-left:5%;
+	margin-top:20px;
+	width:100%;
+	float: left;
+}
+
+#content .report-image span{
+	font-size:13px;
+	color:#CACACA;
+	text-align: left;
+}
+
+#content .image-camered{
+	width:100px;
+	height:100px;
+	border:none;
+	float: left;
+}
+
+#content .shoot-image{
+	float: left;
+	height:80px;
+	width:25%;
+}
+
+#content .shoot-image img{
+	width:80px;
+	height:80px;
+}
+
+#content .add-image{
+	display: inline-block;
+    border: 1px dashed #c6c6c6;
+    height: 80px;
+    width: 80px;
+    color: #c6c6c6;
+    font-size: 50px;
+    line-height: 80px;
+    text-align: center;
+}

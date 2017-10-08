@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+		<meta name="HandheldFriendly" content="true" />
+		<meta name="MobileOptimized" content="320" />
+		<link rel="stylesheet" href="css/mui.min.css">
+		<title>Hello H5+</title>
+		<style>
+			.mui-bar {
+				background: #6bbb55;
+				color: #fff;
+			}
+			
+			header .mui-title {
+				color: #fff;
+			}
+			
+			header .mui-icon-left-nav {
+				color: #fff;
+			}
+			
+			header button{
+				color: #fff !important;	
+			}
+			
+			.yue{
+				padding-top: 200px;
+				text-align: center;
+				font-size: 60px;
+				color:#6bbb55;
+			}
+			
+			.yue p{
+				margin-top: 22px;
+				color:#6bbb55;
+			}
+			
+			.chongzhi{
+				position: absolute;
+				bottom: 90px;
+				background: #6bbb55;
+				color:#fff;
+				height:40px;
+				line-height:40px;
+				width:86%;
+				text-align: center;
+				left:7%;
+			}
+			#content{
+				margin-top: 50px;
+			}
+			
+			.save{
+				font-size: 16px !important;
+				color:#fff;
+				position: absolute;
+				right:10px;
+				top:12px;
+			}
+		</style>
+	</head>
+	<body>
+		<header id="header" class="mui-bar mui-bar-nav">
+			<button class="mui-action-back mui-btn mui-btn-blue mui-btn-link mui-btn-nav mui-pull-left"><span class="mui-icon mui-icon-left-nav"></span>返回</button>
+			<h1 class="mui-title">意见反馈</h1>
+			<a class="save">保存</a>
+		</header>
+		<div id="content" class="content">
+			<textarea style="height:200px"></textarea>
+		</div>
+	</body>
+	<script type="text/javascript" src="js/mui.min.js"></script>
+	<script type="text/javascript" src="js/jquery-2.2.0.min.js"></script>
+	<script type="text/javascript" src="js/base.js"></script>
+	<script>
+		var client = null;
+		document.addEventListener("plusready", plusReady, false);
+		function plusReady() {
+		};
+		$.ajax({
+			type: "post",
+			url: IP + "/client/info",
+			dataType: "json",
+			success : function(data){
+				client = data;
+			},
+		});
+		$(".save").click(function(){
+			console.log($("textarea").val());
+			if($("textarea").val()!=""){
+				$.ajax({
+					url: IP+"/suggest/save",
+					type:"post",
+					data:{
+						username : client.username,
+						content : $("textarea").val(),
+					},
+					success : function(data){
+						if(data=="ok"){
+							plus.nativeUI.alert("谢谢您的意见，我们会尽快做出相应的处理",function(){
+								mui.back();
+							},"","知道了");
+							
+						}
+					},
+				});
+			}else{
+				plus.nativeUI.alert("请填写意见后再提交","","","知道了");
+			}
+		});
+	</script>
+</html>

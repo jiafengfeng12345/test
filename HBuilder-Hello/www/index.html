@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+		<meta name="misapplication-tap-highlight" content="no" />
+		<meta name="HandheldFriendly" content="true" />
+		<meta name="MobileOptimized" content="320" />
+		<title>Hello H5+</title>
+		<link rel="stylesheet" href="css/mui.min.css">
+		<link rel="stylesheet" href="css/font-awesome.min.css">
+		<link rel="stylesheet" href="css/common.css" type="text/css" charset="utf-8" />
+		<style>
+			.mui-input-group .mui-input-row:after {
+				background-color: #e9eaeb;
+			}
+			.mui-input-row input {
+				text-align: center;
+			}
+			.mui-button-row button {
+				margin-top: 20px;
+				width: 94%;
+				background: #6bbb55;
+				height: 48px;
+				border: 1px solid #6bbb55;
+			}
+			.mui-scroll-wrapper {
+				margin-top: 44px;
+			}
+			
+			.username {
+				margin-top: 15px;
+			}
+			
+			.mui-icon-eye:before {
+			    line-height: 35px;
+			}
+			
+			.mui-checkbox input[type=checkbox]:checked:before, .mui-radio input[type=radio]:checked:before {
+			    color: #6bbb55;
+			}
+			
+			.ifootBar {
+				position: absolute;
+				bottom: 20px;
+				right: 20px;
+				font-size: 13px;
+			}
+			
+			.ifootBar a {
+				color: #6bbb55;
+			}
+			
+			#getNeps{
+				position: absolute;
+				bottom: 20px;
+				left: 20px;
+				font-size: 13px;
+			}
+			
+			#getNeps a{
+				color: #6bbb55;
+			}
+			.mui-backdrop{
+				background-color: rgba(0,0,0,0}!important;
+			}
+		</style>
+	</head>
+
+	<body onselectstart="return false;" id="main">
+		<input type="text" id="realHeight" style="display: none;"/>
+		<input type="text" id="deviceId" style="display: none;"/>
+		<div id="content" class="content" style="position: relative;top: 0;left: 0;width: 100%;margin: 0;padding-top: 35px;">
+			<div class="mui-content-padded" style="margin: 5px;">
+				<img src="img/lvxing.png" width="90px" height="auto" style="border-radius: 4px;" />
+			</div>
+			<form class="mui-input-group">
+				<div class="mui-input-row username" style="height: 52px;line-height: 52px;">
+					<input type="number" pattern="\d*" placeholder="手机号" id="user_name">
+				</div>
+				<div class="mui-input-row" style="height: 52px;line-height: 52px;">
+					<input type="password" class="mui-input-password" placeholder="密码" id="user_password">
+				</div>
+			</form>
+			<div class="mui-button-row">
+				<button type="button" class="mui-btn mui-btn-primary" id="loginBtn">登录</button>&nbsp;&nbsp;
+			</div>
+			<div class="ifootBar">
+				<a href="javascript:goPage('register.html')">新用户注册</a>
+			</div>
+			<div id="getNeps">
+				<a  href="javascript:goPage('getNewPassword.html')">忘记密码?</a>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="js/mui.min.js"></script>
+	<script type="text/javascript" src="js/common.js"></script>
+	<script type="text/javascript" src="js/immersed.js"></script>
+	<script type="text/javascript" src="js/jquery-2.2.0.min.js"></script>
+	<script type="text/javascript" src="js/shortcut.js"></script>
+	<script type="text/javascript" src="js/wgs2mars.min.js"></script>
+	<script type="text/javascript" src="js/click.js"></script>
+	<script type="text/javascript" src="js/base.js"></script>
+	<!--<script type="text/javascript" src="http://webapi.amap.com/maps?v=1.3&key=b5a6dea9e006539a5499341b5cf1217f"></script>-->
+	<script type="text/javascript" src="js/gcjTodb09.js"></script>
+	<script type="text/javascript">
+		var realHeight = document.documentElement.clientHeight;
+		$("#content").css("height", realHeight);
+		$("#realHeight").val(realHeight);
+		$(window).resize(function(){
+			$("#content").css("height", $("#realHeight").val() + "px");
+		});
+		
+		document.addEventListener('touchstart', function() {
+			return false;
+		}, true);
+		document.oncontextmenu = function() {
+			return false;
+		};
+		var as = 'pop-in';
+		var city = '';
+		var menuIsOpened = false;
+		var centerPos = [];
+		var map = null;
+		var ws = null; 
+		var lng=null;
+		var lat=null;
+		var loginPostData = null;
+		function plusReady() {
+			$("#deviceId").val(DeviceTool.getDeviceID());
+			
+			plus.push.addEventListener( "click", function( msg ) {
+				// 判断是从本地创建还是离线推送的消息
+				switch( msg.payload ) {
+					case "LocalMSG":
+						alert( "点击本地创建消息启动：" );
+					break;
+					default:
+						alert( "点击离线推送消息启动：");
+					break;
+				}
+				// 提示点击的内容
+				plus.nativeUI.alert( msg.content );
+				// 处理其它数据
+			}, false );
+			// 监听在线消息事件
+			plus.push.addEventListener( "receive", function( msg ) {
+				if ( msg.aps ) {  // Apple APNS message
+					alert( "接收到在线APNS消息：" );
+				} else {
+					alert( "接收到在线透传消息：" );
+				}
+			}, false );
+			
+			ws = plus.webview.currentWebview();
+			plus.webview.currentWebview().setStyle({
+				scrollIndicator: 'none'
+			});
+			plus.key.addEventListener('backbutton', function() {
+//				if(confirm('确认退出？')) {
+//					plus.runtime.quit();
+//				}
+			}, false);
+			compatibleAdjust();
+			/*var flag = 1;
+			if(flag == 1){
+				mui.preload({
+				    url: "map.html",
+					id: "map.html"
+				});
+				flag++;
+			}*/
+			
+			loginPostData = $.parseJSON(plus.storage.getItem("loginPostData"));
+			if(loginPostData != null){
+				$("#user_name").val(loginPostData.username);
+				$("#user_password").val(loginPostData.password);
+				$("#loginBtn").click();
+			}
+		}
+		if(window.plus) {
+			plusReady();
+		} else {
+			document.addEventListener('plusready', plusReady, false);
+		}
+		var _domReady = false;
+		document.addEventListener('DOMContentLoaded', function() {
+			_domReady = true;
+			compatibleAdjust();
+		}, false);
+		var _adjust = false;
+		
+		function compatibleAdjust() {
+			if(_adjust || !window.plus || !_domReady) {
+				return;
+			}
+			_adjust = true;
+			if('iOS' == plus.os.name) {
+				document.getElementById('content').className = 'scontent'; // 使用div的滚动条
+			}
+			setTimeout(function() {
+				plus.navigator.closeSplashscreen();
+				plus.navigator.setStatusBarBackground('#efeff4');
+				/*if(plus.navigator.isImmersedStatusbar()) {
+					plus.navigator.setStatusBarStyle('UIStatusBarStyleBlackOpaque');
+				}*/
+			}, 500);
+		}
+
+		function goPage(page,data) {
+			mui.openWindow({
+				url: page,
+				id: page,
+				extras:{
+					centerPos:centerPos,
+				}
+			});
+		}
+
+		$("#loginBtn").click(function firstComeIn() {
+			var username = $("#user_name").val();
+			var userpassword = $("#user_password").val();
+			var deviceId = $("#deviceId").val();
+			if(deviceId == "") return false;
+			
+			if(loginPostData == null){
+				if(username=="" || userpassword==""){
+					alert("用户名密码不能为空");
+					return false;
+				}
+				loginPostData = {
+					'username': username,
+					'password': userpassword,
+					'deviceId': deviceId
+				};
+			}
+			var w = plus.nativeUI.showWaiting();
+			$.ajax({
+				type: 'post',
+				url: IP + '/mobile/login',
+				data: loginPostData,
+				dataType:"json",
+				success: function(data) {
+					var result = data.result;
+					if(result == 'success') {
+						plus.storage.setItem("loginPostData",JSON.stringify(loginPostData));
+						plus.storage.setItem("username",username);
+						mui.preload({
+						    url: "wallet.html",
+							id: "wallet.html",
+						});
+						mui.preload({
+						    url: "notification.html",
+							id: "notification.html",
+						});
+						mui.preload({
+						    url: "invite.html",
+							id: "invite.html",
+						});
+						mui.preload({
+						    url: "shop.html",
+							id: "shop.html",
+						});
+						mui.preload({
+						    url: "guide.html",
+							id: "guide.html",
+						});
+						mui.preload({
+						    url: "setting.html",
+							id: "setting.html",
+						});
+						mui.preload({
+						    url: "walletHistory.html",
+							id: "walletHistory.html",
+						});
+						setTimeout(function(){
+							w.close();
+							plus.navigator.setStatusBarBackground('#6abb54');
+							goPage("map.html",centerPos);
+						},2000);
+					} else {
+						plus.nativeUI.alert(data.result, function() {
+							console.log("User pressed!");
+						}, "出错了", "知道了");
+						w.close();
+					}
+				},
+				error : function(){
+					w.close();
+					Toast.show("网络出错");
+				}
+			});
+		});
+
+		var ws = null,
+			wo = null;
+		var scan = null;
+
+//		function scanClose() {
+//			scan.close();
+//			setTimeout(function() {
+//				$("#header").empty().html("<header id='header' class='mui-bar mui-bar-nav'><a class='mui-icon mui-icon-bars mui-pull-left'></a><h1 class='mui-title'>绿行</h1><a class='mui-icon mui-icon-search mui-pull-right'></a></header>");
+//			}, 200);
+//
+//		}
+
+		function onmarked(type, result, file) {
+			switch(type) {
+				case plus.barcode.QR:
+					type = "QR";
+					break;
+				case plus.barcode.EAN13:
+					type = "EAN13";
+					break;
+				case plus.barcode.EAN8:
+					type = "EAN8";
+					break;
+				default:
+					type = "其它" + type;
+					break;
+			}
+			setTimeout(function() {
+				scan.close();
+				$("#header").empty().html("<header id='header' class='mui-bar mui-bar-nav'><a class='mui-icon mui-icon-bars mui-pull-left'></a><h1 class='mui-title'>绿行</h1><a class='mui-icon mui-icon-search mui-pull-right'></a></header>");
+			}, 200);
+			mui.toast('扫码成功，等待自行车开锁...');
+		}
+
+
+		$("body").delegate("#content", "click", function() {
+			if(menuIsOpened) {
+				mui('.mui-off-canvas-wrap').offCanvas().close();
+				if(mui.os.ios) {
+					plus.navigator.setFullscreen(false);
+				}
+			}
+		});
+
+		mui.init({
+			keyEventBind: {
+				backbutton: false
+			}
+		});
+	</script>
+</html>

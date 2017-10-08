@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+		<meta name="HandheldFriendly" content="true" />
+		<meta name="MobileOptimized" content="320" />
+		<title>智汇齐心-分享</title>
+		<link rel="stylesheet" href="css/mui.min.css">
+		<link rel="stylesheet" href="css/common.css" type="text/css" charset="utf-8" />
+		<style>
+			.mui-bar {
+				background: #6bbb55;
+				color: #fff;
+			}
+			
+			header .mui-title {
+				color: #fff;
+			}
+			
+			header .mui-icon-left-nav {
+				color: #fff;
+			}
+			
+			header button {
+				color: #fff !important;
+			}
+			
+			footer {
+				width: 100%;
+				text-align: center;
+				color: #c6c6c6;
+				font-size: 12px;
+			}
+			
+			.ishare {
+				background: no-repeat center center url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABYCAYAAAADWlKCAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAABx0RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNui8sowAAAAWdEVYdENyZWF0aW9uIFRpbWUAMDIvMDIvMTbTM6q2AAAD8ElEQVR4nO3bS2hcZRiH8edMlJSgFVGw4kbQhRdE5U1QiaJdGduKKG5EvCAKxbqooFZXtmIUqYIFF7pQRMRQ8FaqSF2bVfLGbBTqpS6sxShSvKQYSs5xcRJJptPMN+iZ+c/J+1vmfANveIY53/kmyYqiIOho9HqAsFoEERNBxEQQMRFETAQRE0HERBAxEURMBBETQcREEDERREwEERNBxEQQMRFETAQRE0HERBAxEURMBBETQcREEDERREwEERNBxJzR6wG6ZWZmZrgoij3AFuAX4BXgdTP7o7eTrZathz+2dvf7gT3AxU2XDgCPmtmxrg91GrUP4u5bgE/XWHIQuMfM5rs00ppqfQ+ZnJwcAHa3WXY78Fj106SpdZDBwcFNwEUJS3dVPUuqWgfJsmwDab/juVXPkqq2Qdx9K/AWcF7C8kMVj5OsVtted88ot7VPAdcAGxNedqwoimcqHawDtQji7kPAZmAncBMwuHSpAL4F/qIM1PyJMA88PTw8/GWXRm2rr4O4+0ZgFNgBbG26fKQoiv15nu8dGBiYB54D7gLOBk4CR4EXzOyTbs7cjuxziLufD2wA5szsZNO1s4CbgUeAO5pe+hXwMbDPzH5deWF2dnZocXHxcuB3M/uusuH/A7kg7n4lcB9wHeW7+TDwgZl96O4AdwIPcGqIr4H3gTeUnrw7JRXE3UeACeCSFpffBM4B7m76+RHg7TzPJ0ZGRiTf9Z2QCeLum4DPgasSXzIHvAp8ZGaHKxusy5Ru6rtJi3EU2EcZ4vtKJ+oBpSD3JqyZozwI/KLqYXqltk/q/UopyDsJay4AJtz9CXdvdePve0o39Qspz5TW9U1dJgj8u+19D7i0xeU1t73AhOrDXiekggC4+xWUD4bX0/RgODY2xvj4eDwY9kLC0cktwMN0cHSydAh5GeXRieSWWTZIiuXDxaIodmRZdsrhIrAf2Jvn+YlGo/E8Zbzlw8UfgRfjcLECU1NTQ41GYzPwOHAjq4/fvwFOAFfT+vh9u5m9261Z26lFkGUrvqDaRRkg9QuqbSrfidQqyEruvg14ErgBOLPN8kNmNlb9VO0pPRj+r5buDQ8BvyUsv7XicZLVNghAURR/A3nC0uNVz5Kq1kEWFhZ+Bn5KWPpS1bOkqnWQ0dHRReBZyt3W6RwEXuvORO3VOgiAmX0GPAj80OLyAcptr8Tf9UKNd1nNpqenr82ybBy4jfLfEV6m/HeEP3s72WrrJki/qP1HVr+JIGIiiJgIIiaCiIkgYiKImAgiJoKIiSBiIoiYCCImgoiJIGIiiJgIIiaCiIkgYiKImAgiJoKIiSBiIoiYCCImgoiJIGIiiJh/AOY8KMGvlE3GAAAAAElFTkSuQmCC);
+				background-size: 50px 44px;
+			}
+			.contentFootBar{
+				position: absolute;
+			    bottom: 70px;
+			    width:100%;
+			}
+			.contentFootBar hr{
+				width:80%;
+				margin: 0 auto;
+			}
+			.contentFootBar .shareTitle{
+				display: inline-block;
+			    position: absolute;
+			    top: -10px;
+			    left: calc(50% - 30px);
+			    width: 60px;
+			    text-align: center;
+			    background-color: #efeff4;
+			}
+			.contentFootBar ul,.contentFootBar li{
+				background-color: #efeff4;
+			}
+			.contentFootBar ul{
+				display:inline-block;
+				padding:0;
+				width:95%;
+				margin:20px auto 0;
+			}
+			.contentFootBar li{
+				float:left;
+				padding:0 5px;
+				width: 50%;
+			}
+			.contentFootBar li img {
+				width:50px;
+				display:block;
+				margin:0 auto;
+			}
+			.contentFootBar li span{
+				font-size: 12px;
+			}
+			.inviteCode{
+				position: absolute;
+				bottom: 180px;
+			    width:100%;
+			}
+		</style>
+	</head>
+	<body>
+		<header id="header" class="mui-bar mui-bar-nav">
+			<button class="mui-action-back mui-btn mui-btn-link mui-btn-nav mui-pull-left"><span class="mui-icon mui-icon-left-nav"></span>返回</button>
+			<h1 class="mui-title">邀请好友</h1>
+			<!--<button onclick="share()" class="mui-btn mui-btn-link mui-btn-nav mui-pull-right">分享</button>-->
+		</header>
+		<div id="content" class="content" style="height:100%">
+			<img style="width:90%;" src="img/default/shareDefault.png">
+			<div class="inviteCode">邀请码&nbsp;:&nbsp;<span></span></div>
+			<div class="contentFootBar">
+				<hr />
+				<span class="shareTitle">去邀请</span>
+				<ul>
+					<li class="shareLi" data-id = "weixin" extra = "WXSceneSession">
+						<img src="img/w1.png" style="width: 40px;"/>
+						<span>微信好友</span>
+					</li>
+					<li class="shareLi" data-id = "weixin" extra = "WXSceneTimeline">
+						<img src="img/w4.png" style="width: 34px;"/>
+						<span>朋友圈</span>
+					</li>
+					<!--<li class="shareLi" data-id = "qq">
+						<img src="img/w2.png" style="width: 34px;"/>
+						<span>QQ好友</span>
+					</li>
+					<li  class="shareLi" data-id = "sinaweibo">
+						<img src="img/w3.png" style="width: 40px;"/>
+						<span>新浪微博</span>
+					</li>-->
+				</ul>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="js/base.js"></script>
+	<script type="text/javascript" src="js/immersed.js"></script>
+	<script type="text/javascript" src="js/mui.min.js"></script>
+	<script type="text/javascript" src="js/common.js"></script>
+	<script type="text/javascript" src="js/jquery-2.2.0.min.js"></script>
+	<script type="text/javascript" charset="utf-8">
+		var inviteCode = "";
+		var UserShareTextConfig = {};
+		$.ajax({
+			url: IP + "/userShareText/getShareText",
+			type: "post",
+			dataType: "json",
+			success: function(re){
+				UserShareTextConfig = re.result;
+			}
+		});
+		$.ajax({
+			url: IP + "/client/info",
+			type: "post",
+			dataType: "json",
+			success: function(re){
+				inviteCode = re.inviteCode;
+				$(".inviteCode span").html(re.inviteCode);
+			}
+		});
+		var shares = {};
+		document.addEventListener("plusready", plusReady, false);
+		function plusReady() {
+			var ev = document.getElementById('version');
+			ev && (ev.innerText = plus.runtime.version);
+			plus.share.getServices(function(s) {
+				for(var i in s) {
+					shares[s[i].id] = s[i];
+				}
+			});
+		}
+		$(".shareLi").click(function(){
+			var id = $(this).attr("data-id");
+			var extra = null;
+			var sb = [];
+			if(id == "weixin"){
+				extra = $(this).attr("extra");
+			}
+			var ss;
+			if(id != "qita"){
+				ss = shares[id];
+			}
+			sb.push({
+				title : id,
+				s : ss,
+				x : extra,
+			});
+			shareAction(sb[0]);
+		});
+		function shareAction(sb) {
+			if(!sb.s) {
+				shareWithSystem();
+				return;
+			}
+			var msg = {};
+			msg.href = IP+'/lvxing/invitePage?inviteCode=' + inviteCode;
+//			msg.href = 'http://zhqx.greenway-tech.com:8080/lvxing/invitePage?inviteCode=' + inviteCode;
+//			msg.content = '出门再也不用等公交啦，一起骑车！我的邀请码 : ' + inviteCode;
+//			msg.title = '智汇齐心分享';
+			msg.content = UserShareTextConfig.content + "";
+			msg.title = UserShareTextConfig.title + "";
+			sb.x && (msg.extra = {
+				scene: sb.x
+			});
+			msg.thumbs = msg.pictures = 'lvxing.png';
+			console.log('share ' + sb.title + ' : ' + JSON.stringify(msg));
+			sb.s.authenticated ? shareMessage(sb.s, msg) : sb.s.authorize(function() {
+				shareMessage(sb.s, msg);
+			}, function(e) {
+				plus.nativeUI.toast('取消分享!');
+			});
+		}
+		function shareWithSystem() {
+			var main = plus.android.runtimeMainActivity(),
+				Intent = plus.android.importClass('android.content.Intent'),
+				File = plus.android.importClass('java.io.File'),
+				Uri = plus.android.importClass('android.net.Uri');
+			var intent = new Intent(Intent.ACTION_SEND),
+				p = plus.io.convertLocalFileSystemURL('_doc/icon.png'),
+				f = new File(p),
+				uri = Uri.fromFile(f);
+			if(f.exists() && f.isFile()) {
+				intent.setType('image/*');
+				intent.putExtra(Intent.EXTRA_STREAM, uri);
+			} else {
+				intent.setType('text/plain');
+			}
+			intent.putExtra(Intent.EXTRA_SUBJECT, '智汇齐心');
+			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			main.startActivity(Intent.createChooser(intent, '智汇齐心分享'));
+		}
+		function shareMessage(s, m) {
+			s.send(m, function() {
+				plus.nativeUI.toast('完成分享!');
+			}, function(e) {
+				plus.nativeUI.toast('取消分享!');
+				console.log( "分享失败："+e.message );
+			});
+		}
+	</script>
+</html>

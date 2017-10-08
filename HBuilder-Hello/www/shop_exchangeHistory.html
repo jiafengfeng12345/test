@@ -1,0 +1,196 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<link href="css/mui.min.css" rel="stylesheet" />
+	<link rel="stylesheet" href="css/font-awesome.min.css" />
+	<style>
+		.mui-bar {
+			background: #6bbb55;
+			color: #fff;
+		}
+		header .mui-title {
+			color: #fff;
+		}
+		header .mui-icon-left-nav {
+			color: #fff;
+		}
+		header button{
+			color: #fff !important;	
+		}
+		
+		.mui-table-view-cell{
+			list-style-type: none;
+			text-align: center;
+		}
+		.mui-table-view .mui-grid-view .mui-table-view-cell .mui-media-body{
+			height: 40px;
+			text-align: left;
+			font-size: 18px;
+		}
+		
+		.historyUl{
+			list-style: none;
+			margin: 0;
+			padding: 0;
+		}
+		.historyUl li{
+			position: relative;
+			width: 100%;
+			height: 91px;
+			border-bottom: 1px solid #E0E0E0;
+		}
+		.historyUl li .left{
+			position: absolute;
+			top: 0;
+			left: 0;
+			display: inline-block;
+			width: 110px;
+			height: 90px;
+			background: #fff;
+		}
+		.historyUl li .left img{
+			margin: 5px 10px;
+			width: 80px;
+			height: 80px;
+		}
+		.historyUl li .right{
+			position: absolute;
+			top: 0;
+			right: 0;
+			display: inline-block;
+			padding: 5px 0;
+			width: calc(100% - 110px);
+			height: 90px;
+			background: #fff;
+		}
+		.fst{
+			font-size: 16px;
+			color: #232326;
+		}
+		.sec{
+			margin-top: 0px;
+			font-size: 14px;
+			color: #232326;
+		}
+		.price{
+			text-decoration: line-through;
+			color: #ccc;
+		}
+		.thr{
+			font-size: 14px;
+			color: #232326;
+		}
+		.cost{
+			color: #00AA00;
+		}
+		.four{
+			font-size: 14px;
+			color: #232326;
+		}
+		
+		.status{
+			position: relative;
+			top: -1px;
+			display: inline-block;
+			margin: 0;
+			padding: 2px 3px;
+			height: 16px;
+			line-height: 16px;
+			font-size: 10px;
+			background: red;
+			color: #fff;
+			border-radius: 3px;
+		}
+		.待发货{
+			background: red;
+		}
+		.已发货{
+			background: orange;
+		}
+		.已完结{
+			background: green;
+		}
+	</style>
+</head>
+<body>
+<header id="header" class="mui-bar mui-bar-nav">
+	<button class="mui-action-back mui-btn mui-btn-blue mui-btn-link mui-btn-nav mui-pull-left"><span class="mui-icon mui-icon-left-nav"></span>返回</button>
+	<h1 class="mui-title">兑换记录</h1>
+</header>
+<div class="mui-content mui-scroll-wrapper">
+	<div class="mui-scroll">
+		<ul class="historyUl" id="historyUl">
+		</ul>
+	</div>
+</div>
+<script type="text/javascript" src="js/base.js"></script>
+<script type="text/javascript" src="js/mui.min.js"></script>
+<script type="text/javascript" src="js/jquery-2.2.0.min.js" ></script>
+<script>
+	mui('.mui-scroll-wrapper').scroll({
+		indicators: false
+	});
+	// 自定义监听事件，可在另外页面触发
+	window.addEventListener('shop_exchangeHistory_init',function(){
+		shop_exchangeHistory_init();
+	});
+	
+	function shop_exchangeHistory_init(){
+		$.ajax({
+			type:"post",
+			url: IP + "/exchangeOrder/mList",
+			async:true,
+			dataType: "json",
+			success: function(re){
+				var list = re.result;
+				var len = list.length;
+				var lis = "";
+				for(var i=0; i<len; i++){
+					var item = list[i];
+					lis +=
+						'<li id="' + item.id + '" onclick="viewExchangeOrder(this)">' +
+							'<div class="left">' +
+								'<img class="img1" src="' + IMGIP + item.img1 + '"/>' +
+							'</div>' +
+							'<div class="right">' +
+								'<div class="fst">' +
+									'<span class="productName">' + item.productName + '</span>&nbsp;' +
+									'<span class="status ' + item.status + '">' + item.status + '</span>' +
+								'</div>' +
+								'<div class="sec">' +
+									'原价&nbsp;:&nbsp;<span class="price">￥' + item.price + '</span>' +
+								'</div>' +
+								'<div class="thr">' +
+									'消耗积分&nbsp;:&nbsp;<span class="cost">' + item.cost + '</span>&nbsp;' +
+								'</div>' +
+								'<div class="four">' +
+									'订单号&nbsp;:&nbsp;<span class="orderSn">' + item.orderSn + '</span>' +
+								'</div>' +
+							'</div>' +
+						'</li>';
+				}
+				$("#historyUl").html(lis);
+			},
+			error: function(){
+//				alert("网络不给力");
+			}
+		});
+	}
+	shop_exchangeHistory_init();
+	
+	function viewExchangeOrder(e){
+		var orderId = $(e).attr("id");
+		var url = "viewExchangeOrder.html";
+		mui.openWindow({
+			url: url,
+			id: url
+		});
+		var webview = plus.webview.getWebviewById(url);
+		mui.fire(webview, "viewExchangeOrder_init", {exchangeOrderId : orderId});
+	}
+</script>
+</body>
+</html>

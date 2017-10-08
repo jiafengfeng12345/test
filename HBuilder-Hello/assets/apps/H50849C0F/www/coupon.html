@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+		<meta name="HandheldFriendly" content="true" />
+		<meta name="MobileOptimized" content="320" />
+		<link rel="stylesheet" href="css/mui.min.css">
+		<title>Hello H5+</title>
+		<style>
+			.mui-bar {
+				background: #6bbb55;
+				color: #fff;
+			}
+			
+			header .mui-title {
+				color: #fff;
+			}
+			
+			header .mui-icon-left-nav {
+				color: #fff;
+			}
+			
+			header button{
+				color: #fff !important;	
+			}
+			
+			.yue{
+				padding-top: 200px;
+				text-align: center;
+				font-size: 60px;
+				color:#6bbb55;
+			}
+			
+			.yue p{
+				margin-top: 22px;
+				color:#6bbb55;
+			}
+			
+			.chongzhi{
+				position: absolute;
+				bottom: 90px;
+				background: #6bbb55;
+				color:#fff;
+				height:40px;
+				line-height:40px;
+				width:86%;
+				text-align: center;
+				left:7%;
+			}
+			
+			header .mui-pull-right a{
+				color:#fff;
+			}
+			
+			.content .exchange{
+				position: absolute;
+				top: 44px;
+				width: 100%;
+				border-bottom: 1px solid #D8D8D8;
+				box-shadow: 0 -1px 1px #e1e1e1;
+			}
+			.content .exchange .coupon_exchangeInput{
+				display: inline-block;
+				margin: 2px 1%;
+				width: 98%;
+			}
+			.content .exchange .coupon_exchangeButton{
+				display: inline-block;
+				margin: 2px 1%;
+				width: 98%;
+				height: 35px;
+				line-height: 35px;
+				background: #6abb54;
+				color: #fff;
+				text-align: center;
+				border-radius: 2px;
+			}
+			.content .couponScroll{
+				top: 129px;
+			}
+			.coupon_ul{
+				margin: 0;
+				padding: 10px 0 0 0;
+				/*background: #fff;*/
+			}
+			.coupon_ul li{
+				/*background: #fff;*/
+				margin: 0;
+				padding: 3px 10px;
+			}
+			.coupon_ul li .coupon{
+				position: relative;
+				width: 100%;
+				height: 120px;
+				background-image: url(img/couponBackground.png);
+				background-size: 100% 100%;
+				background-repeat: no-repeat;
+				border-radius: 3px;
+				/*border-bottom: 1px solid #D8D8D8;
+				box-shadow: 0 -1px 1px #e1e1e1;*/
+			}
+			.coupon_ul li .coupon .title{
+				padding: 25px 0 0 15px;
+				display: block;
+				font-family: "Microsoft YaHei" ! important;
+				font-size: 23px;
+			}
+			.coupon_ul li .coupon .endDate{
+				padding: 5px 0 0 15px;
+				display: block;
+				font-size: 14px;
+				color: #818181;
+			}
+			.coupon_ul li .coupon .note{
+				padding: 0 0 0 15px;
+				display: block;
+				font-size: 14px;
+				color: #818181;
+			}
+			.coupon_ul li .coupon .num{
+				position: absolute;
+				top: 25px;
+				right: 30px;
+				display: block;
+				font-family: "Microsoft YaHei" ! important;
+				font-size: 40px;
+				/*background: #eee;*/
+				color: #f8c705;
+			}
+			.coupon_ul li .coupon .numText{
+				position: absolute;
+				top: 32px;
+				right: 15px;
+				display: block;
+				font-family: "Microsoft YaHei" ! important;
+				font-size: 16px;
+				/*background: #eee;*/
+				color: #f8c705;
+			}
+			.conponDefault{
+				text-align: center;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header id="header" class="mui-bar mui-bar-nav">
+			<button class="mui-btn mui-btn-link mui-btn-nav mui-pull-left couponBack"><span class="mui-icon mui-icon-left-nav"></span>返回</button>
+			<h1 class="mui-title">我的优惠</h1>
+			<button class="mui-btn mui-btn-link mui-pull-right"><a href="javascript:goPage('youHuiUsingContent.html')">使用说明</a></button>
+		</header>
+		<div id="content" class="content">
+			<div class="exchange">
+				<input type="text" class="coupon_exchangeInput" placeholder="输入兑换码"/>
+				<a class="coupon_exchangeButton">兑换</a>
+			</div>
+			<div class="mui-content mui-scroll-wrapper couponScroll">
+				<div class="mui-scroll">
+					<ul class="coupon_ul">
+						<!--<li>
+							<div class="coupon">
+								<span class="title">新人专享券</span>
+								<span class="endDate">有效期至 2017.2.4</span>
+								<span class="note">适用于全国，仅限单笔订单支付</span>
+								<span class="num">5</span>
+								<span class="numText">元</span>
+							</div>
+						</li>-->
+					</ul>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="js/jquery-2.2.0.min.js"></script>
+	<script type="text/javascript" src="js/mui.min.js"></script>
+	<script type="text/javascript" src="js/base.js"></script>
+	<script>
+		mui('.mui-scroll-wrapper').scroll({
+			deceleration: 0.0005 //flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
+		});
+		
+		$(".couponBack").click(function () {
+			var v = plus.webview.getWebviewById("menu.html");
+			mui.fire(v,"reflashClient");
+			mui.back();
+		});
+		
+		function getCouponList(){
+			$.ajax({
+				type:"post",
+				url: IP + "/coupon/mobile/list",
+				dataType: "json",
+				success: function(re){
+					var list = re.result;
+					var ulHtml = "";
+					for(var i in list){
+						var item = list[i];
+						ulHtml +=
+						'<li>' +
+							'<div class="coupon">' +
+								'<span class="title">' +( item.type == 1 ? '优惠券' : '新人专享券') + '</span>' +
+								'<span class="endDate">有效期至 ' + item.expiryDate + '</span>' +
+								'<span class="note">适用于全国，仅限单笔订单支付</span>' +
+								'<span class="num">' + item.denomination + '</span>' +
+								'<span class="numText">元</span>' +
+							'</div>' +
+						'</li>';
+					}
+					if(list.length == 0){
+						
+						ulHtml = "<div class = 'conponDefault'><img src = 'img/coupon.png'>"+
+						"<p>目前还没有优惠券哦</p></div>";
+					}
+					$(".coupon_ul").html(ulHtml);
+				}
+			});
+		}
+		getCouponList();
+		
+		$(".coupon_exchangeButton").click(function(){
+			var code = $(".coupon_exchangeInput").val();
+			if(code == ""){
+				plus.nativeUI.toast("请输入兑换码", {verticalAlign: 'top'});
+				return false;
+			}
+			$.ajax({
+				type:"post",
+				url:IP + "/coupon/exchangeCoupon",
+				dataType: "json",
+				data: {redeemCode: code},
+				success: function(re){
+					if(re.error){
+						plus.nativeUI.toast(re.error.error, {verticalAlign: 'top'});
+					}else{
+						getCouponList();
+						plus.nativeUI.toast("兑换成功", {verticalAlign: 'top'});
+					}
+				}
+			});
+		});
+		
+		
+		function goPage(page) {
+			mui.openWindow({
+				url: page,
+				id: page
+			});
+		}
+	</script>
+
+</html>

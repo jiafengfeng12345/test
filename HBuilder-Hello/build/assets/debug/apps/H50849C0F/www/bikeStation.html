@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport"content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+		<meta name="HandheldFriendly" content="true" />
+		<meta name="MobileOptimized" content="320" />
+		<link rel="stylesheet" href="css/loading.css" />
+		<link rel="stylesheet" href="css/font-awesome.min.css" />
+		<title></title>
+		<style>
+			body{
+				width: 100%;
+				height: 100%;
+				background: rgba(0, 0, 0, 0);
+			}
+			
+			.content{
+				position: absolute;
+				z-index: 1;
+				top: 0px;
+				bottom: 0px;
+				left: 0;
+				right: 0;
+				background: #fff;
+			}
+			.bikeStationInfo{
+				position: fixed;
+				z-index: 2;
+				top: 0px;
+				left: 0px;
+				width: 100%;
+				height: 80px;
+				background: #c4e2d8;
+			}
+			.bikeStationInfo .left{
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 80px;
+				height: 80px;
+			}
+			.bikeStationInfo .left img{
+				margin: 5px;
+				width: 70px;
+				height: 70px;
+			}
+			.bikeStationInfo .right{
+				position: absolute;
+				top: 0;
+				right: 0;
+				width: calc(100% - 80px);
+				height: 80px;
+			}
+			.bikeStationInfo .right .sName{
+				margin: 10px 5px 5px 5px;
+				font-size: 18px;
+				color:#313030;
+			}
+			.bikeStationInfo .right .sJinDu, .bikeStationInfo .right .sWeDu{
+				margin: 3px 0 3px 7px;
+				font-size: 14px;
+			}
+			
+			.mui-content{
+				padding-top: 80px;
+				background: #fff;
+			}
+			.bikeList{
+				list-style: none;
+				margin: 0;
+				padding: 0;
+			}
+			.bikeList li{
+				position: relative;
+				width: 100%;
+				height: 50px;
+				line-height: 50px;
+				background: #fafafa;
+				border-bottom: 1px solid #ebebeb;
+			}
+			.bikeLi .left{
+				position: absolute;
+				padding-left: 10px;
+				top: 0;
+				left: 0;
+				width: calc(70% - 10px);
+				height: 100%;
+				font-size: 15px;
+			}
+			.bikeLi .right{
+				position: absolute;
+				top: 0;
+				right: 0;
+				width: 30%;
+				height: 100%;
+			}
+			.bikeLi .right .bookBike{
+				display: block;
+				position: absolute;
+				top: 11px;
+				right: 10px;
+				width: 50px;
+				height: 28px;
+				line-height: 28px;
+				text-align: center;
+				font-size: 15px;
+				background: #FFCC33;
+				color: #fff;
+				border-radius: 5px;
+			}
+			
+			.maxCount{
+				margin-left:5px;
+				font-size: 14px;
+			}
+			
+			.toast {
+				display: none;
+				position: fixed;
+				z-index: 10000;
+				left: calc(50% - 100px);
+				bottom: calc(50% - 50px);
+				width: 200px;
+				height: 100px;
+				line-height: 100px;
+				text-align: center;
+				color: #fff;
+				background: rgba(0,0,0,0.5);
+				border-radius: 5px;
+			}
+			.toast i{
+				margin-right: 8px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="content">
+			<div class="bikeStationInfo">
+				<div class="left">
+					<img src="img/lvxing.png"/>
+				</div>
+				<div class="right">
+					<div class="sName"></div>
+					<div class="status">车辆Id：<span></span></div>
+					<div class="BikePosCount">经度：<span></span></div>
+					<div class="BikeCanHire">纬度：<span></span></div>
+					<!--<div class="status">状态：<span>在线</span></div>-->
+					<!--<div class="sJinDu">经度&nbsp;:&nbsp;<span></span></div>
+					<div class="sWeDu">纬度&nbsp;:&nbsp;<span></span></div>-->
+				</div>
+			</div>
+			<div class="mui-content mui-scroll-wrapper">
+				<div class="mui-scroll">
+					<ul class="bikeList">
+					</ul>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="js/base.js"></script>
+	<script type="text/javascript" src="js/jquery-2.2.0.min.js"></script>
+	<script type="text/javascript" src="js/common.js"></script>
+	<script type="text/javascript" src="js/mui.min.js"></script>
+	<script>
+		function plusReady() {
+			var curWebView = plus.webview.getWebviewById("bikeStation.html");
+			var partPoint = curWebView.imData;
+//			$(".bikeStationInfo .right .sName").html(partPoint.name);
+//			$(".bikeStationInfo .right .BikePosCount span").html(partPoint.BikePosCount);
+//			$(".bikeStationInfo .right .BikeCanHire span").html(partPoint.BikeCanHire);
+			$(".bikeStationInfo .right .status span").html(partPoint.BikeId);
+			$(".bikeStationInfo .right .BikePosCount span").html(partPoint.Lng);
+			$(".bikeStationInfo .right .BikeCanHire span").html(partPoint.Lat);
+//			$(".bikeStationInfo .right .sJinDu span").html(partPoint.Lat);
+//			$(".bikeStationInfo .right .sWeDu span").html(partPoint.Lng);
+//			$(".bikeStationInfo .right .status span").html(partPoint.Status);
+			
+			$.ajax({
+				type:"post",
+				url: IP + "/bike/mList",
+				async: true,
+				dataType: "json",
+				data: {id : partPoint.id},
+				success: function(re){
+					var list = re;
+					var len = list.length;
+					var lis = "";
+					for(var i=0; i < len; i++){
+						var item = list[i];
+						lis +=
+							'<li class="bikeLi" id="' + item.id + '">' +
+								'<div class="left">车辆编号:<span>' + item.code + '</span></div>' +
+								'<div class="right"><a class="bookBike" onclick="bookBike(this)">预约</a></div>' +
+							'</li>';
+					}
+					$(".bikeList").html(lis);
+				}
+			});
+		}
+		document.addEventListener("plusready", plusReady, false);
+		
+		$(".contentClose").click(function(){
+			plus.webview.close("bikeStation.html");
+		});
+		
+		function bookBike(e){
+			var li = $(e).parent().parent();
+			var id = $(li).attr("id");
+			var loadingStr = 
+				'<div class="weui_loading">' +
+                    '<div class="weui_loading_leaf weui_loading_leaf_0"></div>' +
+                    '<div class="weui_loading_leaf weui_loading_leaf_1"></div>' +
+                    '<div class="weui_loading_leaf weui_loading_leaf_3"></div>' +
+                    '<div class="weui_loading_leaf weui_loading_leaf_2"></div>' +
+                    '<div class="weui_loading_leaf weui_loading_leaf_4"></div>' +
+                    '<div class="weui_loading_leaf weui_loading_leaf_5"></div>' +
+                    '<div class="weui_loading_leaf weui_loading_leaf_6"></div>' +
+                    '<div class="weui_loading_leaf weui_loading_leaf_8"></div>' +
+                    '<div class="weui_loading_leaf weui_loading_leaf_7"></div>' +
+                    '<div class="weui_loading_leaf weui_loading_leaf_9"></div>' +
+                    '<div class="weui_loading_leaf weui_loading_leaf_10"></div>' +
+                    '<div class="weui_loading_leaf weui_loading_leaf_11"></div>' +
+                '</div>';
+			$(e).before(loadingStr);
+			
+			//do ajax
+			$(li).find(".weui_loading").remove();
+			Toast.show('<i class="fa fa-check"></i>预约成功');
+		}
+	</script>
+</html>

@@ -1,0 +1,317 @@
+<!DOCTYPE HTML>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<meta name="HandheldFriendly" content="true" />
+		<meta name="MobileOptimized" content="320" />
+		<title>Hello H5+</title>
+		<link rel="stylesheet" href="css/mui.min.css">
+		<style>
+			.mui-bar {
+				background: #6bbb55;
+				color: #fff;
+			}
+			
+			header .mui-title {
+				color: #fff;
+			}
+			
+			header .mui-icon-back {
+				color: #fff;
+			}
+			#header button{
+				color:#FFFFFF;
+			}
+		</style>
+		<script type="text/javascript" src="js/common.js"></script>
+		<script type="text/javascript" src="js/mui.min.js"></script>
+		<script type="text/javascript" src="js/base.js"></script>
+		<script type="text/javascript">
+			var pays = {};
+
+			function plusReady() {
+				plus.payment.getChannels(function(channels) {
+					var content = document.getElementById('dcontent');
+					var txt = "支付通道信息：";
+					for(var i in channels) {
+						var channel = channels[i];
+						if(channel.id == 'qhpay' || channel.id == 'qihoo') { // 过滤掉不支持的支付通道：暂不支持360相关支付
+							continue;
+						}
+						pays[channel.id] = channel;
+						txt += "id:" + channel.id + ", ";
+						txt += "description:" + channel.description + ", ";
+						txt += "serviceReady:" + channel.serviceReady + "； ";
+//						var de = document.createElement('div');
+//						de.setAttribute('class', 'button');
+//						de.setAttribute('onclick', 'pay(this.id)');
+//						de.id = channel.id;
+//						de.innerText = channel.description + "支付";
+//						content.appendChild(de);
+//						checkServices(channel);
+					}
+				}, function(e) {});
+			}
+			document.addEventListener('plusready', plusReady, false);
+			function checkServices(pc) {
+				if(!pc.serviceReady) {
+					var txt = null;
+					switch(pc.id) {
+						case "alipay":
+							txt = "检测到系统未安装“支付宝快捷支付服务”，无法完成支付操作，是否立即安装？";
+							break;
+						default:
+							txt = "系统未安装“" + pc.description + "”服务，无法完成支付，是否立即安装？";
+							break;
+					}
+					plus.nativeUI.confirm(txt, function(e) {
+						if(e.index == 0) {
+							pc.installService();
+						}
+					}, pc.description);
+				}
+			}
+
+
+			var w = null;
+			var PAYSERVER = IP + '/ali/payment';
+			var PAYSERVER2 = IP + '/weChat/payment';
+			var url = "";
+			
+			function setClientYuE(data) {
+				var re = "";
+				$.ajax({
+					type: 'post',
+					async: false,
+					url: IP + '/client/yuE',
+					data: data,
+					success: function(result){
+						re = result;
+					},
+					error: function(){
+						re = "";
+					}
+				});
+				return re;
+			}
+
+			function pay(id) {
+				if(w) {
+					return;
+				}
+				if(id == 'alipay') {
+					url = PAYSERVER;
+				} else if(id == 'wxpay'){
+					url = PAYSERVER2;
+				}else {
+					plus.nativeUI.alert("当前环境不支持此支付通道！", null, "充值");
+					return;
+				}
+				url += '?total=';
+
+				w = plus.nativeUI.showWaiting();
+				var amount = document.getElementById('total').value;
+				url += amount;
+				$.ajax({
+					type:'post',
+					url:url,
+					data:{},
+					dataType:'json',
+					success:function(retData){
+						w.close();
+						w=null;
+						plus.payment.request(pays[id], retData.order, function(result) {
+							var username = plus.storage.getItem("username");
+							var type= id=="alipay"?"支付宝支付":"微信支付";
+							/*
+							var postData = {
+								'username': username,
+								'amount':amount,
+								'type':type,
+								'outTradeno':retData.outTradeno,
+								'isDeposit':"false"
+							};
+							var i;
+							for(i = 0; i < 5; i++){
+								var re = setClientYuE(postData);
+								if(re!=""){
+									break;
+								}
+							}
+							if(i==5){
+								alert("充值时网络错误，请联系客服");
+							}
+							*/
+							plus.nativeUI.alert("支付成功", function() {
+								var walletSub = plus.webview.getWebviewById("walletSub.html");
+								mui.fire(walletSub,'pulldownRefresh');
+								var walletHistorySub = plus.webview.getWebviewById("walletHistorySub.html");
+								mui.fire(walletHistorySub,'pulldownRefresh');
+								var menu = plus.webview.getWebviewById("menu.html");
+								mui.fire(menu,'reflashClient');
+								back();
+							}, "通知");
+						}, function(e) {
+							$.ajax({
+								type: 'post',
+								url: IP + '/mobile/zhifuHistory/deleteVirtual',
+								data: {
+									'outTradeno':retData.outTradeno
+								}
+							});
+							plus.nativeUI.toast("支付出错");
+						});
+					},
+					error:function(retData){
+						w.close();
+						w=null;
+					}
+				});
+			}
+		</script>
+		<link rel="stylesheet" href="css/common.css" type="text/css" charset="utf-8" />
+		<style type="text/css">
+			#total {
+				padding: 0 1em;
+				border: 0px;
+				border-radius: 0;
+				font-size: 16px;
+				width: 90%;
+				outline: none;
+				text-align: center;
+				margin-top: 15px;
+			}
+			.mui-input-row.mui-radio{
+				background: #FFFFFF;
+				width: 90%;
+				margin-left: 5%;
+				height: 50px;
+			}
+			#appli{
+				border-bottom: 1px solid #DDDDDD;
+			}
+			.mui-radio label{
+				padding-right: 55%;
+				padding-left: 3%;
+				overflow: hidden;
+			}
+			.mui-radio label p{
+				line-height: 32px;
+				font-size: 16px;
+				float: left;
+				margin-left: 8px;
+			}
+			.mui-checkbox input[type=checkbox]:before, .mui-radio input[type=radio]:before{
+				line-height: 50px;
+			}
+			.mui-checkbox input[type=checkbox]:checked:before, .mui-radio input[type=radio]:checked:before {
+			    color: #6BBB55;
+			}
+			#img_wx{
+				float: left;
+				width: 33px;
+				height: 32px;
+			}
+			#img_pay{
+				float: left;
+				width: 33px;
+				height: 32px;
+			}
+			#sure {
+				margin-left: 5%;
+				width: 90%;
+				background: #6BBB55;
+				margin-top: 30px;
+				color: #F3F3F3;
+				font-size: 20px;
+				height: 46px;
+				line-height: 46px;
+				padding: 0;
+				border:0;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header id="header" class="mui-bar mui-bar-nav">
+			<button class="mui-action-back mui-btn mui-btn-link mui-btn-nav mui-pull-left"><span class="mui-icon mui-icon-left-nav"></span>返回</button>
+			<h1 class="mui-title">充值</h1>
+		</header>
+		<div id="dcontent" class="dcontent">
+			<div style="margin-top: 10px;font-size: 18px;">
+				充值金额
+			</div>
+			<div >
+				<input id="total" type="tel" placeholder="￥1 - ￥100" />
+			</div>
+			<div class="mui-input-row mui-radio" id="appli">
+				<label><img src="img/wxPay.png" id="img_wx"><p>微信支付</p></label>
+				<input name="radio1" type="radio" class="radios" id="wxpay" checked="true">
+			</div>
+			<div class="mui-input-row mui-radio">
+				<label><img src="img/z1.png" id="img_pay"><p>支付宝</p></label>
+				<input name="radio1" type="radio" class="radios" id="alipay">
+			</div>
+			
+			<button type="button" class="mui-btn  mui-btn-block" id="sure">确定</button>
+			
+		</div>
+	</body>
+	<script type="text/javascript" src="../js/immersed.js"></script>
+	<script type="text/javascript" src="js/jquery-2.2.0.min.js"></script>
+	<script>
+		mui.init({
+			beforeback: function(){
+				var walletSub = plus.webview.getWebviewById("walletSub.html");
+				mui.fire(walletSub,'pulldownRefresh');
+				var walletHistorySub = plus.webview.getWebviewById("walletHistorySub.html");
+				mui.fire(walletHistorySub,'pulldownRefresh');
+				var menu = plus.webview.getWebviewById("menu.html");
+				mui.fire(menu,'reflashClient');
+				return true;
+			}
+		});
+		$.ajax({
+			type: "post",
+			url: IP + "/client/info",
+			dataType: "json",
+			success : function(data){
+				client = data;
+				$("#yuan").text(data.yuE==null?0:data.yuE);
+			}
+		});
+		var id='wxpay';
+		$(".radios").click(function  () {
+			id=$(this).attr('id');
+		});
+		
+		var lastText = "";
+		$("#total").keydown(function(){
+			lastText = $(this).val();
+		});
+		$("#total").keyup(function(event){
+			var str = lastText + "";
+			var nowStr = $(this).val() + "";
+			$("#total").val(nowStr.replace(/[^0-9]/g, ""));
+			if( str.length > 2 && nowStr.length > 3 )
+				$(this).val(lastText);
+		});
+		
+		$("#sure").click(function  () {
+			var money=$("#total").val();
+			if(money==''){
+				plus.nativeUI.alert("请输入充值金额");
+			} else {
+				var total = parseInt(money);
+				if(total > 100 || total < 1){
+					plus.nativeUI.alert("充值金额必须在1~100元之间");
+					$("#total").val("");
+				}else{
+					pay(id);
+				}
+			}
+		});
+	</script>
+</html>

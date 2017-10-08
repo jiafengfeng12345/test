@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+		<meta name="HandheldFriendly" content="true" />
+		<meta name="MobileOptimized" content="320" />
+		<link rel="stylesheet" href="css/mui.min.css">
+		<link rel="stylesheet" href="css/font-awesome.min.css">
+		<link rel="stylesheet" href="css/common.css" type="text/css" charset="utf-8" />
+		<title>Hello H5+</title>
+		<style>
+			.mui-bar {
+				background: #6bbb55;
+				color: #fff;
+			}
+			
+			header .mui-title {
+				color: #fff;
+			}
+			
+			header .mui-icon-bars {
+				color: #fff;
+			}
+			
+			header .mui-icon-help {
+				color: #fff;
+			}
+			
+			#scanBar {
+				position: absolute;
+				bottom: 5px;
+				width: 50%;
+				left: 25%;
+				height: 40px;
+				line-height: 40px;
+				color: #fff;
+				background: #000;
+				z-index: 999999;
+				text-align: center;
+				overflow: hidden;
+			}
+			
+			#goCenter {
+				position: absolute;
+				bottom: 5px;
+				width: 40px;
+				left: 4%;
+				height: 40px;
+				line-height: 40px;
+				border-radius: 20px;
+				color: #e0e0e0;
+				background: #fff;
+				z-index: 999999;
+				text-align: center;
+				font-size: 24px;
+			}
+			
+			#reportErr {
+				position: absolute;
+				bottom: 5px;
+				width: 40px;
+				right: 4%;
+				height: 40px;
+				line-height: 40px;
+				border-radius: 20px;
+				color: #f97252;
+				background: #fff;
+				z-index: 999999;
+				text-align: center;
+				font-size: 24px;
+			}
+			
+			.mui-scroll-wrapper {
+				margin-top: 44px;
+			}
+			
+			.mui-scroll li a {
+				display: block;
+			}
+			
+			#bcid {
+				width: 100%;
+				position: absolute;
+				top: 60px;
+				bottom: 44px;
+				text-align: center;
+			}
+			
+			.mui-scroll i {
+				width: 20px;
+				display: inline-block;
+			}
+			
+			#icon_05 {
+				width: 25px;
+				height: 25px;
+				float: left;
+				margin-left: 13%;
+				margin-top: 7.5px;
+			}
+			
+			#icon_01 {
+				width: 30px;
+				height: 30px;
+				margin-top: 5px;
+			}
+			
+			#icon_02 {
+				width: 32px;
+				height: 32px;
+				margin-top: 6px;
+			}
+			
+			.mui-backdrop {
+				opacity: 0;
+			}
+			
+			.mapContent {
+				position: absolute;
+				top: 44px;
+				left: 0;
+				right: 0;
+				bottom: 0;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="mui-inner-wrap">
+			<header id="header" class="mui-bar mui-bar-nav">
+				<a href="javascript:goPage('menu.html',true)" class="mui-icon mui-icon-bars mui-pull-left"></a>
+				<h1 class="mui-title">绿行</h1>
+				<a href="javascript:goPage('guide.html',false)" class="mui-icon mui-icon-help mui-pull-right"></a>
+			</header>
+			<div id="content" class="mapContent"></div>
+		</div>
+	</body>
+	<script type="text/javascript" src="js/mui.min.js"></script>
+	<script type="text/javascript" src="js/common.js"></script>
+	<script type="text/javascript" src="js/immersed.js"></script>
+	<script type="text/javascript" src="js/jquery-2.2.0.min.js"></script>
+	<script type="text/javascript" src="js/shortcut.js"></script>
+	<script type="text/javascript" src="js/click.js"></script>
+	<script type="text/javascript" src="js/base.js"></script>
+	<script type="text/javascript" src="js/gcjTodb09.js"></script>
+	<script>
+		var wsub = null;
+		var ws = null;
+		var centerPos = [];
+		var city = '';
+		var lng=null;
+		var lat=null;
+		var longitude = null;
+		var latitude = null;
+		if(window.plus) {
+			plusReady();
+		} else {
+			document.addEventListener('plusready', plusReady, false);
+		}
+
+		function plusReady() {
+			plus.geolocation.watchPosition(function(p) {
+				lng=p.coords.longitude;
+				lat=p.coords.latitude;
+				city=p.address.city;
+			}, function(e) {
+				plus.nativeUI.alert("Geolocation error: " + e.message, function() {
+					console.log("User pressed!");
+				}, "出错了", "知道了")
+			});
+			ws = plus.webview.currentWebview();
+			map = new plus.maps.Map("content");
+			userlocation();
+			wsub = plus.webview.create('mapSub.html', 'mapSub.html', {
+				bottom: '10px',
+				height: '60px',
+				position: 'absolute',
+				scrollIndicator: 'none',
+				background: 'transparent'
+			},{
+				longitude : longitude,
+				latitude : latitude,
+			});
+			ws.append(wsub);
+			var center = map.getCenter();
+			longitude = center.longitude;
+			latitude = center.latitude;
+			showZuCheDian(longitude,latitude);
+			map.onstatuschanged = function(e) {
+				map.getCurrentCenter(function(status, point) {
+					if(0 == status) {
+						showZuCheDian(point.getLng(),point.getLat());
+					}
+				});
+			}
+			plus.navigator.setStatusBarBackground('#6abb54');
+//			map.centerAndZoom(new plus.maps.Point(centerPos[0], centerPos[1]), 18);
+//			var circle = new plus.maps.Circle(new plus.maps.Point(centerPos[0], centerPos[1]), 85);
+//			circle.setFillColor("#6bbb55");
+//			circle.setFillOpacity(0.2);
+//			circle.setStrokeColor("#6bbb55");
+//			circle.setStrokeOpacity(1);
+//			circle.setLineWidth(1);
+//			map.addOverlay(circle);
+//			var marker = new plus.maps.Marker(new plus.maps.Point(centerPos[0], centerPos[1]));
+//			marker.setIcon("img/location2.png");
+//			map.addOverlay(marker);
+//			var marker1 = new plus.maps.Marker(new plus.maps.Point(centerPos[0], centerPos[1]));
+//			marker1.setIcon("img/icon-04.png");
+//			map.onstatuschanged = function(e) {
+//				map.getCurrentCenter(function(status, point) {
+//					if(0 == status) {
+//						marker1.setPoint(point);
+//					}
+//				});
+//			}
+//			map.addOverlay(marker1);
+		};
+
+		function userLocation() {
+			map.getUserLocation(function(state, pos) {
+				if(0 == state) {
+					map.setCenter(pos);
+					map.setZoom(17);
+					showZuCheDian(pos.getLng(),pos.getLat());
+				}
+			});
+		}
+		document.addEventListener('resume',onAppReume,false);
+		function onAppReume(){
+//			map.removeOverlay(marker);
+//			userlocation();
+			userLocation();
+		}
+		var marker;
+//		function ma () {
+//			map.removeOverlay(marker);
+//			marker=new plus.maps.Marker(new plus.maps.Point(lng,lat));
+//			marker.setIcon("img/location2.png");
+//			map.addOverlay(marker);
+//			setTimeout(function (e) {
+//				ma();
+//			},5000);
+//		}
+		var count=0;
+		function userlocation() {
+			map.getUserLocation(function(state, pos) {
+				count++;
+				if(0 == state) {
+					if(count==1){
+						map.setCenter(pos);
+						map.setZoom(17);
+						map.removeOverlay(marker);
+						marker = new plus.maps.Marker(pos);
+						marker.setIcon("img/location2.png");
+						map.addOverlay(marker);
+						setTimeout(function(e) {
+							userlocation();
+						}, 5000);
+					}else{
+						map.removeOverlay(marker);
+//							map.setCenter(pos);
+						marker = new plus.maps.Marker(pos);
+						marker.setIcon("img/location2.png");
+						map.addOverlay(marker);
+						setTimeout(function(e) {
+							userlocation();
+						}, 5000);
+						
+					}
+				}
+			});
+		}
+//		function userlocation(){
+//			map.getUserLocation(function(state,pos){
+//				if(0==state){
+//					map.setCenter(new plus.maps.Point(120.103057,30.339553));	
+//					map.setZoom(16);	
+//					
+//					ma();
+//					var center = map.getCenter();
+//					longitude = center.longitude;
+//					latitude = center.latitude;
+//					showZuCheDian(longitude,latitude);
+//					wsub = plus.webview.create('mapSub.html', 'mapSub.html', {
+//						bottom: '10px',
+//						height: '60px',
+//						position: 'absolute',
+//						scrollIndicator: 'none',
+//						background: 'transparent'
+//					},{
+//						longitude : longitude,
+//						latitude : latitude,
+//					});
+//					ws.append(wsub);
+//				}
+//			});
+//		}
+		var ma=null;
+		function showZuCheDian(longitude,latitude) {
+			map.clearOverlays(ma);
+			$.ajax({
+				type: 'post',
+				url: IP + '/bike/getBikeAround',
+				dataType: 'json',
+				data:{
+					longitude : longitude,
+					latitude : latitude,
+				},
+				success: function(data) {
+					var result = data.bikeList;
+					for(var i = 0; i < result.length; i++) {
+						var m = result[i];
+						var center=[];
+						var gc = wgs84togcj02(m.Lng,m.Lat);
+						center=gcj02tobd09(gc[0],gc[1]);
+						ma = new plus.maps.Marker(new plus.maps.Point(center[0], center[1]));
+						ma.setIcon("img/cc4.png");
+						map.addOverlay(ma);
+						ma.content = m;
+						ma.onclick = function(marker){
+							var partPoint = marker.content;
+							var wbikeStation=plus.webview.create(
+								'bikeStation.html',
+								'bikeStation.html',
+								{
+									top:'74px',
+									bottom:'70px',
+									left:'25px',
+									right:'25px',
+									position:'absolute',
+									scrollIndicator:'none',
+									background:'transparent'
+								}, {
+									imData : partPoint
+								}
+							);
+							ws.append(wbikeStation);
+							var wbikeStationClose=plus.webview.create(
+								'bikeStationClose.html',
+								'bikeStationClose.html',
+								{
+									top:'56px',
+									right:'9px',
+									width: '36px',
+									height: '36px',
+									position:'absolute',
+									scrollIndicator:'none',
+									background:'transparent'
+								}
+							);
+							ws.append(wbikeStationClose);
+							plus.webview.getWebviewById("mapSub.html").hide();
+						};
+					}
+				},
+				error: function() {
+
+				}
+			});
+			
+		}
+		function goPage(page,falg) {
+			mui.openWindow({
+				url: page,
+				id: page,
+				createNew:falg,
+			});
+		}
+		mui.init({
+			keyEventBind: {
+				backbutton: false
+			}
+		});
+	</script>
+
+</html>

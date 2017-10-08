@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+		<meta name="HandheldFriendly" content="true" />
+		<meta name="MobileOptimized" content="320" />
+		<link rel="stylesheet" href="css/mui.min.css">
+		<title></title>
+		<style>
+			* {
+			margin: 0;
+				padding: 0;
+				-webkit-tap-highlight-color: transparent;
+				text-rendering: optimizeLegibility;
+				font-family: Helvetica,"Lucida Grande", "Lucida Sans Unicode", Arial, Verdana, sans-serif;
+				/*-webkit-user-select: none;*/
+			}
+	
+			a {
+				text-decoration: none;
+				color: #111;
+				font-family: Helvetica,"Lucida Grande", "Lucida Sans Unicode", Arial, Verdana, sans-serif;
+			}
+			
+			ul, li, ol {
+				list-style: none;
+			}
+			html{
+				height:100%;
+			}
+			body {
+				font-size: 17px;
+				color: #000;
+				height:100%;
+			}
+			input {
+				-webkit-appearance: none;
+			}
+			#header .shareBtn{
+				color: #FFFFFF;
+			    position: absolute;
+			    right: 10px;
+			    top: 0;
+			    height: 44px;
+			    line-height: 44px;
+			}
+			.mui-bar {
+				background: #6bbb55;
+				color: #fff;
+			}
+			#container{
+				padding:10px;
+				padding-top:54px;
+				height:100%;
+			}
+			#map {
+				width:100%;
+				height: 40%;
+			}
+			#userInfo{
+				height:43%;
+				background-color:#FFFFFF;
+				position:relative;
+			}
+			#journeryInfo{
+				height:calc(18% - 1px);
+				background-color:#FFFFFF;
+				border-top: 1px solid #eae8e9;
+				position:relative;
+			}
+			#userInfo img{
+				width:10%;
+				box-shadow: 0 0 0 5px #FFFFFF;
+				border-radius:50%;
+				position: absolute;
+				left:45%;
+				bottom:90%;
+			}
+			#userInfo .phone{
+				padding-top:40px;
+				display:inline-block;
+				text-align: center;
+				width:100%;
+			}
+			#userInfo .distanceDiv{
+				width:41%;
+				margin:10px auto;
+				border:6px solid #f05a46;
+				border-radius:50%;
+				box-shadow: 0 0 0 3px #f7aca4 inset;
+			}
+			#userInfo .distanceDiv span{
+				display:block;
+				width:100%;
+				text-align: center;
+				margin-top:10px;
+			}
+			#userInfo .distanceDiv span.distance{
+				margin-top:40%;
+				font-size: 30px;
+				color:#f05a46;
+			}
+			#userInfo .distanceDiv span.distanceUnit{
+				font-size: 10px;
+				color:#9f9f9f;
+			}
+			#journeryInfo .bikeCodeDiv{
+				position: absolute;
+			    width: 70%;
+			    left: 15%;
+			    background-color: #f5f5f5;
+			    text-align: center;
+			    border-radius: 10px;
+			    top: -10.5px;
+			    color:#646464;
+			    font-size: 12px;
+			}
+			#journeryInfo .infoDiv{
+				text-align: center;
+				width:calc(100%/3);
+				display: inline-block;
+			}
+			#journeryInfo .infoDiv span{
+				display: block;
+			}
+			#journeryInfo .infoDiv span:nth-child(1){
+				margin-top:30%;
+			}
+			#journeryInfo .infoDiv span.unit{
+				font-size: 10px;
+				color:#9f9f9f;
+			}
+		</style>
+	</head>
+	<body>
+		<header id="header" class="mui-bar mui-bar-nav">
+			<button style="color:#FFFFFF" class="mui-action-back mui-btn mui-btn-link mui-btn-nav mui-pull-left"><span class="mui-icon mui-icon-left-nav"></span>返回</button>
+			<h1 class="mui-title" style="color:#FFFFFF">行程详情</h1>
+			<a class="shareBtn">分享</a>
+		</header>
+		<div id="container">
+			<div id = "map"></div>
+			<div id = "userInfo">
+				<img src="img/touXiang.png">
+				<div class="phone">123****132135</div>
+				<div class="distanceDiv">
+					<span class="distance">5</span>
+					<span class="distanceUnit">骑行距离(公里)</span>
+				</div>
+			</div>
+			<div id = "journeryInfo">
+				<div class="bikeCodeDiv">
+					<span>自行车编号:</spna>
+					<span class="bikeCode">213456</spna>
+				</div>
+				<div class="infoDiv">
+					<span class="rideTime">1</span>
+					<span class="unit">骑行时间 min</span>
+				</div><div class="infoDiv">
+					<span class="CSaving">1</span>
+					<span class="unit">节约碳排量 Kg</span>
+				</div><div class="infoDiv">
+					<span class="calories">1</span>
+					<span class="unit">卡路里 Ka</span>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="http://webapi.amap.com/maps?v=1.3&key=	2adc62914fce4ab18c1c728f72b7d6b9"></script>
+	<script type="text/javascript" src="js/mui.min.js"></script>
+	<script type="text/javascript" src="js/jquery-2.2.0.min.js"></script>
+	<script type="text/javascript" src="js/base.js"></script>
+	<script>
+		$("#userInfo .distanceDiv").height($("#userInfo .distanceDiv").width());
+				
+		var shares=null;
+		var journery = null;
+		var dis = 0;
+		if(window.plus) {
+			plusReady();
+		} else {
+			document.addEventListener("plusready", plusReady, false);
+		}
+		var map = new AMap.Map("map", {
+			resizeEnable: true,
+			zoom: 13 
+		});
+		$(".amap-logo,.amap-copyright").remove();
+				   
+		function plusReady() {
+			journery = plus.webview.currentWebview().journeryId;
+			updateSerivces();
+			$.ajax({
+				type: "post",
+				url: IP + "/mobile/getJournery",
+				dataType: "json",
+				data:{
+					id : journery,
+				},
+				success : function(data){
+					journery = data.result;
+					$(".bikeCode").text(journery.bikeCode);
+					$(".distance").text(journery.distance);
+					$(".rideTime").text(journery.rideTime);
+					$(".CSaving").text(journery.CSaving);
+					$(".calories").text(journery.calories);
+					var parkPointOfBorrowSnLog =journery.parkPointOfBorrowSnLog;
+					var parkPointOfBorrowSnLat =journery.parkPointOfBorrowSnLat;
+					var parkPointOfReturnSnLog =journery.parkPointOfReturnSnLog;
+					var parkPointOfReturnSnLat =journery.parkPointOfReturnSnLat;
+					console.log(parkPointOfBorrowSnLog);
+					console.log(parkPointOfBorrowSnLat);
+					console.log(parkPointOfReturnSnLog);
+					console.log(parkPointOfReturnSnLat);
+					AMap.service('AMap.Walking',function(){
+					    var walking= new AMap.Walking({
+					    	map:map
+					    });
+					    walking.search([parkPointOfBorrowSnLog,parkPointOfBorrowSnLat], [parkPointOfReturnSnLog,parkPointOfReturnSnLat], function(status, result) {
+						     console.log(status);
+						 });
+					});
+					dis = journery.distance;
+				},
+				error :function(){
+					plus.nativeUI.alert("网络错误", function() {
+					}, "出错了", "知道了")
+				}
+			});
+		}
+		
+		function shareShow(){
+			var shareBts=[];
+			var ss=shares['weixin'];
+			if(navigator.userAgent.indexOf('StreamApp')<0&&navigator.userAgent.indexOf('qihoo')<0){
+				ss&&ss.nativeClient&&(shareBts.push({title:'微信朋友圈',s:ss,x:'WXSceneTimeline'}),
+				shareBts.push({title:'微信好友',s:ss,x:'WXSceneSession'}));
+			}
+			ss=shares['sinaweibo'];
+			ss&&shareBts.push({title:'新浪微博',s:ss});
+			ss=shares['qq'];
+			ss&&ss.nativeClient&&shareBts.push({title:'QQ',s:ss});
+			// 弹出分享列表
+			shareBts.length>0?plus.nativeUI.actionSheet({title:'分享',cancel:'取消',buttons:shareBts},function(e){
+				(e.index>0)&&shareAction(shareBts[e.index-1]);
+			}):plus.nativeUI.alert('当前环境无法支持分享操作!');
+		}
+		function updateSerivces(){
+			plus.share.getServices( function(s){
+				shares={};
+				for(var i in s){
+					var t=s[i];
+					if(t.id!= "qq" && t.id!= "tencentweibo" && t.id!= "sinaweibo")
+					shares[t.id]=t;
+				}
+			}, function(e){
+				outSet( "获取分享服务列表失败："+e.message );
+			} );
+		}
+		$("#header .shareBtn").click(function(){
+			shareShow();
+		});
+		
+		function shareAction(sb) {
+			if(!sb.s) {
+				shareWithSystem();
+				return;
+			}
+			var msg = {};
+			msg.href = IP+'/lvxing/journeryDetail?id='+journery.id;
+			msg.content = '我在智汇齐心骑了' + dis + '公里，快来一起体验绿行吧!';
+			msg.title = '智汇齐心分享';
+			sb.x && (msg.extra = {
+				scene: sb.x
+			});
+			msg.thumbs = msg.pictures = 'lvxing.png';
+			console.log('share ' + sb.title + ' : ' + JSON.stringify(msg));
+			sb.s.authenticated ? shareMessage(sb.s, msg) : sb.s.authorize(function() {
+				shareMessage(sb.s, msg);
+			}, function(e) {
+				plus.nativeUI.toast('取消分享!');
+			});
+		}
+		function shareMessage(s, m) {
+			s.send(m, function() {
+				plus.nativeUI.toast('完成分享!');
+			}, function(e) {
+				plus.nativeUI.toast('取消分享!');
+				console.log( "分享失败："+e.message );
+			});
+		}
+	</script>
+</html>

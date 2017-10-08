@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+		<meta name="misapplication-tap-highlight" content="no" />
+		<meta name="HandheldFriendly" content="true" />
+		<meta name="MobileOptimized" content="320" />
+		<title>Hello H5+</title>
+		<link rel="stylesheet" href="css/mui.min.css">
+		<link rel="stylesheet" href="css/font-awesome.min.css">
+		<link rel="stylesheet" href="css/common.css" type="text/css" charset="utf-8" />
+		<style>
+			.mui-input-group .mui-input-row:after {
+				background-color: #e9eaeb;
+			}
+			
+			.mui-input-row input {
+				text-align: center;
+			}
+			
+			.mui-button-row button {
+				margin-top: 20px;
+				width: 94%;
+				background: #6bbb55;
+				height: 48px;
+				border: 1px solid #6bbb55;
+			}
+			
+			.mui-scroll-wrapper {
+				margin-top: 44px;
+			}
+			
+			footer {
+				width: 100%;
+				height: 44px;
+				position: absolute;
+				bottom: 0px;
+				line-height: 44px;
+				text-align: center;
+				color: #FFF;
+			}
+			
+			.fbt {
+				width: 50%;
+				height: 100%;
+				background-color: #FFCC33;
+				float: left;
+			}
+			
+			.fbt:active {
+				-webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.5);
+				box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.5);
+			}
+			
+			.username {
+				margin-top: 15px;
+			}
+			
+			.ifootBar {
+				position: absolute;
+				bottom: 20px;
+				right: 20px;
+				font-size: 13px;
+			}
+			
+			.ifootBar a {
+				color: #6bbb55;
+			}
+			
+			.mui-icon-eye:before {
+			    line-height: 38px;
+			}
+			
+			.mui-checkbox input[type=checkbox]:checked:before, .mui-radio input[type=radio]:checked:before {
+			    color: #6bbb55;
+			}
+			
+			#getNeps{
+				position: absolute;
+				bottom: 20px;
+				left: 20px;
+				font-size: 13px;
+			}
+			
+			#getNeps a{
+				color: #6bbb55;
+			}
+			.mui-backdrop{
+				background-color: rgba(0,0,0,0}!important;
+			}
+			#content{
+				height:100%;
+			}
+		</style>
+	</head>
+
+	<body onselectstart="return false;" id="main">
+		<div id="content" class="content">
+			<div class="mui-content-padded" style="margin: 5px;">
+				<img src="img/lvxing.png" width="90px" height="auto" style="border-radius: 4px;" />
+			</div>
+			<form class="mui-input-group">
+				<div class="mui-input-row username" style="height: 52px;line-height: 52px;">
+					<input type="number" pattern="\d*" placeholder="手机号" id="user_name">
+				</div>
+				<div class="mui-input-row" style="height: 52px;line-height: 52px;">
+					<input type="password" class="mui-input-password" placeholder="密码" id="user_password">
+				</div>
+			</form>
+			<div class="mui-button-row">
+				<button type="button" class="mui-btn mui-btn-primary" id="loginBtn">登录</button>&nbsp;&nbsp;
+			</div>
+			<div class="ifootBar">
+				<a href="javascript:goPage('register.html')">新用户注册</a>
+			</div>
+			<div id="getNeps">
+				<a  href="javascript:goPage('getNewPassword.html')">忘记密码?</a>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="js/mui.min.js"></script>
+	<script type="text/javascript" src="js/common.js"></script>
+	<script type="text/javascript" src="js/immersed.js"></script>
+	<script type="text/javascript" src="js/jquery-2.2.0.min.js"></script>
+	<script type="text/javascript" src="js/shortcut.js"></script>
+	<script type="text/javascript" src="js/wgs2mars.min.js"></script>
+	<script type="text/javascript" src="js/click.js"></script>
+	<script type="text/javascript" src="js/base.js"></script>
+	<script type="text/javascript" src="http://webapi.amap.com/maps?v=1.3&key=b5a6dea9e006539a5499341b5cf1217f"></script>
+	<script type="text/javascript" src="js/gcjTodb09.js"></script>  
+	<script type="text/javascript">
+		document.addEventListener('touchstart', function() {
+			return false;
+		}, true);
+		document.oncontextmenu = function() {
+			return false;
+		};
+		var as = 'pop-in';
+		var centerPos = [];
+		var city = '';
+		var menuIsOpened = false;
+		var map = null;
+		var ws = null;
+
+		function plusReady() {
+			ws = plus.webview.currentWebview();
+			plus.webview.currentWebview().setStyle({
+				scrollIndicator: 'none'
+			});
+			plus.key.addEventListener('backbutton', function() {
+//				if(confirm('确认退出？')) {
+//					plus.runtime.quit();
+//				}
+			}, false);
+			compatibleAdjust();
+			plus.geolocation.watchPosition(function(p) {
+				centerPos = gcj02tobd09(p.coords.longitude, p.coords.latitude);
+				city=p.address.city;
+			}, function(e) {
+				plus.nativeUI.alert("Geolocation error: " + e.message, function() {
+					console.log("User pressed!");
+				}, "出错了", "知道了")
+			});
+		}
+		if(window.plus) {
+			plusReady();
+		} else {
+			document.addEventListener('plusready', plusReady, false);
+		}
+		var _domReady = false;
+		document.addEventListener('DOMContentLoaded', function() {
+			_domReady = true;
+			compatibleAdjust();
+		}, false);
+		var _adjust = false;
+		
+		function compatibleAdjust() {
+			if(_adjust || !window.plus || !_domReady) {
+				return;
+			}
+			_adjust = true;
+			if('iOS' == plus.os.name) {
+				document.getElementById('content').className = 'scontent'; // 使用div的滚动条
+				if(navigator.userAgent.indexOf('StreamApp') >= 0) { // 在流应用模式下显示返回按钮
+					document.getElementById('back').style.visibility = 'visible';
+				}
+			}
+			setTimeout(function() {
+				plus.navigator.closeSplashscreen();
+				plus.navigator.setStatusBarBackground('#efeff4');
+				if(plus.navigator.isImmersedStatusbar()) {
+					plus.navigator.setStatusBarStyle('UIStatusBarStyleBlackOpaque');
+				}
+			}, 500);
+		}
+
+		function goPage(page) {
+			mui.openWindow({
+				url: page,
+				id: page
+			});
+		}
+
+		$("#loginBtn").click(function firstComeIn() {
+			var username = $("#user_name").val();
+			var userpassword = $("#user_password").val();
+			var w = plus.nativeUI.showWaiting();
+			$.ajax({
+				type: 'post',
+				url: IP + '/mobile/login',
+				data: {
+					'username': username,
+					'password': userpassword
+				},
+				dataType: 'json',
+				success: function(data) {
+					plus.storage.setItem("username",username);
+					var result = data.result;
+					if(result == 'success') {
+						mui.init({
+							preloadPages:[
+								{
+									url: "wallet.html",
+									id: "wallet.html",
+								},
+								{
+									url: "travel.html",
+									id: "travel.html",
+								},
+								{
+									url: "notification.html",
+									id: "notification.html",
+								},
+								{
+									url: "invite.html",
+									id: "invite.html",
+								},
+								{
+									url: "shop.html",
+									id: "shop.html",
+								},
+								{
+									url: "guide.html",
+									id: "guide.html",
+								},
+								{
+									url: "setting.html",
+									id: "setting.html",
+								},
+								{
+									url: "walletHistory.html",
+									id: "walletHistory.html",
+								},
+							],
+						});
+						setTimeout(function(){
+						$("#main").empty().load("map.html", function() {
+							plus.navigator.setStatusBarBackground('#6abb54');
+//							map = new AMap.Map('content', {
+//								center: [centerPos.lng, centerPos.lat],
+//								zoom: 17
+//							});
+//							var icon=new AMap.Icon({
+//								image:"img/location.png",
+//								size : new AMap.Size(16,16)
+//							});
+//							var icon1=new AMap.Icon({
+//								image:"img/icon-04.png",
+//								size : new AMap.Size(44,44)
+//							});
+//							var marker1=new AMap.Marker({
+//								icon:icon1,
+//								animation:"AMAP_ANIMATION_NONE",
+//								offset:new AMap.Pixel(-22,-44)
+//							});
+//							map.on('zoomchange',function(){
+//							    var center=map.getCenter();
+//							  	marker1.setPosition(center);
+//							  	marker1.setAnimation("AMAP_ANIMATION_NONE");
+//							});
+//							map.on('dragging',function(){
+//							    var center=map.getCenter();
+//							  	marker1.setPosition(center);
+//						  		marker1.setAnimation("AMAP_ANIMATION_NONE");
+//							});
+//							marker1.setMap(map);
+//							var marker = new AMap.Marker({
+//								icon:icon,
+//								offset:new AMap.Pixel(-8,-8)
+//							});
+//							marker.setMap(map);
+//
+//							var circle = new AMap.Circle({
+//								center: [centerPos.lng, centerPos.lat],
+//								radius: 85,
+//								strokeColor: "#6bbb55",
+//								fillOpacity: 0.2,
+//								strokeWeight: 1,
+//							});
+//							circle.setMap(map);
+//
+							map=new plus.maps.Map("content");
+							map.centerAndZoom(new plus.maps.Point(centerPos[0], centerPos[1]),18);
+							var circle=new plus.maps.Circle(new plus.maps.Point(centerPos[0], centerPos[1]),85);
+							circle.setFillColor("#6bbb55");
+							circle.setFillOpacity(0.2);
+							circle.setStrokeColor("#6bbb55");
+							circle.setStrokeOpacity(1);
+							circle.setLineWidth(1);
+							map.addOverlay(circle);
+							var marker=new plus.maps.Marker(new plus.maps.Point(centerPos[0], centerPos[1]));
+							marker.setIcon("img/location2.png");
+							map.addOverlay(marker);
+							var marker1=new plus.maps.Marker(new plus.maps.Point(centerPos[0], centerPos[1]));
+							marker1.setIcon("img/icon-04.png");
+							map.onstatuschanged=function (e) {
+								map.getCurrentCenter(function (status,point) {
+									if(0==status){
+										marker1.setPoint(point);
+									}
+								});
+							}
+							map.addOverlay(marker1);
+							showZuCheDian();
+							w.close();
+						});
+				},2000);
+					} else {
+						plus.nativeUI.alert(data.result, function() {
+							console.log("User pressed!");
+						}, "出错了", "知道了");
+						w.close();
+					}
+				},
+				error : function(){
+					w.close();
+					Toast.show("网络出错");
+				}
+			});
+		});
+
+		var ws = null,
+			wo = null;
+		var scan = null;
+
+		function scanClose() {
+			scan.close();
+			setTimeout(function() {
+				$("#header").empty().html("<header id='header' class='mui-bar mui-bar-nav'><a class='mui-icon mui-icon-bars mui-pull-left'></a><h1 class='mui-title'>智汇齐心</h1><a class='mui-icon mui-icon-search mui-pull-right'></a></header>");
+			}, 200);
+
+		}
+
+		function onmarked(type, result, file) {
+			switch(type) {
+				case plus.barcode.QR:
+					type = "QR";
+					break;
+				case plus.barcode.EAN13:
+					type = "EAN13";
+					break;
+				case plus.barcode.EAN8:
+					type = "EAN8";
+					break;
+				default:
+					type = "其它" + type;
+					break;
+			}
+			setTimeout(function() {
+				scan.close();
+				$("#header").empty().html("<header id='header' class='mui-bar mui-bar-nav'><a class='mui-icon mui-icon-bars mui-pull-left'></a><h1 class='mui-title'>智汇齐心</h1><a class='mui-icon mui-icon-search mui-pull-right'></a></header>");
+			}, 200);
+			mui.toast('扫码成功，等待自行车开锁...');
+		}
+
+		//搜索
+		$("body").delegate(".mui-icon-search", "click", function() {
+			goPage("search.html");
+		});
+
+		$("body").delegate("#content", "click", function() {
+			if(menuIsOpened) {
+				mui('.mui-off-canvas-wrap').offCanvas().close();
+				if(mui.os.ios) {
+					plus.navigator.setFullscreen(false);
+				}
+			}
+		});
+
+		var infoWindow = new AMap.InfoWindow({
+			offset: new AMap.Pixel(16, -50)
+		});
+
+		function showZuCheDian() {
+			$.ajax({
+				type: 'post',
+				url: IP + '/parkPoint/jsonArray',
+				dataType: 'json',
+				success: function(data) {
+					var result = data.result;
+					for(var i = 0; i < result.length; i++) {
+						var m = result[i];
+//						var Icon=new AMap.Icon({
+//							image:"img/icon-04.png",
+//							size : new AMap.Size(44,44)
+//						});
+//						var ma = new AMap.Marker({
+//							position: [m.GPSLongitude, m.GPSLatitude],
+//							map: map,
+//							icon:Icon
+//						});
+ 						var center=[];
+ 						center=gcj02tobd09(m.GPSLongitude, m.GPSLatitude);
+						var ma= new plus.maps.Marker(new plus.maps.Point(center[0],center[1]));
+						ma.setIcon("img/icon-04.png");
+						map.addOverlay(ma);
+						var title = m.name + '<span style="font-size:11px;color:#F00;">价格:318</span>';
+						var	content = [];
+						content.push("<img src='http://tpc.googlesyndication.com/simgad/5843493769827749134'>GPSLongitude：");
+						content.push("电话：010 64733333");
+						content.push("详细信息");
+						ma.content = content.join("<br/>");
+						ma.onclick=function (marker){
+							console.log("111");
+							var buddle=new plus.maps.Bubble(marker.content);
+							marker.setBubble(buddle);
+							buddle.onclick=function (buddle) {
+								buddle.getLabel();
+							}
+						}
+//						ma.on('click', markerClick);
+					}
+				},
+				error: function() {
+
+				}
+			});
+		}
+
+	</script>
+
+</html>

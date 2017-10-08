@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport"content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+		<meta name="HandheldFriendly" content="true" />
+		<meta name="MobileOptimized" content="320" />
+		<title></title>
+		<style>
+			.contentClose{
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 36px;
+				height: 36px;
+				line-height: 36px;
+				text-align: center;
+				border-radius: 18px;
+				background: #fff;
+				color: #6bbb55;
+			}
+			.contentClose::before{
+				font-size: 36px;
+			    content: "\00D7";
+			}
+			html{
+				background: rgba(0, 0, 0, 0);
+			}
+		</style>
+	</head>
+	<body>
+		<div class="contentClose"></div>
+	</body>
+	<script type="text/javascript" src="js/jquery-2.2.0.min.js"></script>
+	<script type="text/javascript" src="js/common.js"></script>
+	<script type="text/javascript" src="js/mui.min.js"></script>
+	<script>
+		$(".contentClose").click(function(){
+			plus.webview.getWebviewById("mapSub.html").show();
+			plus.webview.close("bikeStation.html");
+			plus.webview.close("bikeStationClose.html");
+		});
+	</script>
+</html>

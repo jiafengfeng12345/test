@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+		<meta name="HandheldFriendly" content="true" />
+		<meta name="MobileOptimized" content="320" />
+		<link rel="stylesheet" href="css/mui.min.css">
+		<link rel="stylesheet" href="css/common.css" type="text/css" charset="utf-8" />
+		<title>Hello H5+</title>
+		<style>
+			
+			.content{
+				height: 100%;
+			}
+			.progressBar{
+				margin: 100px auto 10px;
+			    height: 10px;
+			    width: 155px;
+			    background: #525b64;
+			    border-radius: 45px;
+			    overflow: hidden;
+			}
+			.progressBar .progress{
+				height: 100%;
+			    width: 0%;
+			    background: #6bbb55;
+			    transition: width 40s ease-out;
+			}
+			footer{
+				position: absolute;
+				bottom: 30px;
+				width: 100%;
+				text-align: center;
+			}
+			.content.success{
+				padding:100px;
+				padding-top: 150px;
+				display:none;
+			}
+			.prompt{
+				width: 200px;
+				height:50px;
+				overflow: hidden;
+			}
+			.prompt img{
+				width:50px;
+				height:50px;
+				float: left;
+			}
+			.prompt span{
+				display: inline-block;
+				width:70%;
+				height:50px;
+				line-height: 50px;
+				font-size: 20px;
+				font-family: "微软雅黑";
+				color: #FFFFFF;
+				margin-left: -33px;
+			}
+			.content.error{
+				padding:100px;
+				padding-top: 150px;
+				padding-left:80px;
+				display:none;
+			}
+			.error .prompt span{
+				margin-left: -20px;
+			}
+			.content.error2{
+				padding:50px;
+				padding-top: 150px;
+				padding-right: 30px;
+				display: none;
+			}
+			.content.error2 .prompt{
+				width:95%;
+			}
+			.content.error2 .prompt img{
+				width:40px;
+				height:40px;
+				margin-top:5px;
+			}
+			.content.error2 .prompt span{
+				width:80%;
+				font-size:16px;
+				margin-left: 10px;
+			}
+			.content.error3{
+				padding:50px;
+				padding-top: 150px;
+				padding-left: 30px;
+				padding-right: 30px;
+				display: none;
+			}
+			.content.error3 .prompt{
+				width:100%;
+			}
+			.content.error3 .prompt img{
+				width:30px;
+				height:30px;
+				margin-top:10px;
+			}
+			.content.error3 .prompt span{
+				width:80%;
+				font-size:13px;
+				margin-left:-10px ;
+			}
+		</style>
+	</head>
+
+	<body style="background-color:#2e3035">
+		
+		<div class="content">
+			<div class="progressBar">
+			  <div class = 'progress'></div>
+			</div>
+			<p>开锁中<span class="progressText">0%</span></p>
+		</div>
+		<div class="content success">
+			<div class="prompt">
+				<img src="img/success.png">					
+				<span>开锁成功</span>
+			</div>
+		</div>
+		<div class="content error">
+			<div class="prompt">
+				<img src="img/error.png">					
+				<span>开锁请求超时</span>
+			</div>
+		</div>
+		<div class="content error2">
+			<div class="prompt">
+				<img src="img/error.png">					
+				<span>扫码错误，请正确扫描二维码</span>
+			</div>
+		</div>
+		<div class="content error3">
+			<div class="prompt">
+				<img src="img/error.png">					
+				<span>您有一辆未归还自行车，请归还之后再借</span>
+			</div>
+		</div>
+		<footer>
+			<p>信用分过低会无法租车哦，请注意</p>
+		</footer>
+	</body>
+	<script type="text/javascript" src="js/mui.min.js"></script>
+	<script type="text/javascript" src="js/jquery-2.2.0.min.js"></script>
+	<script type="text/javascript" src="js/base.js"></script>
+	<script type="text/javascript" src="js/numberOperation.js"></script>
+	<script type="text/javascript">
+		
+		function plusReady() {
+			var data = plus.webview.currentWebview().data;
+			var flag = plus.webview.currentWebview().flag;
+			var result = JSON.parse(data);
+			if(!flag){
+				var scan = plus.webview.getWebviewById("scan.html");
+				mui.fire(scan,'scanClose');//必须关闭scan页面，否者扫描控件出错
+				$(".content").css("display","none");
+				$(".content.error2").css("display","block");
+				setTimeout(function(){
+					mui.back();
+				},3000);
+			}else{
+				if(result.result == "success"){
+					$(".progress").css("width","100%");
+					var progressBar = $(".progressBar").width();
+					var progressFlag = false;
+					var progressCalc = setInterval(function(){
+						var progress = $(".progressBar .progress").width();
+						var progressNum =cDiv(cMul(progress,100),progressBar);
+						if(progressNum === 100){
+							window.clearInterval(progressCalc);
+							if(!progressFlag){
+								var scan = plus.webview.getWebviewById("scan.html");
+								mui.fire(scan,'scanClose');//必须关闭scan页面，否者扫描控件出错
+		//						goPage("map.html");
+								$(".content").css("display","none");
+								$(".content.error").css("display","block");
+								setTimeout(function(){
+									mui.back();
+								},2000);
+							}
+						}
+						$(".progressText").text(parseInt(progressNum)+"%");
+						progressNum++;
+						$.ajax({
+							url: IP + "/journery/isUnlock",
+							dataType: "json",
+							data:{
+								journeryId:result.id,
+							},
+							success : function(data){
+								if(data.result == "success"){
+									$(".progressText").text("100%");
+									window.clearInterval(progressCalc);
+									$(".progress").css("transition","none");
+									progressFlag = true;
+									var scan = plus.webview.getWebviewById("scan.html");
+									mui.fire(scan,'scanClose');//必须关闭scan页面，否者扫描控件出错
+									plus.push.createMessage("开锁成功");
+									setTimeout(function(){
+										$(".content").css("display","none");
+										$(".content.success").css("display","block");
+										setTimeout(function(){
+											mui.back();
+										},2000);
+									},1000);
+								}else if(data.result == "租车取消"){
+									$(".progressText").text("100%");
+									window.clearInterval(progressCalc);
+									$(".progress").css("transition","none");
+									progressFlag = true;
+									var scan = plus.webview.getWebviewById("scan.html");
+									mui.fire(scan,'scanClose');//必须关闭scan页面，否者扫描控件出错
+		//							goPage("map.html");
+									setTimeout(function(){
+										$(".content").css("display","none");
+										$(".content.success .prompt >span").text("行程取消");
+										$(".content.success").css("display","block");
+										setTimeout(function(){
+											mui.back();
+										},2000);
+									},1000);
+								}
+							},
+							error :function(){
+								
+							}
+						});
+					},200);
+				}else{
+					var scan = plus.webview.getWebviewById("scan.html");
+					mui.fire(scan,'scanClose');//必须关闭scan页面，否者扫描控件出错
+					$(".content").css("display","none");
+					$(".content.error3 .prompt >span").text(result.result);
+					$(".content.error3").css("display","block");
+					setTimeout(function(){
+						mui.back();
+					},3000);
+				}
+				
+			}
+			
+			
+		}
+		if(window.plus) {
+			plusReady();
+		} else {
+			document.addEventListener('plusready', plusReady, false);
+		}
+		
+		function goPage(page) {
+			mui.openWindow({
+				url: page,
+				id: page
+			});
+		}
+
+	</script>
+
+</html>

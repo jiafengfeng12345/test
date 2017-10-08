@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+		<meta name="HandheldFriendly" content="true" />
+		<meta name="MobileOptimized" content="320" />
+		<link rel="stylesheet" href="css/mui.min.css">
+		<title>Hello H5+</title>
+		<style>
+			.mui-bar {
+				background: #6bbb55;
+				color: #fff;
+			}
+			
+			header .mui-title {
+				color: #fff;
+			}
+			
+			header .mui-icon-left-nav {
+				color: #fff;
+			}
+			
+			header button{
+				color: #fff !important;	
+			}	
+	
+			#content{
+				margin-top: 50px;
+			}
+		</style>
+	</head>
+	<body>
+		<header id="header" class="mui-bar mui-bar-nav">
+			<button class="mui-action-back mui-btn mui-btn-link mui-btn-nav mui-pull-left"><span class="mui-icon mui-icon-left-nav"></span>返回</button>
+			<h1 class="mui-title"></h1>
+		</header>
+		<div id="content" class="content">
+		</div>
+	</body>
+	<script type="text/javascript" src="js/mui.min.js"></script>
+	<script type="text/javascript" src="js/jquery-2.2.0.min.js"></script>
+	<script sype="text/javascript" src="js/base.js"></script>
+	<script>
+		function init(){
+			var webview = plus.webview.currentWebview();
+			var menuId = webview.menuId;
+			var menuName = webview.menuName;
+			$(".mui-title").html(menuName);
+			$.ajax({
+				type: 'post',
+				dataType: 'json',
+				data:{"menuId":menuId},
+				url : IP + "/userHelp/subPageText",
+				success : function(data){
+					$("#content").append(data.content);
+				}
+			});
+		}
+		
+		mui.plusReady(function(){
+			init();
+		});
+	</script>
+</html>

@@ -1,0 +1,254 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<link href="css/mui.min.css" rel="stylesheet" />
+	<link rel="stylesheet" href="css/font-awesome.min.css" />
+	<style>
+		.mui-bar {
+			background: #6bbb55;
+			color: #fff;
+		}
+		header .mui-title {
+			color: #fff;
+		}
+		header .mui-icon-left-nav {
+			color: #fff;
+		}
+		header button{
+			color: #fff !important;	
+		}
+		
+		.mui-table-view-cell{
+			list-style-type: none;
+			text-align: center;
+		}
+		.mui-table-view .mui-grid-view .mui-table-view-cell .mui-media-body{
+			height: 40px;
+			text-align: left;
+			font-size: 18px;
+		}
+		.shop-slider{
+			height: 200px;
+			box-shadow: 0 0.5px 0.5px #e1e1e1;
+		}
+		.shop-slider img{
+			height: 200px;
+			width: 100%;
+		}
+		.shop-productUl-title{
+			margin-top: 16px;
+			padding-top: 7px;
+			height: 35px;
+			width: 100%;
+			font-size: 14px;
+			background: #FFF;
+			box-shadow: 0 -1px 1px #e1e1e1;
+			border-bottom: 1px solid #D8D8D8;
+		}
+		.shop-productUl-title div{
+			margin: 0 0 7px 10px;
+			padding-left: 6px;
+			width: calc(100% - 10px);
+			height: 21px;
+			line-height: 22px;
+			border-left: 2px solid red;
+		}
+		.shop-productUl{
+			margin: 0;
+			padding: 0;
+			list-style: none;
+		}
+		.shop-productUl li{
+			display: inline-block;
+			float: left;
+			width: 50%;
+			height: 162px;
+			background: #fff;
+			border-bottom: 1px solid #D8D8D8;
+		}
+		.shop-productUl li:nth-child(odd){
+			border-right: 1px solid #D8D8D8;
+		}
+		.shop-productUl li a{
+			display: block;
+			padding: 10px;
+			width: 100%;
+			height: 100%;
+			color: #000;
+		}
+		.shop-productUl li a .title{
+			font-size: 14px;
+			font-weight: 780;
+		}
+		.shop-productUl li a .cost{
+			color: #2AC845;
+		}
+		.shop-productUl li a .getWay{
+			display: inline-block;
+			padding: 1px 2px;
+			height: 12px;
+			line-height: 12px;
+			font-size: 11px;
+			background: red;
+			color: #fff;
+			border-radius: 3px;
+		}
+		.shop-productUl li a .productImg{
+			width: 100%;
+		}
+		.shop-productUl li a .productImg img{
+			width: 100%;
+			height: 100px;
+		}
+	</style>
+</head>
+<body>
+<header id="header" class="mui-bar mui-bar-nav">
+	<button class="mui-action-back mui-btn mui-btn-link mui-btn-nav mui-pull-left"><span class="mui-icon mui-icon-left-nav"></span>返回</button>
+	<h1 class="mui-title">积分兑换</h1>
+</header>
+<div class="mui-content mui-scroll-wrapper">
+	<div class="mui-scroll">
+		<div class="mui-slider shop-slider">
+			<div class="mui-slider-group mui-slider-loop" id="shop_topShow">
+			</div>
+			<div class="mui-slider-indicator" id="shop_topShowNote">
+			</div>
+		</div>
+		<ul class="mui-table-view mui-grid-view" style="margin-top: 0;box-shadow: 0 1px 1px #e1e1e1;">
+	        <li class="mui-table-view-cell mui-media mui-col-xs-6">
+	        	<i class="fa fa-database" aria-hidden="true" style="color:#2AC845;"></i>&nbsp;积分
+	        	<i style="color:#00ea55; font-size: 19px;" class="shop-jiFen">0</i>
+	        </li>
+	        <li class="mui-table-view-cell mui-media mui-col-xs-6" onclick="javascript:goExchangeHistory()">
+                <i class="fa fa-file-text-o" aria-hidden="true" style="color:#2AC845;"></i>&nbsp;兑换记录
+	        </li>
+        </ul>
+		<div class="shop-productUl-title">
+            <div>
+            	大家都在兑 <i style="margin-left: 2px;color: red;">HOT!</i>
+            </div>
+        </div>
+        <ul class="shop-productUl" id="shop_productUI">
+        </ul>
+	</div>
+</div>
+<script type="text/javascript" src="js/base.js"></script>
+<script type="text/javascript" src="js/mui.min.js"></script>
+<script type="text/javascript" src="js/jquery-2.2.0.min.js" ></script>
+<script>
+	mui('.mui-scroll-wrapper').scroll({
+		indicators: false
+	});
+	// 自定义监听事件，可在另外页面触发
+	window.addEventListener('shop_initFun',function(event){
+		//获得事件参数
+		shop_initFun();
+	});
+	
+	function goExchangeHistory(){
+		var url = "shop_exchangeHistory.html";
+		mui.openWindow({
+			url: url,
+			id: url
+		});
+		var webview = plus.webview.getWebviewById(url);
+		mui.fire(webview, "shop_exchangeHistory_init");
+	}
+	
+	function goProductDetail(id) {
+		var url = "productDetail.html";
+		id = (id == null ? "" : id);
+		
+		mui.openWindow({
+			url: UrlTool.setData(url, {id : id}),
+			id: url
+		});
+		var webview = plus.webview.getWebviewById(url);
+		mui.fire(webview, "productDetail_init", {id : id});
+	}
+	function shop_initFun(){
+		$.ajax({
+			type:"post",
+			url: IP + "/client/info",
+			async:true,
+			dataType: "json",
+			success: function(re){
+				$(".shop-jiFen").text(re.jiFen);
+			}
+		});
+		$.ajax({
+			type:"post",
+			url: IP + "/product/mTopShowList",
+			async:true,
+			dataType: "json",
+			success: function(re){
+				var list = re.result.list;
+				var len = list.length;
+				var topShowHtml = "";
+				var topShowNoteHtml = "";
+				for(var i = 0; i < len; i++){
+					var item = list[i];
+					if(i==0) topShowHtml +=
+						"<div class=\"mui-slider-item mui-slider-item-duplicate\">" +
+							"<a href=\"javascript:goProductDetail('" + list[len-1].id + "');\">" +
+								"<img src=\"" + IMGIP + list[len-1].img1 + "\"/>" +
+							"</a>" +
+						"</div>";
+					topShowHtml +=
+						"<div class=\"mui-slider-item mui-slider-item-duplicate\">" +
+							"<a href=\"javascript:goProductDetail('" + item.id + "');\">" +
+								"<img src=\"" + IMGIP + item.img1 + "\"/>" +
+							"</a>" +
+						"</div>";
+					topShowNoteHtml += "<div class=\"mui-indicator" + (i==0 ? " mui-active" : "") + "\"></div>";
+					if(i == len-1) topShowHtml +=
+						"<div class=\"mui-slider-item mui-slider-item-duplicate\">" +
+							"<a href=\"javascript:goProductDetail('" + list[0].id + "');\">" +
+								"<img src=\"" + IMGIP + list[0].img1 + "\"/>" +
+							"</a>" +
+						"</div>";
+				}
+				$("#shop_topShow").html(topShowHtml);
+				$("#shop_topShowNote").html(topShowNoteHtml);
+				var gallery = mui('.mui-slider');
+				gallery.slider({
+					interval:5000
+				});
+			}
+		});
+		$.ajax({
+			type:"post",
+			url: IP + "/product/mList",
+			async:true,
+			dataType: "json",
+			success: function(re){
+				var list = re.result.list;
+				var len = list.length;
+				var mListHtml = "";
+				for(var i=0; i<len; i++){
+					var item = list[i];
+					mListHtml +=
+						"<li>" +
+							"<a href=\"javascript:goProductDetail('" + item.id + "');\">" +
+			        			"<div class=\"title\">" + item.name + "</div>" +
+			        			"<div style=\"font-size: 12px;\">" +
+			        				"<span class=\"cost\">" + item.cost + "</span>&nbsp;积分" +
+			        				"<span class=\"getWay\">兑换</span>" +
+			        			"</div>" +
+			        			"<div class=\"productImg\">" +
+			        				"<img src=\"" + IMGIP + item.img1 + "\"/>" +
+			        			"</div>" +
+			        		"</a>" +
+			        	"</li>";
+				}
+				$("#shop_productUI").html(mListHtml);
+			}
+		});
+	}
+</script>
+</body>
+</html>

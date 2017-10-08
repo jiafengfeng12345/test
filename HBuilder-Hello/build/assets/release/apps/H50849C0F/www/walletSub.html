@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+		<meta name="HandheldFriendly" content="true" />
+		<meta name="MobileOptimized" content="320" />
+		<link rel="stylesheet" href="css/mui.min.css">
+		<script type="text/javascript" src="js/mui.min.js"></script>
+		<script type="text/javascript" src="js/jquery-2.2.0.min.js"></script>
+		<script type="text/javascript" src="js/click.js"></script>
+		<script>
+		function goPagex(page) {
+			mui.openWindow({
+				url: page,
+				id: page
+			});
+		}
+		</script>
+		<title>Hello H5+</title>
+		<style>
+			.mui-bar {
+				background: #6bbb55;
+				color: #fff;
+			}
+			
+			header .mui-title {
+				color: #fff;
+			}
+			
+			header .mui-icon-left-nav {
+				color: #fff;
+			}
+			
+			header button {
+				color: #fff !important;
+			}
+			
+			.yue {
+				padding-top: 150px;
+				text-align: center;
+				font-size: 60px;
+				color: #6bbb55;
+			}
+			
+			.yue span{
+				color:#734649;
+			}
+			
+			p {
+				margin-top: 22px;
+				color: #6bbb55;
+				width:100%;
+				text-align: center;
+				font-size: 20px;
+				margin-bottom: 20px;
+			}
+			
+			.chongzhi {
+				position: absolute;
+				bottom: 200px;
+				background: #6bbb55;
+				color: #fff;
+				height: 40px;
+				line-height: 40px;
+				width: 86%;
+				text-align: center;
+				left: 7%;
+			}
+			
+			.tuikuan {
+				position: absolute;
+				bottom: 130px;
+				background: #6bbb55;
+				color: #fff;
+				height: 40px;
+				line-height: 40px;
+				width: 86%;
+				text-align: center;
+				left: 7%;
+			}
+			
+			.deposit-info{
+				position: absolute;
+				width:100%;
+				color: #6bbb55;
+				height:40px;
+				bottom:60px;
+			}
+			
+			.deposit-info a{
+				color:#734649;
+				font-size:14px;
+			}
+			
+			header .mui-pull-right a {
+				color: #fff;
+			}
+			
+			.mui-scroll {
+				top: 0;
+				bottom: 0;
+			}
+			
+			.mui-table-view.mui-table-view-chevron {
+				width: 100%;
+				height: 100%;
+			}
+			
+			.content {
+				display: block;
+				width: 100%;
+				height: 100%;
+			}
+			img{
+				position:absolute;
+				top:100px;
+				left:calc( 50% - 50px);
+				
+			}
+			
+			a.chongzhi:active{
+				color: #6bbb55;
+			}
+			
+			a.tuikuan:active{
+				color: #6bbb55;
+			}
+			.box{
+				display: none;
+				position: absolute;
+				z-index: 5;
+				width: 250px;
+				height: 120px;
+				border: 1px solid #6bbb55;
+				left: calc(50% - 125px);
+				top: 200px;
+				background: #F0F0F0;
+				border-radius: 15px;
+				
+			}
+			.top{
+				width: 100%;
+				height:70px;
+				text-align: center;
+				line-height: 70px;
+				font-weight: 700;
+				font-size: 18px;
+				border-bottom: 1px solid #6bbb55;
+			}
+			.top p{
+				margin: 0;
+				padding-top:14px;
+				text-align: center;
+				color: #000000;
+				font-weight: 700;
+			}
+			.bottom{
+				width: 100%;
+				height:50px;
+			}
+			.bottom span{
+				display: inline-block;
+				width: 50%;
+				float: left;
+				height: 50px;
+				line-height: 50px;
+				text-align: center;
+				color: #0c8eec;
+			}
+			#cannle{
+				border-right: 1px solid #6bbb55;
+			}
+			.model{
+				display: none;
+				position: absolute;
+				top:0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				z-index: 2;
+				opacity: 0.4;
+				background: #ACACB4;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="box">
+			<div class="top">
+				您还未充押金
+			</div>
+			<div class="bottom">
+				<span id="cannle">取消</span>
+				<span id="sure">充押金</span>
+			</div>
+		</div>
+		<div class="model">
+			
+		</div>
+		<div id="contentp" class="content">
+			<div class="yue">
+				<p style="font-size: 20px;display: none;margin-top: -25px;">欠费</p>
+				<span></span>
+				<p style="margin-top:30px;">账户余额(元)</p>
+			</div>
+
+			<!--<div class="chongzhi" onclick="alert('ddd')">去充值</div>-->
+			<a class="chongzhi" href="javascript:recharge()">充值</a>
+			<a class="tuikuan" href="javascript:goPagex('walletHistory.html')">退款</a>
+			<div align="center" class="deposit-info">押金&nbsp;
+				<span class="deposit"></span>&nbsp;元&nbsp;<a onclick="depositPay()"></a></div>
+		</div>
+	</body>
+	<script type="text/javascript" src="js/base.js"></script>
+	<script>
+		var walletClientYuEInterval = null;
+		if(walletClientYuEInterval == null){
+			walletClientYuEInterval = setInterval(function(){
+				$.ajax({
+					type: "post",
+					url: IP + "/client/info",
+					dataType: "json",
+					success : function(data){
+						client = data;
+						yuE = data.yuE;
+						if(yuE<0){
+							$(".yue").find("p").eq(0).css("display","block");
+							var yuan = (Number(yuE*(-1))).toFixed(2);
+							$(".yue span").text(yuan);
+							$(".tuikuan").css("display","none");
+						}else{
+							$(".yue span").text(data.yuE==null?0:data.yuE);
+							$(".yue").find("p").eq(0).css("display","none");
+							$(".tuikuan").css("display","");
+						}
+						$(".deposit").html(data.deposit==null?0:data.deposit);
+						if(data.deposit != null){
+							$(".deposit-info a").html(data.deposit == 0?"充押金":"退押金");
+						}
+					},
+				});
+			}, 1500);
+		}
+	
+		function goWalletHistory(){
+			var url = 'walletHistory.html';
+//			var webview = plus.webview.getWebviewById("walletHistorySub.html");
+//			mui.fire(webview, "pulldownRefresh");
+			goPagex(url);
+		}
+		var client;
+		var w = null;
+		var ws = null;
+		var yuE = null;
+		if(window.plus) {
+			plusReady();
+		} else {
+			document.addEventListener('plusready', plusReady, false);
+		}
+		function plusReady(){
+			ws = plus.webview.currentWebview();
+			$.ajax({
+				type: "post",
+				url: IP + "/client/info",
+				dataType: "json",
+				async: false,
+				success : function(data){
+					if(data.name == "未登录"){
+						if(plus.storage.getItem("login")=="true"){
+							$.ajax({
+								type: "post",
+								url: IP + "/mobile/verificationCheck3",
+								async: false,
+								dataType: "json",
+								data : {"phone":plus.storage.getItem("phone")},
+								success: function() {
+									$.ajax({
+										type: "post",
+										url: IP + "/client/info",
+										async: false,
+										dataType: "json",
+										success: function(data) {
+											yuE=data.yuE;
+											client = data;
+										},
+									});
+								},
+							});
+						}
+					}else{
+						client = data;
+						yuE = data.yuE;
+					}
+				},
+			});
+			if(yuE<0){
+				plus.nativeUI.toast("您的账户余额不足，请充值后在扫码开锁吧");
+				$(".yue").find("p").eq(0).css("display","block");
+				var yuan = (Number(yuE*(-1))).toFixed(2);
+				$(".yue span").text(yuan);
+				$(".tuikuan").css("display","none");
+			}
+			
+		}
+		mui.init({
+			pullRefresh: {
+				container: '#contentp',
+				down: {
+					callback: pulldownRefresh
+				},
+			},
+		});
+		
+		function creatSub2 () {
+			wsub2 = plus.webview.create('mapSub2.html', 'mapSub2.html', {
+				left:'20px',
+				right:'20px',
+				bottom: '50px',
+				height: '320px',
+				position: 'absolute',
+				scrollIndicator: 'none',
+				background: 'transparent'
+			},{yuE:yuE});
+			ws.append(wsub2);
+		}
+
+		function pulldownRefresh() {
+			setTimeout(function() {
+				$.ajax({
+					type: "post",
+					url: IP + "/client/info",
+					dataType: "json",
+					success : function(data){
+						client = data;
+						yuE = data.yuE;
+						if(yuE<0){
+							$(".yue").find("p").eq(0).css("display","block");
+							var yuan = (Number(yuE*(-1))).toFixed(2);
+							$(".yue span").text(yuan);
+							$(".tuikuan").css("display","none");
+						}else{
+							$(".yue span").text(data.yuE==null?0:data.yuE);
+							$(".yue").find("p").eq(0).css("display","none");
+							$(".tuikuan").css("display","");
+						}
+						$(".deposit").html(data.deposit==null?0:data.deposit);
+						if(data.deposit != null){
+							$(".deposit-info a").html(data.deposit == 0?"充押金":"退押金");
+						}
+					},
+				});
+				mui('#contentp').pullRefresh().endPulldownToRefresh();
+			},500);
+		}
+		
+		function walletInit(){
+			$.ajax({
+				type: "post",
+				url: IP + "/client/info",
+				dataType: "json",
+				success : function(data){
+					client = data;
+					yuE = data.yuE;
+					if(yuE<0){
+						$(".yue").find("p").eq(0).css("display","block");
+						var yuan = (Number(yuE*(-1))).toFixed(2);
+						$(".yue span").text(yuan);
+						$(".tuikuan").css("display","none");
+					}else{
+						$(".yue span").text(data.yuE==null?0:data.yuE);
+						$(".yue").find("p").eq(0).css("display","none");
+						$(".tuikuan").css("display","");
+					}
+					$(".deposit").html(data.deposit==null?0:data.deposit);
+					if(data.deposit != null){
+						$(".deposit-info a").html(data.deposit == 0?"充押金":"退押金");
+					}
+				},
+			});
+		}
+		
+		function depositPay(){
+			if($(".deposit").html() == 0){
+				goPagex("depositPay.html");
+			}else{
+				if(yuE < 0) {
+					plus.nativeUI.toast("您已欠费，不能退押金");
+				} else {
+					plus.nativeUI.confirm("押金退还时间为1-7个工作日，在此期间您的账号将无法用车。是否仍然退押金?",function(e){
+						if(e.index == 0){
+							$.ajax({
+								type:"post",
+								url:IP+"/zhifuHistory/refundDeposit",
+								data:{"username":client.username,"orderId":"null"},
+								dataType:"json",
+								success:function(retData){
+									if(retData.type == null){
+										plus.nativeUI.alert("退款失败");
+									}else{
+										w = plus.nativeUI.showWaiting();
+										var	type = "/ali/refund";
+										if(retData.type == "微信支付"){
+											type = "/weChat/refund";
+										}
+										var data = {"orderId":retData.orderId,
+										"amount":$(".deposit").html(),"username":retData.username};
+										$.ajax({
+											type:'post',
+											url:IP + type,
+											data:data,
+											dataType:"json",
+											success:function(retData){
+												if(retData.result == "success"){
+													plus.nativeUI.alert("退款成功");
+													var webview = plus.webview.getWebviewById("walletSub.html");
+													mui.fire(webview, "walletInit");
+													var webviewMenu = plus.webview.getWebviewById("menu.html");
+													mui.fire(webviewMenu,"reflashClient");
+													var walletHistorySub = plus.webview.getWebviewById("walletHistorySub.html");
+													mui.fire(walletHistorySub,'pulldownRefresh');
+													location.reload(true);					
+												}
+												else{
+													plus.nativeUI.alert(retData.result);
+												}
+												w.close();
+												w=null;
+											}
+										});	
+									}
+								}
+							});
+						}
+					},function(){},["确认","取消"]);
+				}
+			}
+		}
+		
+		walletInit();
+		
+		// 自定义监听事件，可在另外页面触发
+		window.addEventListener('walletInit',function(){
+			walletInit();
+		});
+		
+		window.addEventListener("pulldownRefresh",function(){
+			pulldownRefresh();
+		});
+		
+		
+		function recharge(){
+			$.ajax({
+				type: "post",
+				url: IP + "/client/info",
+				dataType: "json",
+				success : function(data){
+					if(data.deposit == 0){
+						$(".box").css("display","block");
+						$(".model").css("display","block");
+					}else{
+						goPagex('payment.html');
+					}
+				},
+			});
+		}
+		$("#cannle").click(function(){
+			$(".box").css("display","none");
+			$(".model").css("display","none");
+		});
+		$("#sure").click(function(){
+			$(".box").css("display","none");
+			$(".model").css("display","none");
+			goPagex("depositPay.html");
+		});
+	</script>
+
+</html>
