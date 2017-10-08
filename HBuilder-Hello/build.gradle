@@ -47,12 +47,12 @@ android {
 		 }
 	 }
 	 
-	 buildTypes {
-      release {
-		  zipAlignEnabled false
-          signingConfig signingConfigs.release
-      }
-  }
+	buildTypes {
+		release {
+			 zipAlignEnabled true
+			signingConfig signingConfigs.release
+		}
+	}
 	
 	
    
