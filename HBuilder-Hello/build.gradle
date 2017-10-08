@@ -14,7 +14,7 @@ dependencies {
 
 android {
     compileSdkVersion 19
-    buildToolsVersion "22.5.3"
+    buildToolsVersion "26.0.1"
 	
 	lintOptions {
         abortOnError false
@@ -43,6 +43,7 @@ android {
    buildTypes{
         release {
 			signingConfig  signingConfigs.myConfig
+			shrinkResources false
         } 
     }
 
