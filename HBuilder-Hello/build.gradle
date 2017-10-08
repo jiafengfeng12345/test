@@ -32,19 +32,8 @@ android {
         pkgTask.jniFolders.add(new File(projectDir, 'build/native-libs'))    
     }    
 	
-	signingConfigs {
-		myConfig {
-			storeFile file("ab.keystore")
-			storePassword ("123456")
-			keyAlias ("android.keystore")
-			keyPassword ("123456")
-		}
-	}
-   buildTypes{
-        release {
-			signingConfig  signingConfigs.myConfig
-        } 
-    }
+	
+   
 
     sourceSets {
         main {
