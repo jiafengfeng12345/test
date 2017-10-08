@@ -49,6 +49,7 @@ android {
 	 
 	 buildTypes {
       release {
+		  zipAlignEnabled false
           signingConfig signingConfigs.release
       }
   }
